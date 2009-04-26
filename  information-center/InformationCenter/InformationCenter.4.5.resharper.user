@@ -1,0 +1,274 @@
+<Configuration>
+  <SettingsComponent>
+    <string />
+    <integer>
+      <setting name="UsedSolutionBuilderID">0</setting>
+    </integer>
+    <boolean>
+      <setting name="livetemplates.csharp.usevar">True</setting>
+      <setting name="SolutionAnalysisEnabled">True</setting>
+    </boolean>
+  </SettingsComponent>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <RecentFiles>
+    <RecentFiles>
+      <File id="B828BE7C-D654-4375-B217-58C6687762D2/f:Default.aspx.cs" caret="0" fromTop="5" />
+      <File id="B828BE7C-D654-4375-B217-58C6687762D2/d:Controllers/f:HomeController.cs" caret="21" fromTop="5" />
+      <File id="1D947340-9F10-42D1-B7A2-9A34106D0242/f:SearchResults.cs" caret="79" fromTop="3" />
+      <File id="1D947340-9F10-42D1-B7A2-9A34106D0242/f:SearchRequest.cs" caret="79" fromTop="3" />
+      <File id="1D947340-9F10-42D1-B7A2-9A34106D0242/f:Document.cs" caret="44" fromTop="2" />
+      <File id="B828BE7C-D654-4375-B217-58C6687762D2/d:Views/d:Search/f:SearchResults.aspx" caret="387" fromTop="7" />
+      <File id="B828BE7C-D654-4375-B217-58C6687762D2/d:Views/d:Search/f:Index.aspx" caret="145" fromTop="1" />
+      <File id="B828BE7C-D654-4375-B217-58C6687762D2/d:Views/d:Download/f:Download.aspx" caret="154" fromTop="1" />
+      <File id="ACD9A65D-E667-4468-ABDC-7E078A733B0F/f:ServiceCenter.cs" caret="186" fromTop="6" />
+      <File id="B828BE7C-D654-4375-B217-58C6687762D2/d:Controllers/f:DownloadController.cs" caret="70" fromTop="2" />
+      <File id="B828BE7C-D654-4375-B217-58C6687762D2/d:Controllers/f:UploadController.cs" caret="13" fromTop="0" />
+      <File id="B828BE7C-D654-4375-B217-58C6687762D2/d:Controllers/f:SearchController.cs" caret="36" fromTop="1" />
+      <File id="ACD9A65D-E667-4468-ABDC-7E078A733B0F/d:Services/f:UploadService.cs" caret="62" fromTop="2" />
+      <File id="ACD9A65D-E667-4468-ABDC-7E078A733B0F/d:Services/f:DownloadService.cs" caret="97" fromTop="3" />
+      <File id="ACD9A65D-E667-4468-ABDC-7E078A733B0F/d:Services/f:SearchService.cs" caret="100" fromTop="4" />
+      <File id="B828BE7C-D654-4375-B217-58C6687762D2/d:Views/d:Shared/f:Site.Master" caret="443" fromTop="7" />
+    </RecentFiles>
+    <RecentEdits>
+      <File id="B828BE7C-D654-4375-B217-58C6687762D2/d:Controllers/f:UploadController.cs" caret="966" fromTop="5" />
+      <File id="B828BE7C-D654-4375-B217-58C6687762D2/d:Controllers/f:UploadController.cs" caret="899" fromTop="5" />
+      <File id="B828BE7C-D654-4375-B217-58C6687762D2/d:Controllers/f:DownloadController.cs" caret="0" fromTop="0" />
+      <File id="B828BE7C-D654-4375-B217-58C6687762D2/d:Controllers/f:SearchController.cs" caret="318" fromTop="17" />
+      <File id="B828BE7C-D654-4375-B217-58C6687762D2/d:Controllers/f:DownloadController.cs" caret="383" fromTop="22" />
+      <File id="B828BE7C-D654-4375-B217-58C6687762D2/d:Controllers/f:SearchController.cs" caret="1499" fromTop="17" />
+      <File id="B828BE7C-D654-4375-B217-58C6687762D2/d:Controllers/f:UploadController.cs" caret="289" fromTop="6" />
+      <File id="B828BE7C-D654-4375-B217-58C6687762D2/d:Controllers/f:UploadController.cs" caret="650" fromTop="22" />
+      <File id="B828BE7C-D654-4375-B217-58C6687762D2/d:Views/d:Search/f:SearchResults.aspx" caret="154" fromTop="1" />
+      <File id="1D947340-9F10-42D1-B7A2-9A34106D0242/f:Document.cs" caret="44" fromTop="2" />
+      <File id="1D947340-9F10-42D1-B7A2-9A34106D0242/f:SearchRequest.cs" caret="79" fromTop="3" />
+      <File id="1D947340-9F10-42D1-B7A2-9A34106D0242/f:SearchResults.cs" caret="79" fromTop="3" />
+      <File id="B828BE7C-D654-4375-B217-58C6687762D2/d:Views/d:Search/f:Index.aspx" caret="145" fromTop="1" />
+      <File id="B828BE7C-D654-4375-B217-58C6687762D2/d:Views/d:Download/f:Download.aspx" caret="154" fromTop="1" />
+      <File id="B828BE7C-D654-4375-B217-58C6687762D2/d:Controllers/f:DownloadController.cs" caret="253" fromTop="14" />
+      <File id="ACD9A65D-E667-4468-ABDC-7E078A733B0F/d:Services/f:DownloadService.cs" caret="97" fromTop="3" />
+      <File id="ACD9A65D-E667-4468-ABDC-7E078A733B0F/d:Services/f:SearchService.cs" caret="143" fromTop="3" />
+      <File id="ACD9A65D-E667-4468-ABDC-7E078A733B0F/d:Services/f:SearchService.cs" caret="1160" fromTop="35" />
+      <File id="ACD9A65D-E667-4468-ABDC-7E078A733B0F/d:Services/f:UploadService.cs" caret="1162" fromTop="33" />
+      <File id="ACD9A65D-E667-4468-ABDC-7E078A733B0F/f:ServiceCenter.cs" caret="86" fromTop="2" />
+      <File id="ACD9A65D-E667-4468-ABDC-7E078A733B0F/d:Services/f:SearchService.cs" caret="48" fromTop="3" />
+      <File id="B828BE7C-D654-4375-B217-58C6687762D2/d:Controllers/f:SearchController.cs" caret="36" fromTop="1" />
+      <File id="B828BE7C-D654-4375-B217-58C6687762D2/d:Controllers/f:DownloadController.cs" caret="13" fromTop="0" />
+      <File id="B828BE7C-D654-4375-B217-58C6687762D2/d:Controllers/f:UploadController.cs" caret="13" fromTop="0" />
+      <File id="ACD9A65D-E667-4468-ABDC-7E078A733B0F/d:Services/f:UploadService.cs" caret="62" fromTop="2" />
+      <File id="B828BE7C-D654-4375-B217-58C6687762D2/d:Views/d:Shared/f:Site.Master" caret="443" fromTop="7" />
+    </RecentEdits>
+  </RecentFiles>
+  <UnitTestRunner>
+    <Providers />
+  </UnitTestRunner>
+  <CompletionStatisticsManager>
+    <ItemStatistics item="Default">
+      <Item value="static" priority="3" />
+      <Item value="string" priority="23" />
+      <Item value="Resources" priority="1" />
+      <Item value="Html" priority="14" />
+      <Item value="ViewData" priority="16" />
+      <Item value="using" priority="3" />
+      <Item value="System" priority="0" />
+      <Item value="Web" priority="0" />
+      <Item value="Util" priority="0" />
+      <Item value="FormMethod" priority="0" />
+      <Item value="HttpContext" priority="4" />
+      <Item value="if" priority="7" />
+      <Item value="bool" priority="8" />
+      <Item value="true" priority="1" />
+      <Item value="false" priority="1" />
+      <Item value="return" priority="8" />
+      <Item value="Redirect" priority="0" />
+      <Item value="RedirectToAction" priority="2" />
+      <Item value="public" priority="23" />
+      <Item value="Action" priority="0" />
+      <Item value="var" priority="6" />
+      <Item value="private" priority="7" />
+      <Item value="this" priority="4" />
+      <Item value="View" priority="6" />
+      <Item value="ActionResult" priority="1" />
+      <Item value="IEnumerable" priority="1" />
+      <Item value="result" priority="6" />
+      <Item value="long" priority="0" />
+      <Item value="new" priority="25" />
+      <Item value="RouteValueDictionary" priority="0" />
+      <Item value="object" priority="3" />
+      <Item value="List" priority="0" />
+      <Item value="List&lt;SearchResult&gt;" priority="0" />
+      <Item value="results" priority="3" />
+      <Item value="SearchResult" priority="2" />
+      <Item value="Convert" priority="2" />
+      <Item value="FormCollection" priority="0" />
+      <Item value="void" priority="2" />
+      <Item value="ValidateSearch" priority="0" />
+      <Item value="else" priority="2" />
+      <Item value="class" priority="1" />
+      <Item value="ctor" priority="8" />
+      <Item value="Items" priority="1" />
+      <Item value="SearchResultItem" priority="2" />
+      <Item value="items" priority="0" />
+      <Item value="Dictionary&lt;string,object&gt;" priority="1" />
+      <Item value="prop" priority="0" />
+      <Item value="Dictionary" priority="0" />
+      <Item value="SearchRequest" priority="9" />
+      <Item value="request" priority="9" />
+      <Item value="List&lt;SearchResultItem&gt;" priority="0" />
+      <Item value="Int64" priority="2" />
+      <Item value="ID" priority="1" />
+      <Item value="id" priority="3" />
+      <Item value="Header" priority="0" />
+      <Item value="header" priority="0" />
+      <Item value="Url" priority="0" />
+      <Item value="url" priority="0" />
+      <Item value="protected" priority="1" />
+      <Item value="Fields" priority="2" />
+      <Item value="thr" priority="4" />
+      <Item value="try" priority="2" />
+      <Item value="SearchService" priority="3" />
+      <Item value="catch" priority="2" />
+      <Item value="Exception" priority="5" />
+      <Item value="ex" priority="3" />
+      <Item value="KeyValuePair" priority="1" />
+      <Item value="DownloadService" priority="4" />
+      <Item value="Document" priority="0" />
+      <Item value="foreach" priority="0" />
+      <Item value="field" priority="2" />
+      <Item value="NameValueCollectionExtensions" priority="0" />
+      <Item value="Response" priority="1" />
+      <Item value="fieldName" priority="2" />
+      <Item value="_Default" priority="0" />
+      <Item value="fieldValue" priority="2" />
+      <Item value="useAdditional" priority="1" />
+      <Item value="SearchResults" priority="0" />
+      <Item value="search" priority="0" />
+      <Item value="more" priority="0" />
+      <Item value="Request" priority="1" />
+      <Item value="key" priority="0" />
+      <Item value="EmptyResult" priority="1" />
+      <Item value="file" priority="7" />
+      <Item value="contentType" priority="0" />
+      <Item value="HttpPostedFileBase" priority="0" />
+      <Item value="fileName" priority="0" />
+      <Item value="UploadController" priority="0" />
+      <Item value="contentLength" priority="0" />
+      <Item value="ValidateFile" priority="0" />
+      <Item value="UploadService" priority="2" />
+      <Item value="serviceCenter" priority="1" />
+      <Item value="ServiceCenter" priority="4" />
+      <Item value="Services" priority="3" />
+      <Item value="InformationCenter" priority="1" />
+      <Item value="internal" priority="0" />
+      <Item value="Data" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@InformationCenter.WebUI.Models.Strings">
+      <Item value="TITLE" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.Mvc.HtmlHelper">
+      <Item value="ActionLink" priority="2" />
+      <Item value="TextBox" priority="0" />
+      <Item value="CheckBox" priority="0" />
+      <Item value="BeginForm" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Web.Mvc.FormMethod">
+      <Item value="Post" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.HttpContextBase">
+      <Item value="Request" priority="4" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.HttpRequestBase">
+      <Item value="[]" priority="0" />
+      <Item value="Form" priority="0" />
+      <Item value="QueryString" priority="1" />
+      <Item value="Params" priority="0" />
+      <Item value="Files" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.String">
+      <Item value="IsNullOrEmpty" priority="4" />
+      <Item value="Empty" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:InformationCenter.WebUI.Controllers.SearchController">
+      <Item value="author" priority="1" />
+      <Item value="title" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:InformationCenter.WebUI.Models.SearchResult">
+      <Item value="Header" priority="0" />
+      <Item value="Url" priority="1" />
+      <Item value="Items" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Collections.Generic.List`1">
+      <Item value="Add" priority="1" />
+      <Item value="RemoveAll" priority="0" />
+      <Item value="Count" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Convert">
+      <Item value="ToBoolean" priority="3" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.String">
+      <Item value="Length" priority="0" />
+      <Item value="StartsWith" priority="0" />
+      <Item value="Substring" priority="0" />
+      <Item value="Contains" priority="0" />
+      <Item value="ToLowerInvariant" priority="1" />
+      <Item value="Trim" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:InformationCenter.WebUI.Models.SearchRequest">
+      <Item value="Fields" priority="4" />
+      <Item value="IsValid" priority="0" />
+      <Item value="Validate" priority="0" />
+      <Item value="ToString" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Collections.Generic.Dictionary`2">
+      <Item value="ContainsKey" priority="2" />
+      <Item value="Add" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@InformationCenter.WebUI.Models.SearchService">
+      <Item value="Query" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Exception">
+      <Item value="Message" priority="2" />
+      <Item value="ToString" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:InformationCenter.WebUI.Models.SearchResultItem">
+      <Item value="ID" priority="0" />
+      <Item value="Header" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Object">
+      <Item value="GetType" priority="0" />
+      <Item value="ToString" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Type">
+      <Item value="Name" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.HttpResponseBase">
+      <Item value="Write" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Collections.Specialized.NameValueCollection">
+      <Item value="ToString" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.HttpResponse">
+      <Item value="Write" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:InformationCenter.WebUI.Models.SearchResults">
+      <Item value="Items" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.HttpRequest">
+      <Item value="QueryString" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.HttpPostedFileBase">
+      <Item value="FileName" priority="1" />
+      <Item value="ContentType" priority="1" />
+      <Item value="SaveAs" priority="0" />
+      <Item value="InputStream" priority="0" />
+      <Item value="ContentLength" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@InformationCenter.WebUI.Models.UploadService">
+      <Item value="ValidateFile" priority="0" />
+    </ItemStatistics>
+  </CompletionStatisticsManager>
+  <UnitTestRunnerMSTest>
+    <UseTestRunConfigFromMetadataFile>False</UseTestRunConfigFromMetadataFile>
+  </UnitTestRunnerMSTest>
+</Configuration>

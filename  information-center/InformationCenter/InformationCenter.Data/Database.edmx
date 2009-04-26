@@ -1,0 +1,747 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="InformationCenterModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+        <EntityContainer Name="InformationCenterModelStoreContainer">
+          <EntitySet Name="DateTimeFieldValue" EntityType="InformationCenterModel.Store.DateTimeFieldValue" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="DocDescription" EntityType="InformationCenterModel.Store.DocDescription" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Document" EntityType="InformationCenterModel.Store.Document" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Field" EntityType="InformationCenterModel.Store.Field" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="FieldType" EntityType="InformationCenterModel.Store.FieldType" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="FieldValue" EntityType="InformationCenterModel.Store.FieldValue" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="FloatFieldValue" EntityType="InformationCenterModel.Store.FloatFieldValue" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="NNFieldTemplate" EntityType="InformationCenterModel.Store.NNFieldTemplate" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="StringFieldValue" EntityType="InformationCenterModel.Store.StringFieldValue" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Template" EntityType="InformationCenterModel.Store.Template" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_DocDescription_DocDocument" Association="InformationCenterModel.Store.FK_DocDescription_DocDocument">
+            <End Role="Document" EntitySet="Document" />
+            <End Role="DocDescription" EntitySet="DocDescription" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Field_FieldType" Association="InformationCenterModel.Store.FK_Field_FieldType">
+            <End Role="FieldType" EntitySet="FieldType" />
+            <End Role="Field" EntitySet="Field" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FieldTemplate_FieldType" Association="InformationCenterModel.Store.FK_FieldTemplate_FieldType">
+            <End Role="Field" EntitySet="Field" />
+            <End Role="NNFieldTemplate" EntitySet="NNFieldTemplate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FieldTemplate_Template" Association="InformationCenterModel.Store.FK_FieldTemplate_Template">
+            <End Role="Template" EntitySet="Template" />
+            <End Role="NNFieldTemplate" EntitySet="NNFieldTemplate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FieldValue_DateTimeFieldValue" Association="InformationCenterModel.Store.FK_FieldValue_DateTimeFieldValue">
+            <End Role="FieldValue" EntitySet="FieldValue" />
+            <End Role="DateTimeFieldValue" EntitySet="DateTimeFieldValue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FieldValue_DocDescription" Association="InformationCenterModel.Store.FK_FieldValue_DocDescription">
+            <End Role="DocDescription" EntitySet="DocDescription" />
+            <End Role="FieldValue" EntitySet="FieldValue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FieldValue_Field" Association="InformationCenterModel.Store.FK_FieldValue_Field">
+            <End Role="Field" EntitySet="Field" />
+            <End Role="FieldValue" EntitySet="FieldValue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FieldValue_FloatFieldValue" Association="InformationCenterModel.Store.FK_FieldValue_FloatFieldValue">
+            <End Role="FieldValue" EntitySet="FieldValue" />
+            <End Role="FloatFieldValue" EntitySet="FloatFieldValue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FieldValue_StringFieldValue" Association="InformationCenterModel.Store.FK_FieldValue_StringFieldValue">
+            <End Role="FieldValue" EntitySet="FieldValue" />
+            <End Role="StringFieldValue" EntitySet="StringFieldValue" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="DateTimeFieldValue">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Value" Type="datetime" />
+        </EntityType>
+        <EntityType Name="DocDescription">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="DocumentID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Document">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Data" Type="varbinary(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Field">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="FieldTypeID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Text" Type="nvarchar" Nullable="false" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="FieldType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="varchar" Nullable="false" MaxLength="128" />
+          <Property Name="SqlName" Type="varchar" Nullable="false" MaxLength="128" />
+          <Property Name="Nullable" Type="bit" Nullable="false" />
+          <Property Name="DotNetType" Type="varchar" Nullable="false" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="FieldValue">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DocDescriptionID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="FieldID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FloatFieldValue">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Value" Type="float" />
+        </EntityType>
+        <EntityType Name="NNFieldTemplate">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="FieldID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TemplateID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StringFieldValue">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Value" Type="nchar" MaxLength="512" />
+        </EntityType>
+        <EntityType Name="Template">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_DocDescription_DocDocument">
+          <End Role="Document" Type="InformationCenterModel.Store.Document" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DocDescription" Type="InformationCenterModel.Store.DocDescription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Document">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DocDescription">
+              <PropertyRef Name="DocumentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Field_FieldType">
+          <End Role="FieldType" Type="InformationCenterModel.Store.FieldType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Field" Type="InformationCenterModel.Store.Field" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FieldType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Field">
+              <PropertyRef Name="FieldTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FieldTemplate_FieldType">
+          <End Role="Field" Type="InformationCenterModel.Store.Field" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="NNFieldTemplate" Type="InformationCenterModel.Store.NNFieldTemplate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Field">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NNFieldTemplate">
+              <PropertyRef Name="FieldID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FieldTemplate_Template">
+          <End Role="Template" Type="InformationCenterModel.Store.Template" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="NNFieldTemplate" Type="InformationCenterModel.Store.NNFieldTemplate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Template">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NNFieldTemplate">
+              <PropertyRef Name="TemplateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FieldValue_DateTimeFieldValue">
+          <End Role="FieldValue" Type="InformationCenterModel.Store.FieldValue" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DateTimeFieldValue" Type="InformationCenterModel.Store.DateTimeFieldValue" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="FieldValue">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DateTimeFieldValue">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FieldValue_DocDescription">
+          <End Role="DocDescription" Type="InformationCenterModel.Store.DocDescription" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FieldValue" Type="InformationCenterModel.Store.FieldValue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocDescription">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="FieldValue">
+              <PropertyRef Name="DocDescriptionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FieldValue_Field">
+          <End Role="Field" Type="InformationCenterModel.Store.Field" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FieldValue" Type="InformationCenterModel.Store.FieldValue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Field">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="FieldValue">
+              <PropertyRef Name="FieldID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FieldValue_FloatFieldValue">
+          <End Role="FieldValue" Type="InformationCenterModel.Store.FieldValue" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FloatFieldValue" Type="InformationCenterModel.Store.FloatFieldValue" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="FieldValue">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="FloatFieldValue">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FieldValue_StringFieldValue">
+          <End Role="FieldValue" Type="InformationCenterModel.Store.FieldValue" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StringFieldValue" Type="InformationCenterModel.Store.StringFieldValue" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="FieldValue">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StringFieldValue">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="AddDocDescription" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="nvarchar" Mode="In" />
+          <Parameter Name="documentId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="tempFieldsTableName" Type="nvarchar" Mode="In" />
+          <Parameter Name="id" Type="uniqueidentifier" Mode="InOut" />
+        </Function>
+        <Function Name="AddDocument" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="data" Type="varbinary(max)" Mode="In" />
+          <Parameter Name="id" Type="uniqueidentifier" Mode="InOut" />
+        </Function>
+        <Function Name="AddField" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="text" Type="nvarchar" Mode="In" />
+          <Parameter Name="fieldTypeId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="id" Type="uniqueidentifier" Mode="InOut" />
+        </Function>
+        <Function Name="AddTemplate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="nvarchar" Mode="In" />
+          <Parameter Name="tempFieldsTableName" Type="nvarchar" Mode="In" />
+          <Parameter Name="id" Type="uniqueidentifier" Mode="InOut" />
+        </Function>
+        <Function Name="AddUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="nvarchar" Mode="In" />
+          <Parameter Name="login" Type="nvarchar" Mode="In" />
+          <Parameter Name="pass" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="DeleteDocument" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="uniqueidentifier" Mode="In" />
+        </Function>
+        <Function Name="DeleteField" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="uniqueidentifier" Mode="In" />
+        </Function>
+        <Function Name="DeleteTemplate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="uniqueidentifier" Mode="In" />
+        </Function>
+        <Function Name="GetFields" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetTemplateFields" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="templateId" Type="uniqueidentifier" Mode="In" />
+        </Function>
+        <Function Name="GetTemplates" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="InformationCenterModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
+        <EntityContainer Name="InformationCenterEntities">
+          <EntitySet Name="DateTimeFieldValue" EntityType="InformationCenterModel.DateTimeFieldValue" />
+          <EntitySet Name="DocDescription" EntityType="InformationCenterModel.DocDescription" />
+          <EntitySet Name="Document" EntityType="InformationCenterModel.Document" />
+          <EntitySet Name="Field" EntityType="InformationCenterModel.Field" />
+          <EntitySet Name="FieldType" EntityType="InformationCenterModel.FieldType" />
+          <EntitySet Name="FieldValue" EntityType="InformationCenterModel.FieldValue" />
+          <EntitySet Name="FloatFieldValue" EntityType="InformationCenterModel.FloatFieldValue" />
+          <EntitySet Name="NNFieldTemplate" EntityType="InformationCenterModel.NNFieldTemplate" />
+          <EntitySet Name="StringFieldValue" EntityType="InformationCenterModel.StringFieldValue" />
+          <EntitySet Name="Template" EntityType="InformationCenterModel.Template" />
+          <AssociationSet Name="FK_FieldValue_DateTimeFieldValue" Association="InformationCenterModel.FK_FieldValue_DateTimeFieldValue">
+            <End Role="FieldValue" EntitySet="FieldValue" />
+            <End Role="DateTimeFieldValue" EntitySet="DateTimeFieldValue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocDescription_DocDocument" Association="InformationCenterModel.FK_DocDescription_DocDocument">
+            <End Role="Document" EntitySet="Document" />
+            <End Role="DocDescription" EntitySet="DocDescription" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FieldValue_DocDescription" Association="InformationCenterModel.FK_FieldValue_DocDescription">
+            <End Role="DocDescription" EntitySet="DocDescription" />
+            <End Role="FieldValue" EntitySet="FieldValue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Field_FieldType" Association="InformationCenterModel.FK_Field_FieldType">
+            <End Role="FieldType" EntitySet="FieldType" />
+            <End Role="Field" EntitySet="Field" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FieldTemplate_FieldType" Association="InformationCenterModel.FK_FieldTemplate_FieldType">
+            <End Role="Field" EntitySet="Field" />
+            <End Role="NNFieldTemplate" EntitySet="NNFieldTemplate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FieldValue_Field" Association="InformationCenterModel.FK_FieldValue_Field">
+            <End Role="Field" EntitySet="Field" />
+            <End Role="FieldValue" EntitySet="FieldValue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FieldValue_FloatFieldValue" Association="InformationCenterModel.FK_FieldValue_FloatFieldValue">
+            <End Role="FieldValue" EntitySet="FieldValue" />
+            <End Role="FloatFieldValue" EntitySet="FloatFieldValue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FieldValue_StringFieldValue" Association="InformationCenterModel.FK_FieldValue_StringFieldValue">
+            <End Role="FieldValue" EntitySet="FieldValue" />
+            <End Role="StringFieldValue" EntitySet="StringFieldValue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FieldTemplate_Template" Association="InformationCenterModel.FK_FieldTemplate_Template">
+            <End Role="Template" EntitySet="Template" />
+            <End Role="NNFieldTemplate" EntitySet="NNFieldTemplate" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="DateTimeFieldValue">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Value" Type="DateTime" />
+          <NavigationProperty Name="FieldValue" Relationship="InformationCenterModel.FK_FieldValue_DateTimeFieldValue" FromRole="DateTimeFieldValue" ToRole="FieldValue" />
+        </EntityType>
+        <EntityType Name="DocDescription">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Document" Relationship="InformationCenterModel.FK_DocDescription_DocDocument" FromRole="DocDescription" ToRole="Document" />
+          <NavigationProperty Name="FieldValue" Relationship="InformationCenterModel.FK_FieldValue_DocDescription" FromRole="DocDescription" ToRole="FieldValue" />
+        </EntityType>
+        <EntityType Name="Document">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Data" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="DocDescription" Relationship="InformationCenterModel.FK_DocDescription_DocDocument" FromRole="Document" ToRole="DocDescription" />
+        </EntityType>
+        <EntityType Name="Field">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Text" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="FieldType" Relationship="InformationCenterModel.FK_Field_FieldType" FromRole="Field" ToRole="FieldType" />
+          <NavigationProperty Name="NNFieldTemplate" Relationship="InformationCenterModel.FK_FieldTemplate_FieldType" FromRole="Field" ToRole="NNFieldTemplate" />
+          <NavigationProperty Name="FieldValue" Relationship="InformationCenterModel.FK_FieldValue_Field" FromRole="Field" ToRole="FieldValue" />
+        </EntityType>
+        <EntityType Name="FieldType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="128" Unicode="false" FixedLength="false" />
+          <Property Name="SqlName" Type="String" Nullable="false" MaxLength="128" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="Field" Relationship="InformationCenterModel.FK_Field_FieldType" FromRole="FieldType" ToRole="Field" />
+          <Property Name="Nullable" Type="Boolean" Nullable="false" />
+          <Property Name="DotNetType" Type="String" Nullable="false" /></EntityType>
+        <EntityType Name="FieldValue">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="DateTimeFieldValue" Relationship="InformationCenterModel.FK_FieldValue_DateTimeFieldValue" FromRole="FieldValue" ToRole="DateTimeFieldValue" />
+          <NavigationProperty Name="DocDescription" Relationship="InformationCenterModel.FK_FieldValue_DocDescription" FromRole="FieldValue" ToRole="DocDescription" />
+          <NavigationProperty Name="Field" Relationship="InformationCenterModel.FK_FieldValue_Field" FromRole="FieldValue" ToRole="Field" />
+          <NavigationProperty Name="FloatFieldValue" Relationship="InformationCenterModel.FK_FieldValue_FloatFieldValue" FromRole="FieldValue" ToRole="FloatFieldValue" />
+          <NavigationProperty Name="StringFieldValue" Relationship="InformationCenterModel.FK_FieldValue_StringFieldValue" FromRole="FieldValue" ToRole="StringFieldValue" />
+        </EntityType>
+        <EntityType Name="FloatFieldValue">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Value" Type="Double" />
+          <NavigationProperty Name="FieldValue" Relationship="InformationCenterModel.FK_FieldValue_FloatFieldValue" FromRole="FloatFieldValue" ToRole="FieldValue" />
+        </EntityType>
+        <EntityType Name="NNFieldTemplate">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Field" Relationship="InformationCenterModel.FK_FieldTemplate_FieldType" FromRole="NNFieldTemplate" ToRole="Field" />
+          <NavigationProperty Name="Template" Relationship="InformationCenterModel.FK_FieldTemplate_Template" FromRole="NNFieldTemplate" ToRole="Template" />
+        </EntityType>
+        <EntityType Name="StringFieldValue">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Value" Type="String" MaxLength="512" Unicode="true" FixedLength="true" />
+          <NavigationProperty Name="FieldValue" Relationship="InformationCenterModel.FK_FieldValue_StringFieldValue" FromRole="StringFieldValue" ToRole="FieldValue" />
+        </EntityType>
+        <EntityType Name="Template">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="NNFieldTemplate" Relationship="InformationCenterModel.FK_FieldTemplate_Template" FromRole="Template" ToRole="NNFieldTemplate" />
+        </EntityType>
+        <Association Name="FK_FieldValue_DateTimeFieldValue">
+          <End Role="FieldValue" Type="InformationCenterModel.FieldValue" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DateTimeFieldValue" Type="InformationCenterModel.DateTimeFieldValue" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="FieldValue">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DateTimeFieldValue">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DocDescription_DocDocument">
+          <End Role="Document" Type="InformationCenterModel.Document" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DocDescription" Type="InformationCenterModel.DocDescription" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_FieldValue_DocDescription">
+          <End Role="DocDescription" Type="InformationCenterModel.DocDescription" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FieldValue" Type="InformationCenterModel.FieldValue" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Field_FieldType">
+          <End Role="FieldType" Type="InformationCenterModel.FieldType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Field" Type="InformationCenterModel.Field" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_FieldTemplate_FieldType">
+          <End Role="Field" Type="InformationCenterModel.Field" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="NNFieldTemplate" Type="InformationCenterModel.NNFieldTemplate" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_FieldValue_Field">
+          <End Role="Field" Type="InformationCenterModel.Field" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FieldValue" Type="InformationCenterModel.FieldValue" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_FieldValue_FloatFieldValue">
+          <End Role="FieldValue" Type="InformationCenterModel.FieldValue" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FloatFieldValue" Type="InformationCenterModel.FloatFieldValue" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="FieldValue">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="FloatFieldValue">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FieldValue_StringFieldValue">
+          <End Role="FieldValue" Type="InformationCenterModel.FieldValue" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StringFieldValue" Type="InformationCenterModel.StringFieldValue" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="FieldValue">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StringFieldValue">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FieldTemplate_Template">
+          <End Role="Template" Type="InformationCenterModel.Template" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="NNFieldTemplate" Type="InformationCenterModel.NNFieldTemplate" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
+        <EntityContainerMapping StorageEntityContainer="InformationCenterModelStoreContainer" CdmEntityContainer="InformationCenterEntities">
+          <EntitySetMapping Name="DateTimeFieldValue">
+            <EntityTypeMapping TypeName="IsTypeOf(InformationCenterModel.DateTimeFieldValue)">
+              <MappingFragment StoreEntitySet="DateTimeFieldValue">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DocDescription">
+            <EntityTypeMapping TypeName="IsTypeOf(InformationCenterModel.DocDescription)">
+              <MappingFragment StoreEntitySet="DocDescription">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Document">
+            <EntityTypeMapping TypeName="IsTypeOf(InformationCenterModel.Document)">
+              <MappingFragment StoreEntitySet="Document">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Field">
+            <EntityTypeMapping TypeName="IsTypeOf(InformationCenterModel.Field)">
+              <MappingFragment StoreEntitySet="Field">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FieldType">
+            <EntityTypeMapping TypeName="IsTypeOf(InformationCenterModel.FieldType)">
+              <MappingFragment StoreEntitySet="FieldType">
+                <ScalarProperty Name="DotNetType" ColumnName="DotNetType" />
+                <ScalarProperty Name="Nullable" ColumnName="Nullable" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="SqlName" ColumnName="SqlName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FieldValue">
+            <EntityTypeMapping TypeName="IsTypeOf(InformationCenterModel.FieldValue)">
+              <MappingFragment StoreEntitySet="FieldValue">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FloatFieldValue">
+            <EntityTypeMapping TypeName="IsTypeOf(InformationCenterModel.FloatFieldValue)">
+              <MappingFragment StoreEntitySet="FloatFieldValue">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NNFieldTemplate">
+            <EntityTypeMapping TypeName="IsTypeOf(InformationCenterModel.NNFieldTemplate)">
+              <MappingFragment StoreEntitySet="NNFieldTemplate">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StringFieldValue">
+            <EntityTypeMapping TypeName="IsTypeOf(InformationCenterModel.StringFieldValue)">
+              <MappingFragment StoreEntitySet="StringFieldValue">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Template">
+            <EntityTypeMapping TypeName="IsTypeOf(InformationCenterModel.Template)">
+              <MappingFragment StoreEntitySet="Template">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK_FieldValue_DateTimeFieldValue" TypeName="InformationCenterModel.FK_FieldValue_DateTimeFieldValue" StoreEntitySet="DateTimeFieldValue">
+            <EndProperty Name="FieldValue">
+              <ScalarProperty Name="ID" ColumnName="ID" />
+            </EndProperty>
+            <EndProperty Name="DateTimeFieldValue">
+              <ScalarProperty Name="ID" ColumnName="ID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_DocDescription_DocDocument" TypeName="InformationCenterModel.FK_DocDescription_DocDocument" StoreEntitySet="DocDescription">
+            <EndProperty Name="Document">
+              <ScalarProperty Name="ID" ColumnName="DocumentID" />
+            </EndProperty>
+            <EndProperty Name="DocDescription">
+              <ScalarProperty Name="ID" ColumnName="ID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_FieldValue_DocDescription" TypeName="InformationCenterModel.FK_FieldValue_DocDescription" StoreEntitySet="FieldValue">
+            <EndProperty Name="DocDescription">
+              <ScalarProperty Name="ID" ColumnName="DocDescriptionID" />
+            </EndProperty>
+            <EndProperty Name="FieldValue">
+              <ScalarProperty Name="ID" ColumnName="ID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Field_FieldType" TypeName="InformationCenterModel.FK_Field_FieldType" StoreEntitySet="Field">
+            <EndProperty Name="FieldType">
+              <ScalarProperty Name="ID" ColumnName="FieldTypeID" />
+            </EndProperty>
+            <EndProperty Name="Field">
+              <ScalarProperty Name="ID" ColumnName="ID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_FieldTemplate_FieldType" TypeName="InformationCenterModel.FK_FieldTemplate_FieldType" StoreEntitySet="NNFieldTemplate">
+            <EndProperty Name="Field">
+              <ScalarProperty Name="ID" ColumnName="FieldID" />
+            </EndProperty>
+            <EndProperty Name="NNFieldTemplate">
+              <ScalarProperty Name="ID" ColumnName="ID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_FieldValue_Field" TypeName="InformationCenterModel.FK_FieldValue_Field" StoreEntitySet="FieldValue">
+            <EndProperty Name="Field">
+              <ScalarProperty Name="ID" ColumnName="FieldID" />
+            </EndProperty>
+            <EndProperty Name="FieldValue">
+              <ScalarProperty Name="ID" ColumnName="ID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_FieldValue_FloatFieldValue" TypeName="InformationCenterModel.FK_FieldValue_FloatFieldValue" StoreEntitySet="FloatFieldValue">
+            <EndProperty Name="FieldValue">
+              <ScalarProperty Name="ID" ColumnName="ID" />
+            </EndProperty>
+            <EndProperty Name="FloatFieldValue">
+              <ScalarProperty Name="ID" ColumnName="ID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_FieldValue_StringFieldValue" TypeName="InformationCenterModel.FK_FieldValue_StringFieldValue" StoreEntitySet="StringFieldValue">
+            <EndProperty Name="FieldValue">
+              <ScalarProperty Name="ID" ColumnName="ID" />
+            </EndProperty>
+            <EndProperty Name="StringFieldValue">
+              <ScalarProperty Name="ID" ColumnName="ID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_FieldTemplate_Template" TypeName="InformationCenterModel.FK_FieldTemplate_Template" StoreEntitySet="NNFieldTemplate">
+            <EndProperty Name="Template">
+              <ScalarProperty Name="ID" ColumnName="TemplateID" />
+            </EndProperty>
+            <EndProperty Name="NNFieldTemplate">
+              <ScalarProperty Name="ID" ColumnName="ID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2007/06/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram Name="Database">
+        <EntityTypeShape EntityType="InformationCenterModel.DateTimeFieldValue" Width="1.5" PointX="7.5" PointY="1.75" Height="1.427958984375" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformationCenterModel.DocDescription" Width="1.5" PointX="3" PointY="3.875" Height="1.592306315104167" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformationCenterModel.Document" Width="1.5" PointX="0.75" PointY="3.875" Height="1.4279589843749996" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformationCenterModel.Field" Width="1.5" PointX="3" PointY="0.75" Height="1.7566536458333335" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformationCenterModel.FieldType" Width="1.5" PointX="0.75" PointY="1" Height="1.5923063151041672" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformationCenterModel.FieldValue" Width="1.5" PointX="5.25" PointY="3.625" Height="1.9210009765624996" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformationCenterModel.FloatFieldValue" Width="1.5" PointX="7.5" PointY="3.875" Height="1.4279589843749996" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformationCenterModel.NNFieldTemplate" Width="1.5" PointX="5.25" PointY="0.875" Height="1.4279589843749998" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformationCenterModel.StringFieldValue" Width="1.5" PointX="7.5" PointY="6.125" Height="1.4279589843749996" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformationCenterModel.Template" Width="1.5" PointX="3" PointY="7" Height="1.5923063151041674" IsExpanded="true" />
+        <AssociationConnector Association="InformationCenterModel.FK_FieldValue_DateTimeFieldValue" ManuallyRouted="false">
+          <ConnectorPoint PointX="6" PointY="3.625" />
+          <ConnectorPoint PointX="6" PointY="2.7404594843749996" />
+          <ConnectorPoint PointX="7.5" PointY="2.7404594843749996" /></AssociationConnector>
+        <AssociationConnector Association="InformationCenterModel.FK_DocDescription_DocDocument" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="4.5889794921875" />
+          <ConnectorPoint PointX="3" PointY="4.5889794921875" /></AssociationConnector>
+        <AssociationConnector Association="InformationCenterModel.FK_FieldValue_DocDescription" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="4.6711531575520837" />
+          <ConnectorPoint PointX="4.916666666666667" PointY="4.6711531575520828" />
+          <ConnectorPoint PointX="5.083333333333333" PointY="4.6711531575520837" />
+          <ConnectorPoint PointX="5.25" PointY="4.6711531575520837" /></AssociationConnector>
+        <AssociationConnector Association="InformationCenterModel.FK_Field_FieldType" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="1.7533268229166668" />
+          <ConnectorPoint PointX="3" PointY="1.7533268229166668" /></AssociationConnector>
+        <AssociationConnector Association="InformationCenterModel.FK_FieldTemplate_FieldType" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="1.5889794921874998" />
+          <ConnectorPoint PointX="4.916666666666667" PointY="1.5889794921874991" />
+          <ConnectorPoint PointX="5.083333333333333" PointY="1.5889794921874998" />
+          <ConnectorPoint PointX="5.25" PointY="1.5889794921874998" /></AssociationConnector>
+        <AssociationConnector Association="InformationCenterModel.FK_FieldValue_Field" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="2.0790685690104165" />
+          <ConnectorPoint PointX="4.875" PointY="2.0790685690104165" />
+          <ConnectorPoint PointX="4.875" PointY="4.1168245787760416" />
+          <ConnectorPoint PointX="4.916666666666667" PointY="4.1168245787760407" />
+          <ConnectorPoint PointX="5.083333333333333" PointY="4.1168245787760416" />
+          <ConnectorPoint PointX="5.25" PointY="4.1168245787760416" /></AssociationConnector>
+        <AssociationConnector Association="InformationCenterModel.FK_FieldValue_FloatFieldValue" ManuallyRouted="false">
+          <ConnectorPoint PointX="6.75" PointY="4.5889794921875" />
+          <ConnectorPoint PointX="7.5" PointY="4.5889794921875" /></AssociationConnector>
+        <AssociationConnector Association="InformationCenterModel.FK_FieldValue_StringFieldValue" ManuallyRouted="false">
+          <ConnectorPoint PointX="6" PointY="5.5460009765625" />
+          <ConnectorPoint PointX="6" PointY="6.8389794921875" />
+          <ConnectorPoint PointX="7.5" PointY="6.8389794921875" /></AssociationConnector>
+        <AssociationConnector Association="InformationCenterModel.FK_FieldTemplate_Template" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="7.7961531575520837" />
+          <ConnectorPoint PointX="5" PointY="7.7961531575520837" />
+          <ConnectorPoint PointX="5" PointY="1.20073774609375" />
+          <ConnectorPoint PointX="5.25" PointY="1.20073774609375" /></AssociationConnector></Diagram></edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
