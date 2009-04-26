@@ -15,10 +15,14 @@ namespace InformationCenter.Services.ServicesImpl
 
         #endregion
 
+        #region Конструкторы
+
         public DownloadService(string ConnectionString)
         {
             connectionString = ConnectionString;
         }
+
+        #endregion
 
         #region Свойства
 

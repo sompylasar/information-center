@@ -38,4 +38,12 @@ namespace InformationCenter.Services
 
     }
 
+    public class FileSizeOverflowException : Exception
+    {
+
+        public FileSizeOverflowException() : base() { }
+
+    }
+
+
 }

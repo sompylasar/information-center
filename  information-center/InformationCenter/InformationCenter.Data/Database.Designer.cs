@@ -20,7 +20,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("InformationCenterModel", "FK_FieldTemplate_Template", "Template", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(InformationCenter.Data.Template), "NNFieldTemplate", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(InformationCenter.Data.NNFieldTemplate))]
 
 // Original file name:
-// Generation date: 26.04.2009 23:10:30
+// Generation date: 27.04.2009 0:48:09
 namespace InformationCenter.Data
 {
     
@@ -205,6 +205,21 @@ namespace InformationCenter.Data
         }
         private global::System.Data.Objects.ObjectQuery<Template> _Template;
         /// <summary>
+        /// There are no comments for IntEntitySet in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectQuery<IntEntity> IntEntitySet
+        {
+            get
+            {
+                if ((this._IntEntitySet == null))
+                {
+                    this._IntEntitySet = base.CreateQuery<IntEntity>("[IntEntitySet]");
+                }
+                return this._IntEntitySet;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<IntEntity> _IntEntitySet;
+        /// <summary>
         /// There are no comments for DateTimeFieldValue in the schema.
         /// </summary>
         public void AddToDateTimeFieldValue(DateTimeFieldValue dateTimeFieldValue)
@@ -273,6 +288,29 @@ namespace InformationCenter.Data
         public void AddToTemplate(Template template)
         {
             base.AddObject("Template", template);
+        }
+        /// <summary>
+        /// There are no comments for IntEntitySet in the schema.
+        /// </summary>
+        public void AddToIntEntitySet(IntEntity intEntity)
+        {
+            base.AddObject("IntEntitySet", intEntity);
+        }
+        /// <summary>
+        /// There are no comments for InformationCenterModel.AddDocument in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectResult<IntEntity> AddDocument(byte[] data, global::System.Data.Objects.ObjectParameter id)
+        {
+            global::System.Data.Objects.ObjectParameter dataParameter;
+            if ((data != null))
+            {
+                dataParameter = new global::System.Data.Objects.ObjectParameter("data", data);
+            }
+            else
+            {
+                dataParameter = new global::System.Data.Objects.ObjectParameter("data", typeof(byte[]));
+            }
+            return base.ExecuteFunction<IntEntity>("AddDocument", dataParameter, id);
         }
     }
     /// <summary>
@@ -1588,5 +1626,50 @@ namespace InformationCenter.Data
                 }
             }
         }
+    }
+    /// <summary>
+    /// There are no comments for InformationCenterModel.IntEntity in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// Value
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="InformationCenterModel", Name="IntEntity")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class IntEntity : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new IntEntity object.
+        /// </summary>
+        /// <param name="value">Initial value of Value.</param>
+        public static IntEntity CreateIntEntity(int value)
+        {
+            IntEntity intEntity = new IntEntity();
+            intEntity.Value = value;
+            return intEntity;
+        }
+        /// <summary>
+        /// There are no comments for Property Value in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int Value
+        {
+            get
+            {
+                return this._Value;
+            }
+            set
+            {
+                this.OnValueChanging(value);
+                this.ReportPropertyChanging("Value");
+                this._Value = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("Value");
+                this.OnValueChanged();
+            }
+        }
+        private int _Value;
+        partial void OnValueChanging(int value);
+        partial void OnValueChanged();
     }
 }

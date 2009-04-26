@@ -12,15 +12,22 @@ namespace InformationCenter.Services.ServicesImpl
 
         private InformationCenterEngine engine = null;
         private string connectionString = null;
+        private static int maxFileSizeInBytes = 100 * 1024 * 1024;
 
         #endregion
+
+        #region Конструкторы
 
         public UploadService(string ConnectionString)
         {
             connectionString = ConnectionString;
         }
 
+        #endregion
+
         #region Свойства
+
+        public static int MaxFileSizeInBytes { get { return maxFileSizeInBytes; } }
 
         public string ConnectionString { get { return connectionString; } }
 
@@ -40,30 +47,28 @@ namespace InformationCenter.Services.ServicesImpl
 
         #endregion
 
-        public void ValidateFile(Stream stream, string fileName, string contentType, int contentLength)
-        {
-            if (stream == null) throw new ArgumentNullException("stream");
-            if (fileName == null) throw new ArgumentNullException("fileName");
-            if (contentType == null) throw new ArgumentNullException("contentType");
+        #region Методы
 
-            if (fileName.Trim() == "")
-                throw new Exception("Имя файла не указано");
-            if (contentLength <= 0)
-                throw new Exception("Файл пуст");
-            if (contentType != "text/plain")
-                throw new Exception("Тип файла " + contentType + " запрещен к загрузке");
+        private Exception ValidateFile(Stream stream, string fileName, string contentType, int contentLength)
+        {
+            if (stream == null) return new ArgumentNullException("stream");
+            if (fileName == null) return new ArgumentNullException("fileName");
+            if (contentType == null) return new ArgumentNullException("contentType");
+            if (fileName.Trim() == "") return new Exception("Имя файла не указано");
+            if (contentLength <= 0) return new Exception("Файл пуст");
+            if (!File.Exists(fileName)) return new FileNotFoundException("", fileName);
+            if (contentLength > MaxFileSizeInBytes) return new FileSizeOverflowException();
+            if (contentType != "text/plain") return new Exception("Тип файла " + contentType + " запрещен к загрузке");
+            return null;
         }
 
-        public void SaveFile(Stream stream, string fileName, string contentType, int contentLength)
+        public void Upload(Stream stream, string fileName, string contentType, int contentLength)
         {
-            ValidateFile(stream, fileName, contentType, contentLength);
-
-            // TODO: save file
+            Exception ex = ValidateFile(stream, fileName, contentType, contentLength);
+            if (ex != null) throw ex;
+            int result = Engine.AddDocument(new ByteBlockReader(stream).ReadToEnd().ToArray());
         }
-
-
-        #region IDisposable Members
-        
+ 
         public void Dispose()
         {
             if (engine != null)
@@ -74,6 +79,7 @@ namespace InformationCenter.Services.ServicesImpl
         }
 
         #endregion
+
     }
 
 }

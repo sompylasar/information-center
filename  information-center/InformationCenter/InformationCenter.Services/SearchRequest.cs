@@ -36,10 +36,6 @@ namespace InformationCenter.Services
 
         #endregion
 
-        #region Ìועמהû
-
-        #endregion
-
     }
 
     public enum SearchMode

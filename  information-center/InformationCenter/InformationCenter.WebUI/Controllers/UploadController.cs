@@ -26,7 +26,7 @@ namespace InformationCenter.WebUI.Controllers
                 if (file == null)
                     throw new Exception("Файл не загружен.");
 
-                serviceCenter.UploadService.SaveFile(file.InputStream, file.FileName, file.ContentType, file.ContentLength);
+                serviceCenter.UploadService.Upload(file.InputStream, file.FileName, file.ContentType, file.ContentLength);
 
                 ViewData["error"] = "";
             }
