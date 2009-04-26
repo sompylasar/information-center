@@ -31,6 +31,8 @@ namespace InformationCenter.Services
 
         #region Свойства
 
+        private InformationCenterEntities Entities { get { return Context as InformationCenterEntities; } }
+
         public IDbConnection GetConnection(DbConnectionStringBuilder connectionStringBuilder) { return null; }
 
         public IDbConnection CurrentConnection { get { return Context.Connection; } }
@@ -58,6 +60,15 @@ namespace InformationCenter.Services
                 return current;
             }
         }*/
+
+        #endregion
+
+        #region Методы
+
+        public int AddDocument(byte[] Data)
+        {
+            return Entities.AddDocument(Data, new System.Data.Objects.ObjectParameter("id", null)).First().Value;
+        }
 
         #endregion
 

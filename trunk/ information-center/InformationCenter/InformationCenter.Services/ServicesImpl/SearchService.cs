@@ -70,14 +70,14 @@ namespace InformationCenter.Services.ServicesImpl
             return null;
         }
 
-        public SearchResult Query(SearchRequest Request)
+        public SearchResultItem[] Query(SearchRequest Request)
         {
             if (Request == null) throw new ArgumentNullException("Request");
 
             Exception ex = ValidateRequest(Request);
             if (ex != null) throw ex;
 
-            var result = new SearchResult();
+            var result = new SearchResultItem[1];
             
             // TODO: fetch SearchResults or SearchResultItems from Mapper
             //result.Items.Add(new SearchResultItem(1, "A", "clickme1"));
