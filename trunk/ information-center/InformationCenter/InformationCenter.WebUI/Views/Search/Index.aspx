@@ -1,4 +1,5 @@
 <%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+<%@ Import Namespace="InformationCenter.Services"%>
 <%@ Import Namespace="InformationCenter.Data"%>
 
 <asp:Content ID="indexTitle" ContentPlaceHolderID="TitleContent" runat="server">
@@ -40,8 +41,8 @@
         <p><span class="field-validation-error"><%=ViewData["error"]%></span></p>
         <p>
             <table class="search-fields">
-                <tr><td><label for="txtSearchTitle">Название:</label></td><td><input type="text" id="txtSearchTitle" name="t" value="<%=request.Fields.ContainsKey("Title") ? request.Fields["Title"] : ""%>" /></td></tr>
-                <tr><td><label for="txtSearchAuthor">Автор:</label></td><td><input type="text" id="txtSearchAuthor" name="a" value="<%=request.Fields.ContainsKey("Author") ? request.Fields["Author"] : ""%>" /></td></tr>
+                <tr><td><label for="txtSearchTitle">Название:</label></td><td><input type="text" id="txtSearchTitle" name="t" value="" /></td></tr>
+                <tr><td><label for="txtSearchAuthor">Автор:</label></td><td><input type="text" id="txtSearchAuthor" name="a" value="" /></td></tr>
                 <tr>
                     <td><label for="chkUseAdditional">Использовать дополнительные поля</label></td>
                     <td><input type="checkbox" id="chkUseAdditional" name="more" value="true"<%= useAdditional ? " checked=\"checked\"" : "" %> /></td>
@@ -52,8 +53,8 @@
     </form>
     <div class="hidden" id="frmSearchDocument_additional">
         <table class="search-fields">
-            <tr class="additional"><td><label for="txtAdditionalDate">Дата:</label></td><td><input type="text" id="txtAdditionalDate" name="_Date" value="<%=request.Fields.ContainsKey("Date") ? request.Fields["Date"] : ""%>" /></td></tr>
-            <tr class="additional"><td><label for="txtAdditionalPublisher">Издательство:</label></td><td><input type="text" id="txtAdditionalPublisher" name="_Publisher" value="<%=request.Fields.ContainsKey("Publisher") ? request.Fields["Publisher"] : ""%>" /></td></tr>
+            <tr class="additional"><td><label for="txtAdditionalDate">Дата:</label></td><td><input type="text" id="txtAdditionalDate" name="_Date" value="" /></td></tr>
+            <tr class="additional"><td><label for="txtAdditionalPublisher">Издательство:</label></td><td><input type="text" id="txtAdditionalPublisher" name="_Publisher" value="" /></td></tr>
         </table>
     </div>
 </asp:Content>
