@@ -13,7 +13,7 @@ namespace InformationCenter.Services
 
         private Stream s = null;
         private byte[] buffer = null;
-        private int blockSize = 1024;
+        private long blockSize = 1024;
         private List<byte[]> blocks = new List<byte[]>();
 
         #endregion
@@ -26,13 +26,21 @@ namespace InformationCenter.Services
             blockSize = BlockSize;
         }
 
-        public ByteBlockReader(Stream Stream) : this(Stream, 1024) { }
+        public ByteBlockReader(Stream Stream) : this(Stream, -1) { }
 
         #endregion
 
         #region Свойства
 
-        public int BlockSize { get { return blockSize; } }
+        public long BlockSize
+        {
+            get
+            {
+                if (blockSize == -1) blockSize = s.Length;
+                if (blockSize == 0) blockSize = 1;
+                return blockSize;
+            }
+        }
 
         public bool CanRead { get { return s.CanRead; } }
 

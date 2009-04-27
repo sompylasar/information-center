@@ -49,10 +49,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ByteBlockReader.cs" />
-    <Compile Include="DocumentView.cs" />
+    <Compile Include="Items\DocDescriptionView.cs" />
+    <Compile Include="Items\DocumentView.cs" />
     <Compile Include="Exceptions.cs" />
-    <Compile Include="InformationCenterEngine.cs" />
-    <Compile Include="InformationCenterEngineLoader.cs" />
+    <Compile Include="Items\FieldTypeView.cs" />
+    <Compile Include="Items\FieldView.cs" />
+    <Compile Include="Engine\InformationCenterEngine.cs" />
+    <Compile Include="Engine\InformationCenterEngineLoader.cs" />
+    <Compile Include="Items\TemplateView.cs" />
+    <Compile Include="Items\ViewItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchItem.cs" />
     <Compile Include="SearchRequest.cs" />

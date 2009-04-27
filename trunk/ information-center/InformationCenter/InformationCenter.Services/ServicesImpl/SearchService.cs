@@ -46,6 +46,13 @@ namespace InformationCenter.Services.ServicesImpl
 
         #region Ìועמהû
 
+        public FieldView[] GetFields()
+        {
+            return Array.ConvertAll<Field, FieldView>(Engine.GetFields(), input => new FieldView(input));
+        }
+
+        public object[] GetValuesOfField(FieldView FieldView) { return Engine.GetFieldValues(FieldView.ID); }
+
         private Exception ValidateRequest(SearchRequest Request)
         {
             foreach (SearchItem item in Request.Items)
@@ -58,7 +65,7 @@ namespace InformationCenter.Services.ServicesImpl
                 if (t == null) return new DotNetTypeNotFoundException();
                 if (item.FieldValue == null)
                 {
-                    if (!value.FieldType.Nullable)
+                    if (!value.Nullable)
                         return new NullableValueNotAllowedException();
                 }
                 else
