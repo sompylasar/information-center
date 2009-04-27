@@ -49,24 +49,33 @@ namespace InformationCenter.Services.ServicesImpl
 
         #region Методы
 
-        private Exception ValidateFile(Stream stream, string fileName, string contentType, int contentLength)
+        public TemplateView[] GetTemplates()
         {
-            if (stream == null) return new ArgumentNullException("stream");
-            if (fileName == null) return new ArgumentNullException("fileName");
-            if (contentType == null) return new ArgumentNullException("contentType");
-            if (fileName.Trim() == "") return new Exception("Имя файла не указано");
-            if (contentLength <= 0) return new Exception("Файл пуст");
-            if (!File.Exists(fileName)) return new FileNotFoundException("", fileName);
-            if (contentLength > MaxFileSizeInBytes) return new FileSizeOverflowException();
-            if (contentType != "text/plain") return new Exception("Тип файла " + contentType + " запрещен к загрузке");
+            return Array.ConvertAll<Template, TemplateView>(Engine.GetTemplates(), input => new TemplateView(input));
+        }
+
+        public FieldView[] GetFieldsOfTemplate(TemplateView TemplateView)
+        {
+            return Array.ConvertAll<Field, FieldView>(Engine.GetTemplateFields(TemplateView.ID), input => new FieldView(input));
+        }
+
+        private Exception ValidateFile(Stream Stream, string FileName, string ContentType, int ContentLength)
+        {
+            if (Stream == null) return new ArgumentNullException("stream");
+            if (FileName == null) return new ArgumentNullException("fileName");
+            if (ContentType == null) return new ArgumentNullException("contentType");
+            if (FileName.Trim() == "") return new Exception("Имя файла не указано");
+            if (ContentLength <= 0) return new Exception("Файл пуст");
+            if (ContentLength > MaxFileSizeInBytes) return new FileSizeOverflowException();
+            if (ContentType != "text/plain") return new Exception("Тип файла " + ContentType + " запрещен к загрузке");
             return null;
         }
 
-        public void Upload(Stream stream, string fileName, string contentType, int contentLength)
+        public Guid Upload(Stream Stream, string FileName, string contentType, int ContentLength)
         {
-            Exception ex = ValidateFile(stream, fileName, contentType, contentLength);
+            Exception ex = ValidateFile(Stream, FileName, contentType, ContentLength);
             if (ex != null) throw ex;
-            int result = Engine.AddDocument(new ByteBlockReader(stream).ReadToEnd().ToArray());
+            return Engine.AddDocument(FileName, new ByteBlockReader(Stream).ReadToEnd().ToArray());
         }
  
         public void Dispose()
