@@ -56,6 +56,10 @@
       <Project>{1D947340-9F10-42D1-B7A2-9A34106D0242}</Project>
       <Name>InformationCenter.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\InformationCenter.LogicUtils\InformationCenter.LogicUtils.csproj">
+      <Project>{0DF8EE79-4875-424C-83C0-90EBD909F973}</Project>
+      <Name>InformationCenter.LogicUtils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InformationCenter.Services\InformationCenter.Services.csproj">
       <Project>{ACD9A65D-E667-4468-ABDC-7E078A733B0F}</Project>
       <Name>InformationCenter.Services</Name>

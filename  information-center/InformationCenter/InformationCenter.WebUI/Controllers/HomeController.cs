@@ -7,6 +7,7 @@ namespace InformationCenter.WebUI.Controllers
     {
         public ActionResult Index()
         {
+            //
             return View();
         }
 
