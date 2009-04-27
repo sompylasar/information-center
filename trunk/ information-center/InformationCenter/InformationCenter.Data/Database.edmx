@@ -13,6 +13,7 @@
           <EntitySet Name="FieldType" EntityType="InformationCenterModel.Store.FieldType" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="FieldValue" EntityType="InformationCenterModel.Store.FieldValue" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="FloatFieldValue" EntityType="InformationCenterModel.Store.FloatFieldValue" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="IntValue" EntityType="InformationCenterModel.Store.IntValue" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="NNFieldTemplate" EntityType="InformationCenterModel.Store.NNFieldTemplate" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="StringFieldValue" EntityType="InformationCenterModel.Store.StringFieldValue" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Template" EntityType="InformationCenterModel.Store.Template" store:Type="Tables" Schema="dbo" />
@@ -75,7 +76,6 @@
           <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Data" Type="varbinary(max)" Nullable="false" />
           <Property Name="FileName" Type="nvarchar" Nullable="false" MaxLength="128" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="128" />
         </EntityType>
         <EntityType Name="Field">
           <Key>
@@ -94,6 +94,7 @@
           <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Name" Type="varchar" Nullable="false" MaxLength="128" />
           <Property Name="SqlName" Type="varchar" Nullable="false" MaxLength="128" />
+          <Property Name="DotNetType" Type="varchar" Nullable="false" MaxLength="128" />
         </EntityType>
         <EntityType Name="FieldValue">
           <Key>
@@ -109,6 +110,12 @@
           </Key>
           <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Value" Type="float" />
+        </EntityType>
+        <EntityType Name="IntValue">
+          <Key>
+            <PropertyRef Name="Value" />
+          </Key>
+          <Property Name="Value" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="NNFieldTemplate">
           <Key>
@@ -266,7 +273,6 @@
           <Parameter Name="id" Type="uniqueidentifier" Mode="InOut" />
         </Function>
         <Function Name="AddDocument" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="name" Type="nvarchar" Mode="In" />
           <Parameter Name="fileName" Type="nvarchar" Mode="In" />
           <Parameter Name="data" Type="varbinary(max)" Mode="In" />
           <Parameter Name="id" Type="uniqueidentifier" Mode="InOut" />
@@ -296,6 +302,9 @@
           <Parameter Name="id" Type="uniqueidentifier" Mode="In" />
         </Function>
         <Function Name="GetFields" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetFieldValues" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fieldId" Type="uniqueidentifier" Mode="In" />
+        </Function>
         <Function Name="GetTemplateFields" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="templateId" Type="uniqueidentifier" Mode="In" />
         </Function>
@@ -304,7 +313,7 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="InformationCenterModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
-        <EntityContainer Name="InformationCenterEntities">
+        <EntityContainer Name="Entities">
           <EntitySet Name="DateTimeFieldValue" EntityType="InformationCenterModel.DateTimeFieldValue" />
           <EntitySet Name="DocDescription" EntityType="InformationCenterModel.DocDescription" />
           <EntitySet Name="Document" EntityType="InformationCenterModel.Document" />
@@ -351,8 +360,13 @@
             <End Role="Template" EntitySet="Template" />
             <End Role="NNFieldTemplate" EntitySet="NNFieldTemplate" />
           </AssociationSet>
-          <EntitySet Name="IntEntitySet" EntityType="InformationCenterModel.IntEntity" />
-          <FunctionImport Name="AddDocument" EntitySet="IntEntitySet" ReturnType="Collection(InformationCenterModel.IntEntity)">
+          <EntitySet Name="IntValue" EntityType="InformationCenterModel.IntValue" />
+          <FunctionImport Name="GetTemplateFields" EntitySet="Field" ReturnType="Collection(InformationCenterModel.Field)">
+            <Parameter Name="templateId" Mode="In" Type="Guid" /></FunctionImport>
+          <FunctionImport Name="GetTemplates" EntitySet="Template" ReturnType="Collection(InformationCenterModel.Template)" />
+          <FunctionImport Name="GetFields" EntitySet="Field" ReturnType="Collection(InformationCenterModel.Field)" />
+          <FunctionImport Name="AddDocument" EntitySet="IntValue" ReturnType="Collection(InformationCenterModel.IntValue)">
+            <Parameter Name="fileName" Mode="In" Type="String" />
             <Parameter Name="data" Mode="In" Type="Binary" />
             <Parameter Name="id" Mode="InOut" Type="Guid" /></FunctionImport></EntityContainer>
         <EntityType Name="DateTimeFieldValue">
@@ -378,20 +392,21 @@
           </Key>
           <Property Name="ID" Type="Guid" Nullable="false" />
           <Property Name="Data" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="FileName" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="DocDescription" Relationship="InformationCenterModel.FK_DocDescription_DocDocument" FromRole="Document" ToRole="DocDescription" />
-          <Property Name="FileName" Type="String" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" /></EntityType>
+        </EntityType>
         <EntityType Name="Field">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Guid" Nullable="false" />
           <Property Name="Text" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+          <Property Name="Nullable" Type="Boolean" Nullable="false" />
+          <Property Name="OrderNumber" Type="Int32" Nullable="false" />
           <NavigationProperty Name="FieldType" Relationship="InformationCenterModel.FK_Field_FieldType" FromRole="Field" ToRole="FieldType" />
           <NavigationProperty Name="NNFieldTemplate" Relationship="InformationCenterModel.FK_FieldTemplate_FieldType" FromRole="Field" ToRole="NNFieldTemplate" />
           <NavigationProperty Name="FieldValue" Relationship="InformationCenterModel.FK_FieldValue_Field" FromRole="Field" ToRole="FieldValue" />
-          <Property Name="Nullable" Type="Boolean" Nullable="false" />
-          <Property Name="OrderNumber" Type="Int32" Nullable="false" /></EntityType>
+        </EntityType>
         <EntityType Name="FieldType">
           <Key>
             <PropertyRef Name="ID" />
@@ -400,7 +415,6 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="128" Unicode="false" FixedLength="false" />
           <Property Name="SqlName" Type="String" Nullable="false" MaxLength="128" Unicode="false" FixedLength="false" />
           <NavigationProperty Name="Field" Relationship="InformationCenterModel.FK_Field_FieldType" FromRole="FieldType" ToRole="Field" />
-          <Property Name="Nullable" Type="Boolean" Nullable="false" />
           <Property Name="DotNetType" Type="String" Nullable="false" /></EntityType>
         <EntityType Name="FieldValue">
           <Key>
@@ -524,7 +538,7 @@
           </End>
           <End Role="NNFieldTemplate" Type="InformationCenterModel.NNFieldTemplate" Multiplicity="*" />
         </Association>
-        <EntityType Name="IntEntity">
+        <EntityType Name="IntValue">
           <Key>
             <PropertyRef Name="Value" /></Key>
           <Property Name="Value" Type="Int32" Nullable="false" /></EntityType></Schema>
@@ -532,7 +546,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
-        <EntityContainerMapping StorageEntityContainer="InformationCenterModelStoreContainer" CdmEntityContainer="InformationCenterEntities">
+        <EntityContainerMapping StorageEntityContainer="InformationCenterModelStoreContainer" CdmEntityContainer="Entities">
           <EntitySetMapping Name="DateTimeFieldValue">
             <EntityTypeMapping TypeName="IsTypeOf(InformationCenterModel.DateTimeFieldValue)">
               <MappingFragment StoreEntitySet="DateTimeFieldValue">
@@ -552,26 +566,26 @@
           <EntitySetMapping Name="Document">
             <EntityTypeMapping TypeName="IsTypeOf(InformationCenterModel.Document)">
               <MappingFragment StoreEntitySet="Document">
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="FileName" ColumnName="FileName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Field">
             <EntityTypeMapping TypeName="IsTypeOf(InformationCenterModel.Field)">
               <MappingFragment StoreEntitySet="Field">
-                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
-                <ScalarProperty Name="Nullable" ColumnName="Nullable" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="Nullable" ColumnName="Nullable" />
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="FieldType">
             <EntityTypeMapping TypeName="IsTypeOf(InformationCenterModel.FieldType)">
               <MappingFragment StoreEntitySet="FieldType">
+                <ScalarProperty Name="DotNetType" ColumnName="DotNetType" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="SqlName" ColumnName="SqlName" />
@@ -689,6 +703,13 @@
               <ScalarProperty Name="ID" ColumnName="ID" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="IntValue">
+            <EntityTypeMapping TypeName="IsTypeOf(InformationCenterModel.IntValue)">
+              <MappingFragment StoreEntitySet="IntValue">
+                <ScalarProperty Name="Value" ColumnName="Value" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetTemplateFields" FunctionName="InformationCenterModel.Store.GetTemplateFields" />
+          <FunctionImportMapping FunctionImportName="GetTemplates" FunctionName="InformationCenterModel.Store.GetTemplates" />
+          <FunctionImportMapping FunctionImportName="GetFields" FunctionName="InformationCenterModel.Store.GetFields" />
           <FunctionImportMapping FunctionImportName="AddDocument" FunctionName="InformationCenterModel.Store.AddDocument" /></EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -708,54 +729,57 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram Name="Database">
-        <EntityTypeShape EntityType="InformationCenterModel.DateTimeFieldValue" Width="1.5" PointX="7.5" PointY="1.75" Height="1.427958984375" IsExpanded="true" />
-        <EntityTypeShape EntityType="InformationCenterModel.DocDescription" Width="1.5" PointX="3" PointY="3.875" Height="1.592306315104167" IsExpanded="true" />
-        <EntityTypeShape EntityType="InformationCenterModel.Document" Width="1.5" PointX="0.75" PointY="3.875" Height="1.4279589843749996" IsExpanded="true" />
-        <EntityTypeShape EntityType="InformationCenterModel.Field" Width="1.5" PointX="3" PointY="0.75" Height="1.7566536458333335" IsExpanded="true" />
-        <EntityTypeShape EntityType="InformationCenterModel.FieldType" Width="1.5" PointX="0.75" PointY="1" Height="1.5923063151041672" IsExpanded="true" />
-        <EntityTypeShape EntityType="InformationCenterModel.FieldValue" Width="1.5" PointX="5.25" PointY="3.625" Height="1.9210009765624996" IsExpanded="true" />
-        <EntityTypeShape EntityType="InformationCenterModel.FloatFieldValue" Width="1.5" PointX="7.5" PointY="3.875" Height="1.4279589843749996" IsExpanded="true" />
-        <EntityTypeShape EntityType="InformationCenterModel.NNFieldTemplate" Width="1.5" PointX="5.25" PointY="0.875" Height="1.4279589843749998" IsExpanded="true" />
-        <EntityTypeShape EntityType="InformationCenterModel.StringFieldValue" Width="1.5" PointX="7.5" PointY="6.125" Height="1.4279589843749996" IsExpanded="true" />
-        <EntityTypeShape EntityType="InformationCenterModel.Template" Width="1.5" PointX="3" PointY="7" Height="1.5923063151041674" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformationCenterModel.DateTimeFieldValue" Width="1.5" PointX="7.5" PointY="1.875" Height="1.4279589843749998" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformationCenterModel.DocDescription" Width="1.5" PointX="3" PointY="4" Height="1.5923063151041674" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformationCenterModel.Document" Width="1.5" PointX="0.75" PointY="3.875" Height="1.5923063151041665" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformationCenterModel.Field" Width="1.5" PointX="3" PointY="0.75" Height="2.0853483072916674" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformationCenterModel.FieldType" Width="1.5" PointX="0.75" PointY="1.125" Height="1.7566536458333339" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformationCenterModel.FieldValue" Width="1.5" PointX="5.25" PointY="3.875" Height="1.9210009765624996" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformationCenterModel.FloatFieldValue" Width="1.5" PointX="7.5" PointY="4.125" Height="1.4279589843749996" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformationCenterModel.NNFieldTemplate" Width="1.5" PointX="5.25" PointY="1.125" Height="1.427958984375" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformationCenterModel.StringFieldValue" Width="1.5" PointX="7.5" PointY="6.25" Height="1.4279589843749996" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformationCenterModel.Template" Width="1.5" PointX="3" PointY="7.125" Height="1.5923063151041665" IsExpanded="true" />
         <AssociationConnector Association="InformationCenterModel.FK_FieldValue_DateTimeFieldValue" ManuallyRouted="false">
-          <ConnectorPoint PointX="6" PointY="3.625" />
-          <ConnectorPoint PointX="6" PointY="2.7404594843749996" />
-          <ConnectorPoint PointX="7.5" PointY="2.7404594843749996" /></AssociationConnector>
+          <ConnectorPoint PointX="6" PointY="3.875" />
+          <ConnectorPoint PointX="6" PointY="2.802958984375" />
+          <ConnectorPoint PointX="7" PointY="2.802958984375" />
+          <ConnectorPoint PointX="7" PointY="2.5889794921875" />
+          <ConnectorPoint PointX="7.5" PointY="2.5889794921875" /></AssociationConnector>
         <AssociationConnector Association="InformationCenterModel.FK_DocDescription_DocDocument" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="4.7948616536458335" />
-          <ConnectorPoint PointX="3" PointY="4.7948616536458335" /></AssociationConnector>
+          <ConnectorPoint PointX="2.25" PointY="4.7336531575520837" />
+          <ConnectorPoint PointX="3" PointY="4.7336531575520837" /></AssociationConnector>
         <AssociationConnector Association="InformationCenterModel.FK_FieldValue_DocDescription" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="4.6711531575520837" />
-          <ConnectorPoint PointX="4.854166666666667" PointY="4.6711531575520828" />
-          <ConnectorPoint PointX="5.020833333333333" PointY="4.6711531575520837" />
-          <ConnectorPoint PointX="5.25" PointY="4.6711531575520837" /></AssociationConnector>
+          <ConnectorPoint PointX="4.5" PointY="4.7961531575520837" />
+          <ConnectorPoint PointX="4.791666666666667" PointY="4.7961531575520828" />
+          <ConnectorPoint PointX="5.083333333333333" PointY="4.7961531575520837" />
+          <ConnectorPoint PointX="5.25" PointY="4.7961531575520837" /></AssociationConnector>
         <AssociationConnector Association="InformationCenterModel.FK_Field_FieldType" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="1.7533268229166668" />
-          <ConnectorPoint PointX="3" PointY="1.7533268229166668" /></AssociationConnector>
+          <ConnectorPoint PointX="2.25" PointY="1.9801741536458337" />
+          <ConnectorPoint PointX="3" PointY="1.9801741536458337" /></AssociationConnector>
         <AssociationConnector Association="InformationCenterModel.FK_FieldTemplate_FieldType" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="1.5889794921874998" />
-          <ConnectorPoint PointX="4.854166666666667" PointY="1.5889794921874991" />
-          <ConnectorPoint PointX="5.020833333333333" PointY="1.5889794921874998" />
-          <ConnectorPoint PointX="5.25" PointY="1.5889794921874998" /></AssociationConnector>
+          <ConnectorPoint PointX="4.5" PointY="1.8389794921875" />
+          <ConnectorPoint PointX="4.791666666666667" PointY="1.8389794921874993" />
+          <ConnectorPoint PointX="4.958333333333333" PointY="1.8389794921875" />
+          <ConnectorPoint PointX="5.25" PointY="1.8389794921875" /></AssociationConnector>
         <AssociationConnector Association="InformationCenterModel.FK_FieldValue_Field" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="1.6283268229166668" />
-          <ConnectorPoint PointX="4.875" PointY="1.6283268229166668" />
-          <ConnectorPoint PointX="4.875" PointY="4.1168245787760416" />
-          <ConnectorPoint PointX="5.25" PointY="4.1168245787760416" />
-          </AssociationConnector>
+          <ConnectorPoint PointX="4.5" PointY="1.26323774609375" />
+          <ConnectorPoint PointX="4.875" PointY="1.26323774609375" />
+          <ConnectorPoint PointX="4.875" PointY="5.3273290670572919" />
+          <ConnectorPoint PointX="4.916666666666667" PointY="5.327329067057291" />
+          <ConnectorPoint PointX="5.083333333333333" PointY="5.3273290670572919" />
+          <ConnectorPoint PointX="5.25" PointY="5.3273290670572919" /></AssociationConnector>
         <AssociationConnector Association="InformationCenterModel.FK_FieldValue_FloatFieldValue" ManuallyRouted="false">
-          <ConnectorPoint PointX="6.75" PointY="4.5889794921875" />
-          <ConnectorPoint PointX="7.5" PointY="4.5889794921875" /></AssociationConnector>
+          <ConnectorPoint PointX="6.75" PointY="4.8389794921875" />
+          <ConnectorPoint PointX="7.5" PointY="4.8389794921875" /></AssociationConnector>
         <AssociationConnector Association="InformationCenterModel.FK_FieldValue_StringFieldValue" ManuallyRouted="false">
-          <ConnectorPoint PointX="6" PointY="5.5460009765625" />
-          <ConnectorPoint PointX="6" PointY="6.8389794921875" />
-          <ConnectorPoint PointX="7.5" PointY="6.8389794921875" /></AssociationConnector>
+          <ConnectorPoint PointX="6" PointY="5.7960009765625" />
+          <ConnectorPoint PointX="6" PointY="6.9639794921875" />
+          <ConnectorPoint PointX="7.5" PointY="6.9639794921875" /></AssociationConnector>
         <AssociationConnector Association="InformationCenterModel.FK_FieldTemplate_Template" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="7.7961531575520837" />
-          <ConnectorPoint PointX="4.9375" PointY="7.7961531575520837" />
-          <ConnectorPoint PointX="4.9375" PointY="1.2516639114583332" />
-          <ConnectorPoint PointX="5.25" PointY="1.2516639114583332" /></AssociationConnector>
-        <EntityTypeShape EntityType="InformationCenterModel.IntEntity" Width="1.5" PointX="5.375" PointY="8.75" Height="1.0992643229166674" /></Diagram></edmx:Diagrams>
+          <ConnectorPoint PointX="4.5" PointY="7.9211531575520846" />
+          <ConnectorPoint PointX="5" PointY="7.9211531575520846" />
+          <ConnectorPoint PointX="5" PointY="2.22722123828125" />
+          <ConnectorPoint PointX="5.25" PointY="2.22722123828125" /></AssociationConnector>
+        <EntityTypeShape EntityType="InformationCenterModel.IntValue" Width="1.5" PointX="5.375" PointY="8.75" Height="1.0992643229166674" /></Diagram></edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>
