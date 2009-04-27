@@ -20,7 +20,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("InformationCenterModel", "FK_FieldTemplate_Template", "Template", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(InformationCenter.Data.Template), "NNFieldTemplate", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(InformationCenter.Data.NNFieldTemplate))]
 
 // Original file name:
-// Generation date: 27.04.2009 0:48:09
+// Generation date: 27.04.2009 23:47:32
 namespace InformationCenter.Data
 {
     
@@ -562,11 +562,15 @@ namespace InformationCenter.Data
         /// </summary>
         /// <param name="id">Initial value of ID.</param>
         /// <param name="data">Initial value of Data.</param>
-        public static Document CreateDocument(global::System.Guid id, byte[] data)
+        /// <param name="fileName">Initial value of FileName.</param>
+        /// <param name="name">Initial value of Name.</param>
+        public static Document CreateDocument(global::System.Guid id, byte[] data, string fileName, string name)
         {
             Document document = new Document();
             document.ID = id;
             document.Data = data;
+            document.FileName = fileName;
+            document.Name = name;
             return document;
         }
         /// <summary>
@@ -616,6 +620,52 @@ namespace InformationCenter.Data
         partial void OnDataChanging(byte[] value);
         partial void OnDataChanged();
         /// <summary>
+        /// There are no comments for Property FileName in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string FileName
+        {
+            get
+            {
+                return this._FileName;
+            }
+            set
+            {
+                this.OnFileNameChanging(value);
+                this.ReportPropertyChanging("FileName");
+                this._FileName = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("FileName");
+                this.OnFileNameChanged();
+            }
+        }
+        private string _FileName;
+        partial void OnFileNameChanging(string value);
+        partial void OnFileNameChanged();
+        /// <summary>
+        /// There are no comments for Property Name in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Name
+        {
+            get
+            {
+                return this._Name;
+            }
+            set
+            {
+                this.OnNameChanging(value);
+                this.ReportPropertyChanging("Name");
+                this._Name = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("Name");
+                this.OnNameChanged();
+            }
+        }
+        private string _Name;
+        partial void OnNameChanging(string value);
+        partial void OnNameChanged();
+        /// <summary>
         /// There are no comments for DocDescription in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("InformationCenterModel", "FK_DocDescription_DocDocument", "DocDescription")]
@@ -653,11 +703,15 @@ namespace InformationCenter.Data
         /// </summary>
         /// <param name="id">Initial value of ID.</param>
         /// <param name="text">Initial value of Text.</param>
-        public static Field CreateField(global::System.Guid id, string text)
+        /// <param name="nullable">Initial value of Nullable.</param>
+        /// <param name="orderNumber">Initial value of OrderNumber.</param>
+        public static Field CreateField(global::System.Guid id, string text, bool nullable, int orderNumber)
         {
             Field field = new Field();
             field.ID = id;
             field.Text = text;
+            field.Nullable = nullable;
+            field.OrderNumber = orderNumber;
             return field;
         }
         /// <summary>
@@ -706,6 +760,52 @@ namespace InformationCenter.Data
         private string _Text;
         partial void OnTextChanging(string value);
         partial void OnTextChanged();
+        /// <summary>
+        /// There are no comments for Property Nullable in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public bool Nullable
+        {
+            get
+            {
+                return this._Nullable;
+            }
+            set
+            {
+                this.OnNullableChanging(value);
+                this.ReportPropertyChanging("Nullable");
+                this._Nullable = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("Nullable");
+                this.OnNullableChanged();
+            }
+        }
+        private bool _Nullable;
+        partial void OnNullableChanging(bool value);
+        partial void OnNullableChanged();
+        /// <summary>
+        /// There are no comments for Property OrderNumber in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int OrderNumber
+        {
+            get
+            {
+                return this._OrderNumber;
+            }
+            set
+            {
+                this.OnOrderNumberChanging(value);
+                this.ReportPropertyChanging("OrderNumber");
+                this._OrderNumber = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("OrderNumber");
+                this.OnOrderNumberChanged();
+            }
+        }
+        private int _OrderNumber;
+        partial void OnOrderNumberChanging(int value);
+        partial void OnOrderNumberChanged();
         /// <summary>
         /// There are no comments for FieldType in the schema.
         /// </summary>

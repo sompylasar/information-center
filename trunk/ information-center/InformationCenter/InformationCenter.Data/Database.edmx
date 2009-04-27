@@ -13,7 +13,6 @@
           <EntitySet Name="FieldType" EntityType="InformationCenterModel.Store.FieldType" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="FieldValue" EntityType="InformationCenterModel.Store.FieldValue" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="FloatFieldValue" EntityType="InformationCenterModel.Store.FloatFieldValue" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="IntEntity" EntityType="InformationCenterModel.Store.IntEntity" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="NNFieldTemplate" EntityType="InformationCenterModel.Store.NNFieldTemplate" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="StringFieldValue" EntityType="InformationCenterModel.Store.StringFieldValue" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Template" EntityType="InformationCenterModel.Store.Template" store:Type="Tables" Schema="dbo" />
@@ -75,6 +74,8 @@
           </Key>
           <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Data" Type="varbinary(max)" Nullable="false" />
+          <Property Name="FileName" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="128" />
         </EntityType>
         <EntityType Name="Field">
           <Key>
@@ -83,6 +84,8 @@
           <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="FieldTypeID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Text" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="Nullable" Type="bit" Nullable="false" />
+          <Property Name="OrderNumber" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="FieldType">
           <Key>
@@ -91,8 +94,6 @@
           <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Name" Type="varchar" Nullable="false" MaxLength="128" />
           <Property Name="SqlName" Type="varchar" Nullable="false" MaxLength="128" />
-          <Property Name="Nullable" Type="bit" Nullable="false" />
-          <Property Name="DotNetType" Type="varchar" Nullable="false" MaxLength="128" />
         </EntityType>
         <EntityType Name="FieldValue">
           <Key>
@@ -108,12 +109,6 @@
           </Key>
           <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Value" Type="float" />
-        </EntityType>
-        <EntityType Name="IntEntity">
-          <Key>
-            <PropertyRef Name="Value" />
-          </Key>
-          <Property Name="Value" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="NNFieldTemplate">
           <Key>
@@ -271,6 +266,8 @@
           <Parameter Name="id" Type="uniqueidentifier" Mode="InOut" />
         </Function>
         <Function Name="AddDocument" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="nvarchar" Mode="In" />
+          <Parameter Name="fileName" Type="nvarchar" Mode="In" />
           <Parameter Name="data" Type="varbinary(max)" Mode="In" />
           <Parameter Name="id" Type="uniqueidentifier" Mode="InOut" />
         </Function>
@@ -382,7 +379,8 @@
           <Property Name="ID" Type="Guid" Nullable="false" />
           <Property Name="Data" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
           <NavigationProperty Name="DocDescription" Relationship="InformationCenterModel.FK_DocDescription_DocDocument" FromRole="Document" ToRole="DocDescription" />
-        </EntityType>
+          <Property Name="FileName" Type="String" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" /></EntityType>
         <EntityType Name="Field">
           <Key>
             <PropertyRef Name="ID" />
@@ -392,7 +390,8 @@
           <NavigationProperty Name="FieldType" Relationship="InformationCenterModel.FK_Field_FieldType" FromRole="Field" ToRole="FieldType" />
           <NavigationProperty Name="NNFieldTemplate" Relationship="InformationCenterModel.FK_FieldTemplate_FieldType" FromRole="Field" ToRole="NNFieldTemplate" />
           <NavigationProperty Name="FieldValue" Relationship="InformationCenterModel.FK_FieldValue_Field" FromRole="Field" ToRole="FieldValue" />
-        </EntityType>
+          <Property Name="Nullable" Type="Boolean" Nullable="false" />
+          <Property Name="OrderNumber" Type="Int32" Nullable="false" /></EntityType>
         <EntityType Name="FieldType">
           <Key>
             <PropertyRef Name="ID" />
@@ -553,6 +552,8 @@
           <EntitySetMapping Name="Document">
             <EntityTypeMapping TypeName="IsTypeOf(InformationCenterModel.Document)">
               <MappingFragment StoreEntitySet="Document">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Data" ColumnName="Data" />
               </MappingFragment>
@@ -561,6 +562,8 @@
           <EntitySetMapping Name="Field">
             <EntityTypeMapping TypeName="IsTypeOf(InformationCenterModel.Field)">
               <MappingFragment StoreEntitySet="Field">
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+                <ScalarProperty Name="Nullable" ColumnName="Nullable" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Text" ColumnName="Text" />
               </MappingFragment>
@@ -569,8 +572,6 @@
           <EntitySetMapping Name="FieldType">
             <EntityTypeMapping TypeName="IsTypeOf(InformationCenterModel.FieldType)">
               <MappingFragment StoreEntitySet="FieldType">
-                <ScalarProperty Name="DotNetType" ColumnName="DotNetType" />
-                <ScalarProperty Name="Nullable" ColumnName="Nullable" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="SqlName" ColumnName="SqlName" />
@@ -688,10 +689,6 @@
               <ScalarProperty Name="ID" ColumnName="ID" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="IntEntitySet">
-            <EntityTypeMapping TypeName="IsTypeOf(InformationCenterModel.IntEntity)">
-              <MappingFragment StoreEntitySet="IntEntity">
-                <ScalarProperty Name="Value" ColumnName="Value" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
           <FunctionImportMapping FunctionImportName="AddDocument" FunctionName="InformationCenterModel.Store.AddDocument" /></EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
