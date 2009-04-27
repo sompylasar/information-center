@@ -20,36 +20,36 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("InformationCenterModel", "FK_FieldTemplate_Template", "Template", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(InformationCenter.Data.Template), "NNFieldTemplate", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(InformationCenter.Data.NNFieldTemplate))]
 
 // Original file name:
-// Generation date: 27.04.2009 23:47:32
+// Generation date: 28.04.2009 2:05:37
 namespace InformationCenter.Data
 {
     
     /// <summary>
-    /// There are no comments for InformationCenterEntities in the schema.
+    /// There are no comments for Entities in the schema.
     /// </summary>
-    public partial class InformationCenterEntities : ObjectContextEx
+    public partial class Entities : ObjectContextEx
     {
         /// <summary>
-        /// Initializes a new InformationCenterEntities object using the connection string found in the 'InformationCenterEntities' section of the application configuration file.
+        /// Initializes a new Entities object using the connection string found in the 'Entities' section of the application configuration file.
         /// </summary>
-        public InformationCenterEntities() : 
-                base("name=InformationCenterEntities", "InformationCenterEntities")
+        public Entities() : 
+                base("name=Entities", "Entities")
         {
             this.OnContextCreated();
         }
         /// <summary>
-        /// Initialize a new InformationCenterEntities object.
+        /// Initialize a new Entities object.
         /// </summary>
-        public InformationCenterEntities(string connectionString) : 
-                base(connectionString, "InformationCenterEntities")
+        public Entities(string connectionString) : 
+                base(connectionString, "Entities")
         {
             this.OnContextCreated();
         }
         /// <summary>
-        /// Initialize a new InformationCenterEntities object.
+        /// Initialize a new Entities object.
         /// </summary>
-        public InformationCenterEntities(global::System.Data.EntityClient.EntityConnection connection) : 
-                base(connection, "InformationCenterEntities")
+        public Entities(global::System.Data.EntityClient.EntityConnection connection) : 
+                base(connection, "Entities")
         {
             this.OnContextCreated();
         }
@@ -205,20 +205,20 @@ namespace InformationCenter.Data
         }
         private global::System.Data.Objects.ObjectQuery<Template> _Template;
         /// <summary>
-        /// There are no comments for IntEntitySet in the schema.
+        /// There are no comments for IntValue in the schema.
         /// </summary>
-        public global::System.Data.Objects.ObjectQuery<IntEntity> IntEntitySet
+        public global::System.Data.Objects.ObjectQuery<IntValue> IntValue
         {
             get
             {
-                if ((this._IntEntitySet == null))
+                if ((this._IntValue == null))
                 {
-                    this._IntEntitySet = base.CreateQuery<IntEntity>("[IntEntitySet]");
+                    this._IntValue = base.CreateQuery<IntValue>("[IntValue]");
                 }
-                return this._IntEntitySet;
+                return this._IntValue;
             }
         }
-        private global::System.Data.Objects.ObjectQuery<IntEntity> _IntEntitySet;
+        private global::System.Data.Objects.ObjectQuery<IntValue> _IntValue;
         /// <summary>
         /// There are no comments for DateTimeFieldValue in the schema.
         /// </summary>
@@ -290,17 +290,56 @@ namespace InformationCenter.Data
             base.AddObject("Template", template);
         }
         /// <summary>
-        /// There are no comments for IntEntitySet in the schema.
+        /// There are no comments for IntValue in the schema.
         /// </summary>
-        public void AddToIntEntitySet(IntEntity intEntity)
+        public void AddToIntValue(IntValue intValue)
         {
-            base.AddObject("IntEntitySet", intEntity);
+            base.AddObject("IntValue", intValue);
+        }
+        /// <summary>
+        /// There are no comments for InformationCenterModel.GetTemplateFields in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectResult<Field> GetTemplateFields(global::System.Nullable<global::System.Guid> templateId)
+        {
+            global::System.Data.Objects.ObjectParameter templateIdParameter;
+            if (templateId.HasValue)
+            {
+                templateIdParameter = new global::System.Data.Objects.ObjectParameter("templateId", templateId);
+            }
+            else
+            {
+                templateIdParameter = new global::System.Data.Objects.ObjectParameter("templateId", typeof(global::System.Guid));
+            }
+            return base.ExecuteFunction<Field>("GetTemplateFields", templateIdParameter);
+        }
+        /// <summary>
+        /// There are no comments for InformationCenterModel.GetTemplates in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectResult<Template> GetTemplates()
+        {
+            return base.ExecuteFunction<Template>("GetTemplates");
+        }
+        /// <summary>
+        /// There are no comments for InformationCenterModel.GetFields in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectResult<Field> GetFields()
+        {
+            return base.ExecuteFunction<Field>("GetFields");
         }
         /// <summary>
         /// There are no comments for InformationCenterModel.AddDocument in the schema.
         /// </summary>
-        public global::System.Data.Objects.ObjectResult<IntEntity> AddDocument(byte[] data, global::System.Data.Objects.ObjectParameter id)
+        public global::System.Data.Objects.ObjectResult<IntValue> AddDocument(string fileName, byte[] data, global::System.Data.Objects.ObjectParameter id)
         {
+            global::System.Data.Objects.ObjectParameter fileNameParameter;
+            if ((fileName != null))
+            {
+                fileNameParameter = new global::System.Data.Objects.ObjectParameter("fileName", fileName);
+            }
+            else
+            {
+                fileNameParameter = new global::System.Data.Objects.ObjectParameter("fileName", typeof(string));
+            }
             global::System.Data.Objects.ObjectParameter dataParameter;
             if ((data != null))
             {
@@ -310,7 +349,7 @@ namespace InformationCenter.Data
             {
                 dataParameter = new global::System.Data.Objects.ObjectParameter("data", typeof(byte[]));
             }
-            return base.ExecuteFunction<IntEntity>("AddDocument", dataParameter, id);
+            return base.ExecuteFunction<IntValue>("AddDocument", fileNameParameter, dataParameter, id);
         }
     }
     /// <summary>
@@ -563,14 +602,12 @@ namespace InformationCenter.Data
         /// <param name="id">Initial value of ID.</param>
         /// <param name="data">Initial value of Data.</param>
         /// <param name="fileName">Initial value of FileName.</param>
-        /// <param name="name">Initial value of Name.</param>
-        public static Document CreateDocument(global::System.Guid id, byte[] data, string fileName, string name)
+        public static Document CreateDocument(global::System.Guid id, byte[] data, string fileName)
         {
             Document document = new Document();
             document.ID = id;
             document.Data = data;
             document.FileName = fileName;
-            document.Name = name;
             return document;
         }
         /// <summary>
@@ -642,29 +679,6 @@ namespace InformationCenter.Data
         private string _FileName;
         partial void OnFileNameChanging(string value);
         partial void OnFileNameChanged();
-        /// <summary>
-        /// There are no comments for Property Name in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public string Name
-        {
-            get
-            {
-                return this._Name;
-            }
-            set
-            {
-                this.OnNameChanging(value);
-                this.ReportPropertyChanging("Name");
-                this._Name = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
-                this.ReportPropertyChanged("Name");
-                this.OnNameChanged();
-            }
-        }
-        private string _Name;
-        partial void OnNameChanging(string value);
-        partial void OnNameChanged();
         /// <summary>
         /// There are no comments for DocDescription in the schema.
         /// </summary>
@@ -903,15 +917,13 @@ namespace InformationCenter.Data
         /// <param name="id">Initial value of ID.</param>
         /// <param name="name">Initial value of Name.</param>
         /// <param name="sqlName">Initial value of SqlName.</param>
-        /// <param name="nullable">Initial value of Nullable.</param>
         /// <param name="dotNetType">Initial value of DotNetType.</param>
-        public static FieldType CreateFieldType(global::System.Guid id, string name, string sqlName, bool nullable, string dotNetType)
+        public static FieldType CreateFieldType(global::System.Guid id, string name, string sqlName, string dotNetType)
         {
             FieldType fieldType = new FieldType();
             fieldType.ID = id;
             fieldType.Name = name;
             fieldType.SqlName = sqlName;
-            fieldType.Nullable = nullable;
             fieldType.DotNetType = dotNetType;
             return fieldType;
         }
@@ -984,29 +996,6 @@ namespace InformationCenter.Data
         private string _SqlName;
         partial void OnSqlNameChanging(string value);
         partial void OnSqlNameChanged();
-        /// <summary>
-        /// There are no comments for Property Nullable in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public bool Nullable
-        {
-            get
-            {
-                return this._Nullable;
-            }
-            set
-            {
-                this.OnNullableChanging(value);
-                this.ReportPropertyChanging("Nullable");
-                this._Nullable = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("Nullable");
-                this.OnNullableChanged();
-            }
-        }
-        private bool _Nullable;
-        partial void OnNullableChanging(bool value);
-        partial void OnNullableChanged();
         /// <summary>
         /// There are no comments for Property DotNetType in the schema.
         /// </summary>
@@ -1728,25 +1717,25 @@ namespace InformationCenter.Data
         }
     }
     /// <summary>
-    /// There are no comments for InformationCenterModel.IntEntity in the schema.
+    /// There are no comments for InformationCenterModel.IntValue in the schema.
     /// </summary>
     /// <KeyProperties>
     /// Value
     /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="InformationCenterModel", Name="IntEntity")]
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="InformationCenterModel", Name="IntValue")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
     [global::System.Serializable()]
-    public partial class IntEntity : global::System.Data.Objects.DataClasses.EntityObject
+    public partial class IntValue : global::System.Data.Objects.DataClasses.EntityObject
     {
         /// <summary>
-        /// Create a new IntEntity object.
+        /// Create a new IntValue object.
         /// </summary>
         /// <param name="value">Initial value of Value.</param>
-        public static IntEntity CreateIntEntity(int value)
+        public static IntValue CreateIntValue(int value)
         {
-            IntEntity intEntity = new IntEntity();
-            intEntity.Value = value;
-            return intEntity;
+            IntValue intValue = new IntValue();
+            intValue.Value = value;
+            return intValue;
         }
         /// <summary>
         /// There are no comments for Property Value in the schema.
