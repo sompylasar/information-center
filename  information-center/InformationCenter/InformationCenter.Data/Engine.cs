@@ -119,7 +119,7 @@ namespace InformationCenter.Data
     public interface IEngine : IRequestable, IDisposable
     {
 
-        //Person CurrentUser { get; }
+        User Current { get; }
 
     }
 

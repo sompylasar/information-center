@@ -20,7 +20,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("InformationCenterModel", "FK_FieldTemplate_Template", "Template", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(InformationCenter.Data.Template), "NNFieldTemplate", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(InformationCenter.Data.NNFieldTemplate))]
 
 // Original file name:
-// Generation date: 28.04.2009 22:40:00
+// Generation date: 29.04.2009 0:03:31
 namespace InformationCenter.Data
 {
     
@@ -398,6 +398,138 @@ namespace InformationCenter.Data
                 fieldIdParameter = new global::System.Data.Objects.ObjectParameter("fieldId", typeof(global::System.Guid));
             }
             return base.ExecuteFunction<StringFieldValue>("GetStringCollection", fieldIdParameter);
+        }
+        /// <summary>
+        /// There are no comments for InformationCenterModel.AddDocumentDescription in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectResult<IntValue> AddDocumentDescription(string name, global::System.Nullable<global::System.Guid> documentId, string tempFieldsTableName, global::System.Data.Objects.ObjectParameter id)
+        {
+            global::System.Data.Objects.ObjectParameter nameParameter;
+            if ((name != null))
+            {
+                nameParameter = new global::System.Data.Objects.ObjectParameter("name", name);
+            }
+            else
+            {
+                nameParameter = new global::System.Data.Objects.ObjectParameter("name", typeof(string));
+            }
+            global::System.Data.Objects.ObjectParameter documentIdParameter;
+            if (documentId.HasValue)
+            {
+                documentIdParameter = new global::System.Data.Objects.ObjectParameter("documentId", documentId);
+            }
+            else
+            {
+                documentIdParameter = new global::System.Data.Objects.ObjectParameter("documentId", typeof(global::System.Guid));
+            }
+            global::System.Data.Objects.ObjectParameter tempFieldsTableNameParameter;
+            if ((tempFieldsTableName != null))
+            {
+                tempFieldsTableNameParameter = new global::System.Data.Objects.ObjectParameter("tempFieldsTableName", tempFieldsTableName);
+            }
+            else
+            {
+                tempFieldsTableNameParameter = new global::System.Data.Objects.ObjectParameter("tempFieldsTableName", typeof(string));
+            }
+            return base.ExecuteFunction<IntValue>("AddDocumentDescription", nameParameter, documentIdParameter, tempFieldsTableNameParameter, id);
+        }
+        /// <summary>
+        /// There are no comments for InformationCenterModel.AddField in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectResult<IntValue> AddField(string text, global::System.Nullable<global::System.Guid> fieldTypeId, global::System.Data.Objects.ObjectParameter id)
+        {
+            global::System.Data.Objects.ObjectParameter textParameter;
+            if ((text != null))
+            {
+                textParameter = new global::System.Data.Objects.ObjectParameter("text", text);
+            }
+            else
+            {
+                textParameter = new global::System.Data.Objects.ObjectParameter("text", typeof(string));
+            }
+            global::System.Data.Objects.ObjectParameter fieldTypeIdParameter;
+            if (fieldTypeId.HasValue)
+            {
+                fieldTypeIdParameter = new global::System.Data.Objects.ObjectParameter("fieldTypeId", fieldTypeId);
+            }
+            else
+            {
+                fieldTypeIdParameter = new global::System.Data.Objects.ObjectParameter("fieldTypeId", typeof(global::System.Guid));
+            }
+            return base.ExecuteFunction<IntValue>("AddField", textParameter, fieldTypeIdParameter, id);
+        }
+        /// <summary>
+        /// There are no comments for InformationCenterModel.AddTemplate in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectResult<IntValue> AddTemplate(string name, string tempFieldsTableName, global::System.Data.Objects.ObjectParameter id)
+        {
+            global::System.Data.Objects.ObjectParameter nameParameter;
+            if ((name != null))
+            {
+                nameParameter = new global::System.Data.Objects.ObjectParameter("name", name);
+            }
+            else
+            {
+                nameParameter = new global::System.Data.Objects.ObjectParameter("name", typeof(string));
+            }
+            global::System.Data.Objects.ObjectParameter tempFieldsTableNameParameter;
+            if ((tempFieldsTableName != null))
+            {
+                tempFieldsTableNameParameter = new global::System.Data.Objects.ObjectParameter("tempFieldsTableName", tempFieldsTableName);
+            }
+            else
+            {
+                tempFieldsTableNameParameter = new global::System.Data.Objects.ObjectParameter("tempFieldsTableName", typeof(string));
+            }
+            return base.ExecuteFunction<IntValue>("AddTemplate", nameParameter, tempFieldsTableNameParameter, id);
+        }
+        /// <summary>
+        /// There are no comments for InformationCenterModel.DeleteDocument in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectResult<IntValue> DeleteDocument(global::System.Nullable<global::System.Guid> id)
+        {
+            global::System.Data.Objects.ObjectParameter idParameter;
+            if (id.HasValue)
+            {
+                idParameter = new global::System.Data.Objects.ObjectParameter("id", id);
+            }
+            else
+            {
+                idParameter = new global::System.Data.Objects.ObjectParameter("id", typeof(global::System.Guid));
+            }
+            return base.ExecuteFunction<IntValue>("DeleteDocument", idParameter);
+        }
+        /// <summary>
+        /// There are no comments for InformationCenterModel.DeleteField in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectResult<IntValue> DeleteField(global::System.Nullable<global::System.Guid> id)
+        {
+            global::System.Data.Objects.ObjectParameter idParameter;
+            if (id.HasValue)
+            {
+                idParameter = new global::System.Data.Objects.ObjectParameter("id", id);
+            }
+            else
+            {
+                idParameter = new global::System.Data.Objects.ObjectParameter("id", typeof(global::System.Guid));
+            }
+            return base.ExecuteFunction<IntValue>("DeleteField", idParameter);
+        }
+        /// <summary>
+        /// There are no comments for InformationCenterModel.DeleteTemplate in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectResult<IntValue> DeleteTemplate(global::System.Nullable<global::System.Guid> id)
+        {
+            global::System.Data.Objects.ObjectParameter idParameter;
+            if (id.HasValue)
+            {
+                idParameter = new global::System.Data.Objects.ObjectParameter("id", id);
+            }
+            else
+            {
+                idParameter = new global::System.Data.Objects.ObjectParameter("id", typeof(global::System.Guid));
+            }
+            return base.ExecuteFunction<IntValue>("DeleteTemplate", idParameter);
         }
     }
     /// <summary>
