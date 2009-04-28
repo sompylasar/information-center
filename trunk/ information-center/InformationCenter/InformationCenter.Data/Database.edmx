@@ -368,7 +368,13 @@
           <FunctionImport Name="AddDocument" EntitySet="IntValue" ReturnType="Collection(InformationCenterModel.IntValue)">
             <Parameter Name="fileName" Mode="In" Type="String" />
             <Parameter Name="data" Mode="In" Type="Binary" />
-            <Parameter Name="id" Mode="InOut" Type="Guid" /></FunctionImport></EntityContainer>
+            <Parameter Name="id" Mode="InOut" Type="Guid" /></FunctionImport>
+          <FunctionImport Name="GetFloatCollection" EntitySet="FloatFieldValue" ReturnType="Collection(InformationCenterModel.FloatFieldValue)">
+            <Parameter Name="fieldId" Mode="In" Type="Guid" /></FunctionImport>
+          <FunctionImport Name="GetDateTimeCollection" EntitySet="DateTimeFieldValue" ReturnType="Collection(InformationCenterModel.DateTimeFieldValue)">
+            <Parameter Name="fieldId" Mode="In" Type="Guid" /></FunctionImport>
+          <FunctionImport Name="GetStringCollection" EntitySet="StringFieldValue" ReturnType="Collection(InformationCenterModel.StringFieldValue)">
+            <Parameter Name="fieldId" Mode="In" Type="Guid" /></FunctionImport></EntityContainer>
         <EntityType Name="DateTimeFieldValue">
           <Key>
             <PropertyRef Name="ID" />
@@ -710,7 +716,10 @@
           <FunctionImportMapping FunctionImportName="GetTemplateFields" FunctionName="InformationCenterModel.Store.GetTemplateFields" />
           <FunctionImportMapping FunctionImportName="GetTemplates" FunctionName="InformationCenterModel.Store.GetTemplates" />
           <FunctionImportMapping FunctionImportName="GetFields" FunctionName="InformationCenterModel.Store.GetFields" />
-          <FunctionImportMapping FunctionImportName="AddDocument" FunctionName="InformationCenterModel.Store.AddDocument" /></EntityContainerMapping>
+          <FunctionImportMapping FunctionImportName="AddDocument" FunctionName="InformationCenterModel.Store.AddDocument" />
+          <FunctionImportMapping FunctionImportName="GetFloatCollection" FunctionName="InformationCenterModel.Store.GetFieldValues" />
+          <FunctionImportMapping FunctionImportName="GetDateTimeCollection" FunctionName="InformationCenterModel.Store.GetFieldValues" />
+          <FunctionImportMapping FunctionImportName="GetStringCollection" FunctionName="InformationCenterModel.Store.GetFieldValues" /></EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

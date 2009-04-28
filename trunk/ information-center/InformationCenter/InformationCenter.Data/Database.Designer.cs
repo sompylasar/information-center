@@ -20,7 +20,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("InformationCenterModel", "FK_FieldTemplate_Template", "Template", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(InformationCenter.Data.Template), "NNFieldTemplate", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(InformationCenter.Data.NNFieldTemplate))]
 
 // Original file name:
-// Generation date: 28.04.2009 2:05:37
+// Generation date: 28.04.2009 22:40:00
 namespace InformationCenter.Data
 {
     
@@ -350,6 +350,54 @@ namespace InformationCenter.Data
                 dataParameter = new global::System.Data.Objects.ObjectParameter("data", typeof(byte[]));
             }
             return base.ExecuteFunction<IntValue>("AddDocument", fileNameParameter, dataParameter, id);
+        }
+        /// <summary>
+        /// There are no comments for InformationCenterModel.GetFloatCollection in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectResult<FloatFieldValue> GetFloatCollection(global::System.Nullable<global::System.Guid> fieldId)
+        {
+            global::System.Data.Objects.ObjectParameter fieldIdParameter;
+            if (fieldId.HasValue)
+            {
+                fieldIdParameter = new global::System.Data.Objects.ObjectParameter("fieldId", fieldId);
+            }
+            else
+            {
+                fieldIdParameter = new global::System.Data.Objects.ObjectParameter("fieldId", typeof(global::System.Guid));
+            }
+            return base.ExecuteFunction<FloatFieldValue>("GetFloatCollection", fieldIdParameter);
+        }
+        /// <summary>
+        /// There are no comments for InformationCenterModel.GetDateTimeCollection in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectResult<DateTimeFieldValue> GetDateTimeCollection(global::System.Nullable<global::System.Guid> fieldId)
+        {
+            global::System.Data.Objects.ObjectParameter fieldIdParameter;
+            if (fieldId.HasValue)
+            {
+                fieldIdParameter = new global::System.Data.Objects.ObjectParameter("fieldId", fieldId);
+            }
+            else
+            {
+                fieldIdParameter = new global::System.Data.Objects.ObjectParameter("fieldId", typeof(global::System.Guid));
+            }
+            return base.ExecuteFunction<DateTimeFieldValue>("GetDateTimeCollection", fieldIdParameter);
+        }
+        /// <summary>
+        /// There are no comments for InformationCenterModel.GetStringCollection in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectResult<StringFieldValue> GetStringCollection(global::System.Nullable<global::System.Guid> fieldId)
+        {
+            global::System.Data.Objects.ObjectParameter fieldIdParameter;
+            if (fieldId.HasValue)
+            {
+                fieldIdParameter = new global::System.Data.Objects.ObjectParameter("fieldId", fieldId);
+            }
+            else
+            {
+                fieldIdParameter = new global::System.Data.Objects.ObjectParameter("fieldId", typeof(global::System.Guid));
+            }
+            return base.ExecuteFunction<StringFieldValue>("GetStringCollection", fieldIdParameter);
         }
     }
     /// <summary>
