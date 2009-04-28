@@ -57,21 +57,21 @@ namespace InformationCenter.Services.ServicesImpl
         {
             foreach (SearchItem item in Request.Items)
             {
-                if (item == null) return new ItemIsNullException();
+                if (item == null) return new ItemIsNullException(Request.Items, Request.Items.IndexOf(item));
                 Field value = Engine.CreateQuery<Field>().Where(f => f.ID == item.FieldID).FirstOrDefault();
-                if (value == null) return new FieldNotFoundException();
+                if (value == null) return new FieldNotFoundException(item.FieldID);
                 value.FieldTypeReference.Load();
                 Type t = Type.GetType(value.FieldType.DotNetType);
-                if (t == null) return new DotNetTypeNotFoundException();
+                if (t == null) return new DotNetTypeNotExistsException(value.FieldType.DotNetType);
                 if (item.FieldValue == null)
                 {
                     if (!value.Nullable)
-                        return new NullableValueNotAllowedException();
+                        return new NullableValueNotAllowedException(new FieldView(value));
                 }
                 else
                 {
-                    if (item.FieldValue.GetType() != t)
-                        return new TypeMismatchException();
+                    Type realType = item.FieldValue.GetType();
+                    if (realType != t) return new TypeMismatchException(t, realType);
                 }
             }
             return null;

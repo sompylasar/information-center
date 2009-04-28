@@ -93,6 +93,21 @@ namespace InformationCenter.Services
             return result.ToArray();
         }
 
+        public T[] GetFieldValues<T>(Guid FieldID)
+        {
+            Field f = Entities.Field.Where(val => val.ID == FieldID).FirstOrDefault();
+            if (f == null) return new T[] { };
+            Type realType = new FieldView(f).FieldTypeView.TypeOfField;
+            if (realType != typeof(T)) throw new TypeMismatchException(typeof(T), realType);
+            if (typeof(T) == typeof(string))
+                return Entities.GetStringCollection(FieldID).Select(s => s.Value).Cast<T>().ToArray();
+            if (typeof(T) == typeof(DateTime))
+                return Entities.GetDateTimeCollection(FieldID).Select(s => s.Value).Cast<T>().ToArray();
+            if (typeof(T) == typeof(float))
+                return Entities.GetFloatCollection(FieldID).Select(s => s.Value).Cast<T>().ToArray();
+            throw new NotSupportedFieldTypeException(typeof(T));
+        }
+                
         public string[] GetStringCollection() { return Entities.StringFieldValue.Select(v => v.Value).Distinct().ToArray(); }
 
         public double?[] GetFloatCollection() { return Entities.FloatFieldValue.Select(v => v.Value).Distinct().ToArray(); }
