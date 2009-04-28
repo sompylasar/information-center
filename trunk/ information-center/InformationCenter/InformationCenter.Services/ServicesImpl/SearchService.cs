@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using InformationCenter.Data;
 
@@ -84,21 +85,12 @@ namespace InformationCenter.Services.ServicesImpl
             Exception ex = ValidateRequest(Request);
             if (ex != null) throw ex;
 
-            var result = new SearchResultItem[1];
+            var results = new List<SearchResultItem>();
             
-            // TODO: fetch SearchResults or SearchResultItems from Mapper
-            //result.Items.Add(new SearchResultItem(1, "A", "clickme1"));
-            //result.Items.Add(new SearchResultItem(2, "BC", "clickme2"));
-            //result.Items.Add(new SearchResultItem(3, "CD", "clickme3"));
-            //result.Items.Add(new SearchResultItem(4, "D", "clickme4"));
+            // TODO: fetch SearchResultItems from Mapper
+            //results.Add(new SearchResultItem(new DocDescription()));
 
-            //var search = ((string)(request.Fields["Title"] ?? "")).Trim().ToLowerInvariant();
-
-            //result.Items.RemoveAll(x => 
-            //                       search == "" || !x.Header.ToLowerInvariant().Contains(search)
-            //    );
-
-            return result;
+            return results.ToArray();
         }
 
         public void Dispose()
