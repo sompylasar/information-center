@@ -374,7 +374,26 @@
           <FunctionImport Name="GetDateTimeCollection" EntitySet="DateTimeFieldValue" ReturnType="Collection(InformationCenterModel.DateTimeFieldValue)">
             <Parameter Name="fieldId" Mode="In" Type="Guid" /></FunctionImport>
           <FunctionImport Name="GetStringCollection" EntitySet="StringFieldValue" ReturnType="Collection(InformationCenterModel.StringFieldValue)">
-            <Parameter Name="fieldId" Mode="In" Type="Guid" /></FunctionImport></EntityContainer>
+            <Parameter Name="fieldId" Mode="In" Type="Guid" /></FunctionImport>
+          <FunctionImport Name="AddDocumentDescription" EntitySet="IntValue" ReturnType="Collection(InformationCenterModel.IntValue)">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="documentId" Mode="In" Type="Guid" />
+            <Parameter Name="tempFieldsTableName" Mode="In" Type="String" />
+            <Parameter Name="id" Mode="InOut" Type="Guid" /></FunctionImport>
+          <FunctionImport Name="AddField" EntitySet="IntValue" ReturnType="Collection(InformationCenterModel.IntValue)">
+            <Parameter Name="text" Mode="In" Type="String" />
+            <Parameter Name="fieldTypeId" Mode="In" Type="Guid" />
+            <Parameter Name="id" Mode="InOut" Type="Guid" /></FunctionImport>
+          <FunctionImport Name="AddTemplate" EntitySet="IntValue" ReturnType="Collection(InformationCenterModel.IntValue)">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="tempFieldsTableName" Mode="In" Type="String" />
+            <Parameter Name="id" Mode="InOut" Type="Guid" /></FunctionImport>
+          <FunctionImport Name="DeleteDocument" EntitySet="IntValue" ReturnType="Collection(InformationCenterModel.IntValue)">
+            <Parameter Name="id" Mode="In" Type="Guid" /></FunctionImport>
+          <FunctionImport Name="DeleteField" EntitySet="IntValue" ReturnType="Collection(InformationCenterModel.IntValue)">
+            <Parameter Name="id" Mode="In" Type="Guid" /></FunctionImport>
+          <FunctionImport Name="DeleteTemplate" EntitySet="IntValue" ReturnType="Collection(InformationCenterModel.IntValue)">
+            <Parameter Name="id" Mode="In" Type="Guid" /></FunctionImport></EntityContainer>
         <EntityType Name="DateTimeFieldValue">
           <Key>
             <PropertyRef Name="ID" />
@@ -719,7 +738,13 @@
           <FunctionImportMapping FunctionImportName="AddDocument" FunctionName="InformationCenterModel.Store.AddDocument" />
           <FunctionImportMapping FunctionImportName="GetFloatCollection" FunctionName="InformationCenterModel.Store.GetFieldValues" />
           <FunctionImportMapping FunctionImportName="GetDateTimeCollection" FunctionName="InformationCenterModel.Store.GetFieldValues" />
-          <FunctionImportMapping FunctionImportName="GetStringCollection" FunctionName="InformationCenterModel.Store.GetFieldValues" /></EntityContainerMapping>
+          <FunctionImportMapping FunctionImportName="GetStringCollection" FunctionName="InformationCenterModel.Store.GetFieldValues" />
+          <FunctionImportMapping FunctionImportName="AddDocumentDescription" FunctionName="InformationCenterModel.Store.AddDocDescription" />
+          <FunctionImportMapping FunctionImportName="AddField" FunctionName="InformationCenterModel.Store.AddField" />
+          <FunctionImportMapping FunctionImportName="AddTemplate" FunctionName="InformationCenterModel.Store.AddTemplate" />
+          <FunctionImportMapping FunctionImportName="DeleteDocument" FunctionName="InformationCenterModel.Store.DeleteDocument" />
+          <FunctionImportMapping FunctionImportName="DeleteField" FunctionName="InformationCenterModel.Store.DeleteField" />
+          <FunctionImportMapping FunctionImportName="DeleteTemplate" FunctionName="InformationCenterModel.Store.DeleteTemplate" /></EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

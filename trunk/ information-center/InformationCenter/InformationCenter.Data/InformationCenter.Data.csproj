@@ -59,6 +59,7 @@
     </Compile>
     <Compile Include="Engine.cs" />
     <Compile Include="ObjectContextEx.cs" />
+    <Compile Include="Partial.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
