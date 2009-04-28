@@ -23,7 +23,8 @@ namespace InformationCenter.WebUI.Controllers
         {
             var templates = serviceCenter.UploadService.GetTemplates();
 
-            //if (templates.Length <= 0) return RedirectToAction("FillDescription");
+            // skip template selection if no templates found
+            if (templates.Length <= 0) return RedirectToAction("FillDescription");
 
             ViewData["Templates"] = templates;
 
