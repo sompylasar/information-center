@@ -28,7 +28,7 @@ namespace InformationCenter.Services
             get
             {
                 Type t = Type.GetType(FieldType.DotNetType);
-                if (t == null) throw new DotNetTypeNotFoundException();
+                if (t == null) throw new DotNetTypeNotExistsException(FieldType.DotNetType);
                 return t;
             }
         }
