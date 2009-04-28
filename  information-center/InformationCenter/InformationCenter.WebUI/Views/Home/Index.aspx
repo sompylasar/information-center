@@ -8,6 +8,8 @@
 Информационный центр ВУЗа
 </asp:Content>
 
+<asp:Content ID="Content4" ContentPlaceHolderID="HeadContent" runat="server"></asp:Content>
+
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Выбор сервиса</h2>
     <ul>

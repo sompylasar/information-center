@@ -15,6 +15,8 @@ namespace InformationCenter.Services
 
         #region Свойства
 
+        public Guid ID { get { return (entity as Document).ID; } }
+
         protected Document Document { get { return entity as Document; } }
 
         #endregion

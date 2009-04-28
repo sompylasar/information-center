@@ -38,6 +38,11 @@ p, ul
     line-height: 1.6em;
 }
 
+label 
+{
+	margin-right: 5px;
+}
+
 /* HEADINGS   
 ----------------------------------------------------------*/
 h1, h2, h3, h4, h5, h6
@@ -230,13 +235,14 @@ input[type="password"]
 
 table 
 {
-  border: solid 1px #e8eef4;
-  border-collapse: collapse;
+  /*border: solid 1px #e8eef4;*/
+  border-collapse: separate;
+  border-spacing: 0px;
 }
 
 table td 
 {
-  padding: 5px;   
+  padding: 2px;   
   border: solid 1px #e8eef4;
 }
 

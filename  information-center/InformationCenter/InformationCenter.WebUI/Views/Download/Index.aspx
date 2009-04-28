@@ -8,6 +8,7 @@
 Информационный центр ВУЗа
 </asp:Content>
 
+<asp:Content ID="Content4" ContentPlaceHolderID="HeadContent" runat="server"></asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Ошибка</h2>

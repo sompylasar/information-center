@@ -8,6 +8,8 @@
 Информационный центр ВУЗа
 </asp:Content>
 
+<asp:Content ID="Content4" ContentPlaceHolderID="HeadContent" runat="server"></asp:Content>
+
 <asp:Content ID="aboutContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Об авторах</h2>
     <ul>
