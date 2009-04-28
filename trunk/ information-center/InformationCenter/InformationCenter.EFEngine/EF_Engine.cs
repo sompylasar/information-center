@@ -37,10 +37,18 @@ namespace InformationCenter.EFEngine
 
         #endregion
 
+        #region Свойства
+
         /// <summary>
         /// режим разрешения конфликтов
         /// </summary>
         public RefreshMode ConflictModeResolveOnSave { get; set; }
+
+        protected ObjectContextEx Context { get { return context; } }
+
+        #endregion
+
+        #region Методы
 
         public IQueryable<T> Get<T>(IEnumerable<Guid> Identifiers) where T : EntityObject
         {
@@ -65,41 +73,39 @@ namespace InformationCenter.EFEngine
         /// <param name="Params">параметры для процедуры</param>
         public void DoFetch(string ProcedureName, DbDataReaderDelegate Delegate, params DbParameter[] Params)
         {
-            DebugTimer t = new DebugTimer();
-            t.Start();
-            DbConnection cn = null;
-            DbDataReader reader = null;
-            Exception Exc = null;
-            DbCommand cmd = null;
-            try
+            using (new DebugTimer("DoFetch(" + ProcedureName + ") : {0}"))
             {
-                cn = new SqlConnection(context.Connection.ConnectionString);
-                cn.Open();
-                cmd = cn.CreateCommand();
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = ProcedureName;
-                if (Params != null && Params.Length != 0) cmd.Parameters.AddRange(Params);
-                reader = cmd.ExecuteReader();// (CommandBehavior.SequentialAccess);
-                Delegate(reader);
-                reader.Close();
-            }
-            catch (Exception Ex) { Exc = Ex; }
-            finally
-            {
-                if (reader != null && !reader.IsClosed) reader.Close();
-                if (reader != null) reader.Dispose();
-                if (cmd != null) cmd.Dispose();
-                if (cn != null)
+                DbConnection cn = null;
+                DbDataReader reader = null;
+                Exception Exc = null;
+                DbCommand cmd = null;
+                try
                 {
-                    cn.Close();
-                    cn.Dispose();
+                    cn = new SqlConnection(context.Connection.ConnectionString);
+                    cn.Open();
+                    cmd = cn.CreateCommand();
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = ProcedureName;
+                    if (Params != null && Params.Length != 0) cmd.Parameters.AddRange(Params);
+                    reader = cmd.ExecuteReader();// (CommandBehavior.SequentialAccess);
+                    Delegate(reader);
+                    reader.Close();
                 }
+                catch (Exception Ex) { Exc = Ex; }
+                finally
+                {
+                    if (reader != null && !reader.IsClosed) reader.Close();
+                    if (reader != null) reader.Dispose();
+                    if (cmd != null) cmd.Dispose();
+                    if (cn != null)
+                    {
+                        cn.Close();
+                        cn.Dispose();
+                    }
+                }
+                if (Exc != null) throw Exc;
             }
-            t.ToTraceString("DoFetch(" + ProcedureName + ") : {0}");
-            if (Exc != null) throw Exc;
-        }
-
-        protected ObjectContextEx Context { get { return context; } }
+        }       
 
         public ObjectQuery<T> CreateQuery<T>() where T : EntityObject { return context.CreateQuery<T>("[" + typeof(T).Name + "]"); }
 
@@ -107,11 +113,8 @@ namespace InformationCenter.EFEngine
 
         public ObjectResult<T> ExecuteFunction<T>(string FunctionName, params ObjectParameter[] Parameters) where T : IEntityWithChangeTracker
         {
-            DebugTimer t = new DebugTimer();
-            t.Start();
-            var result = context.ExecuteFunctionA<T>(FunctionName, Parameters);
-            t.ToTraceString("ExecuteFunction<" + typeof(T) + ">(" + FunctionName + ") : {0}");
-            return result;
+            using (new DebugTimer("ExecuteFunction<" + typeof(T) + ">(" + FunctionName + ") : {0}"))
+                return context.ExecuteFunctionA<T>(FunctionName, Parameters);
         }
 
         public T GetByKey<T>(EntityKey Key) { return (T)GetByKey(Key); }
@@ -142,13 +145,9 @@ namespace InformationCenter.EFEngine
 
         public void Refresh(RefreshMode RefreshMode, object Entity)
         {
-            DebugTimer t = new DebugTimer();
-            t.Start();
             if (Entity == null) throw new ArgumentNullException("Entity");
-            //EntityState state = (Entity as EntityObject).EntityState;
-            //if (state != EntityState.Detached && state != EntityState.Added)
-            context.Refresh(RefreshMode, Entity);
-            t.ToTraceString("Refresh(" + RefreshMode.ToString() + ", " + Entity.ToString() + ") : {0}");
+            using (new DebugTimer("Refresh(" + RefreshMode.ToString() + ", " + Entity.ToString() + ") : {0}"))
+                context.Refresh(RefreshMode, Entity);
         }
 
         public Exception SaveChanges()
@@ -181,6 +180,8 @@ namespace InformationCenter.EFEngine
         }
 
         public void Dispose() { context.Dispose(); }
+
+        #endregion
 
     }
 
