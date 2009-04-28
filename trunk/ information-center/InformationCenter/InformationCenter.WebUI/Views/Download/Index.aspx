@@ -12,5 +12,5 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Ошибка</h2>
-    <p><%=ViewData["error"] %></p>
+    <p><span class="error"><%=ViewData["error"]%></span></p>
 </asp:Content>
