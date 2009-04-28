@@ -10,6 +10,8 @@
 Информационный центр ВУЗа
 </asp:Content>
 
+<asp:Content ID="Content4" ContentPlaceHolderID="HeadContent" runat="server"></asp:Content>
+
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript">
         jQuery(function($) {
@@ -33,16 +35,30 @@
     </script>
     
     <h2>Поиск документов</h2>
-    <form action="/Search/Query" method="get" id="frmSearchDocument" class="search-form">
-        <% 
+    <form action="/Search/Query" method="post" id="frmSearchDocument" class="search-form">
+        <%
+            var fields = (IEnumerable<FieldView>)(ViewData["Fields"] ?? new FieldView[0]);
+            fields = fields.OrderBy(field => field.Order);
             var request = (SearchRequest)(ViewData["SearchRequest"] ?? new SearchRequest());
             var useAdditional = Convert.ToBoolean(ViewData["UseAdditionalFields"]);
         %>
-        <p><span class="field-validation-error"><%=ViewData["error"]%></span></p>
+        <p><span class="error"><%=ViewData["error"]%></span></p>
         <p>
             <table class="search-fields">
-                <tr><td><label for="txtSearchTitle">Название:</label></td><td><input type="text" id="txtSearchTitle" name="t" value="" /></td></tr>
-                <tr><td><label for="txtSearchAuthor">Автор:</label></td><td><input type="text" id="txtSearchAuthor" name="a" value="" /></td></tr>
+                <% foreach (FieldView field in fields)
+                   { 
+                       object value = "";
+                       foreach (SearchItem item in request.Items)
+                       {
+                           if (item.FieldID == field.ID)
+                           {
+                               value = item.FieldValue;
+                               break;
+                           }
+                       }
+                %>
+                <tr><td><label for="txt_<%=field.ID %>"><%=field.Name %></label></td><td><input type="text" id="txt_<%=field.ID %>" name="_<%=field.ID %>" value="<%=value %>" /></td></tr>
+                <% } %>
                 <tr>
                     <td><label for="chkUseAdditional">Использовать дополнительные поля</label></td>
                     <td><input type="checkbox" id="chkUseAdditional" name="more" value="true"<%= useAdditional ? " checked=\"checked\"" : "" %> /></td>
@@ -53,8 +69,8 @@
     </form>
     <div class="hidden" id="frmSearchDocument_additional">
         <table class="search-fields">
-            <tr class="additional"><td><label for="txtAdditionalDate">Дата:</label></td><td><input type="text" id="txtAdditionalDate" name="_Date" value="" /></td></tr>
-            <tr class="additional"><td><label for="txtAdditionalPublisher">Издательство:</label></td><td><input type="text" id="txtAdditionalPublisher" name="_Publisher" value="" /></td></tr>
+            <!--<tr class="additional"><td><label for="txtAdditionalDate">Дата:</label></td><td><input type="text" id="txtAdditionalDate" name="_Date" value="" /></td></tr>
+            <tr class="additional"><td><label for="txtAdditionalPublisher">Издательство:</label></td><td><input type="text" id="txtAdditionalPublisher" name="_Publisher" value="" /></td></tr>-->
         </table>
     </div>
 </asp:Content>

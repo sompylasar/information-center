@@ -2,6 +2,7 @@ using System;
 using System.Web.Mvc;
 using InformationCenter.Data;
 using InformationCenter.Services;
+using InformationCenter.WebUI.Models;
 
 namespace InformationCenter.WebUI.Controllers
 {
@@ -10,28 +11,26 @@ namespace InformationCenter.WebUI.Controllers
         //
         // GET: /Search/
 
-        private ServiceCenter serviceCenter = new ServiceCenter(@"Data Source=.\SQLEXPRESS;Initial Catalog=InformationCenter;Integrated Security=SSPI;"); 
-
-        private SearchRequest request = new SearchRequest();
-        private bool useAdditional = false;
+        private ServiceCenter serviceCenter = new ServiceCenter(AppSettings.CONNECTION_STRING); 
 
         public ActionResult Index()
         {
-            ViewData["SearchRequest"] = request;
-            ViewData["UseAdditionalFields"] = useAdditional;
+            ViewData["Fields"] = serviceCenter.SearchService.GetFields();
+            ViewData["SearchRequest"] = (Session["SearchPrevRequest"] ?? new SearchRequest());
+            ViewData["UseAdditionalFields"] = (Session["SearchUseAdditionalFields"] ?? false);
 
             return View();
         }
 
         public ActionResult Query(bool? more)
         {
-            useAdditional = more ?? false;
-            
+            bool useAdditional = more ?? false;
+
+            var request = new SearchRequest();
+
+            ViewData["Fields"] = serviceCenter.SearchService.GetFields();
             ViewData["SearchRequest"] = request;
             ViewData["UseAdditionalFields"] = useAdditional;
-
-            request.Items.Add(new SearchItem(new Guid(), HttpContext.Request.QueryString["t"] ?? ""));
-            //request.Items.Add["Author"] = HttpContext.Request.QueryString["a"] ?? "";
 
             foreach (string fieldKey in HttpContext.Request.QueryString)
             {
@@ -39,16 +38,20 @@ namespace InformationCenter.WebUI.Controllers
 
                 if (fieldKey.StartsWith("_"))
                 {
-                    string fieldName = fieldKey.Substring(1);
-                   // request.Fields[fieldName] = fieldValue ?? "";
+                    Guid fieldId = new Guid(fieldKey.Substring(1));
+
+                    request.Items.Add(new SearchItem(fieldId, fieldValue));
                 }
             }
 
+            Session["SearchPrevRequest"] = request;
+            Session["SearchUseAdditionalFields"] = useAdditional;
+
             try
             {
-                var result = serviceCenter.SearchService.Query(request);
+                var results = serviceCenter.SearchService.Query(request);
 
-                ViewData["SearchResults"] = result;
+                ViewData["SearchResultItems"] = results;
 
                 return View("SearchResults");
             }

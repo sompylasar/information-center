@@ -21,7 +21,7 @@ namespace InformationCenter.Services
 
         #region Свойства
 
-        internal Guid ID { get { return Field.ID; } }
+        public Guid ID { get { return Field.ID; } }
 
         protected Field Field { get { return entity as Field; } }
 

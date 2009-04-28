@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using InformationCenter.Data;
 
@@ -16,7 +17,7 @@ namespace InformationCenter.Services
 
         #region Свойства
 
-        internal Guid ID { get { return Template.ID; } }
+        public Guid ID { get { return Template.ID; } }
 
         protected Template Template { get { return entity as Template; } }
 
@@ -25,7 +26,6 @@ namespace InformationCenter.Services
         public DateTime CreationDate { get { return Template.CreationDate; } }
 
         #endregion
-
     }
 
 }
