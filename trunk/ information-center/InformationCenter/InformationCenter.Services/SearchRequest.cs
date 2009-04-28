@@ -38,6 +38,7 @@ namespace InformationCenter.Services
 
     }
 
+    [Description("Режим поиска")]
     public enum SearchMode
     {
 
