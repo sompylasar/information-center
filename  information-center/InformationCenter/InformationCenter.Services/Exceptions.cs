@@ -4,6 +4,9 @@ using System.Collections;
 namespace InformationCenter.Services
 {
 
+    /// <summary>
+    /// Исключение возникает, когда какой-то элемент коллекции null.
+    /// </summary>
     public class ItemIsNullException : Exception
     {
 
@@ -39,6 +42,9 @@ namespace InformationCenter.Services
 
     }
 
+    /// <summary>
+    /// Исключение возникает, когда не найдено поле в хранилище по идентификатору.
+    /// </summary>
     public class FieldNotFoundException : Exception
     {
 
@@ -70,6 +76,9 @@ namespace InformationCenter.Services
 
     }
 
+    /// <summary>
+    /// Исключение возникает, когда невозможно создать тип по строке из БД.
+    /// </summary>
     public class DotNetTypeNotExistsException : Exception
     {
 
@@ -101,6 +110,9 @@ namespace InformationCenter.Services
 
     }
 
+    /// <summary>
+    /// Исключение возникает, когда заданное поле не поддерживает null. 
+    /// </summary>
     public class NullableValueNotAllowedException : Exception
     {
 
@@ -133,6 +145,9 @@ namespace InformationCenter.Services
 
     }
 
+    /// <summary>
+    /// Исключение возникает, когда ожидаемый тип не совпадает с реальным типом.
+    /// </summary>
     public class TypeMismatchException : Exception
     {
 
@@ -167,6 +182,9 @@ namespace InformationCenter.Services
 
     }
 
+    /// <summary>
+    /// Исключение возникает, когда размер загружаемого в хранилище файла превышает максимально допустимый размер.
+    /// </summary>
     public class FileSizeOverflowException : Exception
     {
 
@@ -205,6 +223,9 @@ namespace InformationCenter.Services
 
     }
 
+    /// <summary>
+    /// Исключение возникает, когда происходит попытка работы с типом данных, который не поддерживается хранилищем.
+    /// </summary>
     public class NotSupportedFieldTypeException : Exception
     {
 
@@ -235,5 +256,5 @@ namespace InformationCenter.Services
         #endregion
 
     }
-
+    
 }

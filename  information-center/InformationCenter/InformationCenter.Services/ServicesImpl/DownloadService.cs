@@ -46,13 +46,13 @@ namespace InformationCenter.Services.ServicesImpl
 
         #region Ìועמהû
 
-        public DocumentView Fetch(SearchResultItem Item)
+        public DocumentView GetDocument(SearchResultItem Item)
         {
             if (Item == null) throw new ArgumentNullException("Item");
-            return Fetch(Item.ID);
+            return GetDocument(Item.ID);
         }
 
-        public DocumentView Fetch(Guid ID)
+        public DocumentView GetDocument(Guid ID)
         {
             Document doc = Engine.CreateQuery<Document>().Where(d => d.ID == ID).FirstOrDefault();
             return doc == null ? null : new DocumentView(doc);

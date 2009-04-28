@@ -17,7 +17,7 @@ namespace InformationCenter.Services
 
         #region Поля
 
-      //  private Person current = null;
+        private User current = null;
 
         #endregion
 
@@ -53,28 +53,71 @@ namespace InformationCenter.Services
         /// <summary>
         /// получить текущего пользователя
         /// </summary>
-        /*public Person CurrentUser
+        public User Current
         {
             get
             {
-                DebugTimer t = new DebugTimer();
-                t.Start();
-                if (current == null) current = (Context as SchedulingEntities).CurrentUser().FirstOrDefault();
-                t.ToTraceString("CurrentUser : {0}");
+                if (current == null) current = new User();
                 return current;
             }
-        }*/
+        }
 
         #endregion
 
         #region Методы
 
+        #region Add
+
         public Guid AddDocument(string FileName, byte[] Data)
         {
             ObjectParameter g = new ObjectParameter("id", null);
             int result = Entities.AddDocument(FileName, Data, g).First().Value;
-            return (Guid)g.Value;
+            return result == 0 ? (Guid)g.Value : Guid.Empty;
         }
+
+        public Guid AddDocumentDescription(string Name, Guid DocumentID)
+        {
+            ObjectParameter g = new ObjectParameter("id", null);
+            int result = Entities.AddDocumentDescription(Name, DocumentID, "", g).First().Value;
+            return result == 0 ? (Guid)g.Value : Guid.Empty;
+        }
+
+        public Guid AddField(string Name, Guid FieldTypeID)
+        {
+            ObjectParameter g = new ObjectParameter("id", null);
+            int result = Entities.AddField(Name, FieldTypeID, g).First().Value;
+            return result == 0 ? (Guid)g.Value : Guid.Empty;
+        }
+
+        public Guid AddTemplate(string Name)
+        {
+            ObjectParameter g = new ObjectParameter("id", null);
+            int result = Entities.AddTemplate(Name, "", g).First().Value;
+            return result == 0 ? (Guid)g.Value : Guid.Empty;
+        }
+
+        #endregion
+
+        #region Delete
+
+        public int DeleteDocument(Guid ID)
+        {
+            return Entities.DeleteDocument(ID).First().Value;
+        }
+
+        public int DeleteField(Guid ID)
+        {
+            return Entities.DeleteField(ID).First().Value;
+        }
+
+        public int DeleteTemplate(Guid ID)
+        {
+            return Entities.DeleteTemplate(ID).First().Value;
+        }
+
+        #endregion
+
+        #region Get
 
         public Field[] GetTemplateFields(Template Template) { return GetTemplateFields(Template.ID); }
 
@@ -113,6 +156,8 @@ namespace InformationCenter.Services
         public double?[] GetFloatCollection() { return Entities.FloatFieldValue.Select(v => v.Value).Distinct().ToArray(); }
 
         public DateTime?[] GetDateTimeCollection() { return Entities.DateTimeFieldValue.Select(v => v.Value).Distinct().ToArray(); }
+
+        #endregion
 
         #endregion
 
