@@ -10,7 +10,7 @@ namespace InformationCenter.WebUI.Controllers
         //
         // GET: /Search/
 
-        private ServiceCenter serviceCenter = new ServiceCenter(""); 
+        private ServiceCenter serviceCenter = new ServiceCenter(@"Data Source=.\SQLEXPRESS;Initial Catalog=InformationCenter;Integrated Security=SSPI;"); 
 
         private SearchRequest request = new SearchRequest();
         private bool useAdditional = false;
