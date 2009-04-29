@@ -17,6 +17,8 @@ namespace InformationCenter.Services
 
         protected DocDescription Description { get { return entity as DocDescription; } }
 
+        public Guid ID { get { return Description.ID; } }
+
         #endregion
 
     }

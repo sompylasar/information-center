@@ -21,6 +21,8 @@ namespace InformationCenter.Services
 
         protected FieldType FieldType { get { return entity as FieldType; } }
 
+        public Guid ID { get { return FieldType.ID; } }
+
         public string SqlName { get { return FieldType.SqlName; } }
 
         public Type TypeOfField
