@@ -13,6 +13,17 @@ namespace InformationCenter.DBUtils
 {
     public class DBWorker
     {
+        public DBWorker(SqlConnectionStringBuilder csb)
+        {
+            if (csb == null)
+                throw new ArgumentNullException("csb", "Некорректная строка подключения");
+
+            if (String.IsNullOrEmpty(csb.ConnectionString.Trim()))
+                throw new ArgumentException("Некорректная строка подключения", "csb");
+
+            this.csb = new SqlConnectionStringBuilder(csb.ConnectionString);
+            provider = new SqlConnectionProvider();
+        }
         public DBWorker(string connectionString)
         {
             if(String.IsNullOrEmpty(connectionString.Trim()))
@@ -63,7 +74,7 @@ namespace InformationCenter.DBUtils
             DataTable result = new DataTable();
             if (Connection != null)
             {
-                if (Connection.State == ConnectionState.Open)
+                if (Connection.State != ConnectionState.Open)
                     Connection.Open();
                 Cmd.Connection = Connection;
                 var reader = Cmd.ExecuteReader();
@@ -112,6 +123,23 @@ namespace InformationCenter.DBUtils
 
             return ExecuteQuery(cmd);
         }
+        public DataTable ExecuteQuery(string Query, SqlConnection Connection, params SqlParameter[] Params)
+        {
+            if (Query.Trim() == string.Empty)
+                throw new ArgumentException("Пустая строка", Query);
+            if (Params == null)
+                throw new NullReferenceException("Params");
+            if (Connection == null)
+                throw new ArgumentNullException("Connection");
+
+            var cmd = new SqlCommand(Query);
+            foreach (var param in Params)
+            {
+                cmd.Parameters.Add(param);
+            }
+
+            return ExecuteQuery(cmd, Connection);
+        }
 
         /// <summary>
         /// Выполнить запрос (не на выборку)
@@ -146,6 +174,25 @@ namespace InformationCenter.DBUtils
 
             return ExecuteNonQuery(cmd);
         }
+
+        public int ExecuteNonQuery(string Query, SqlConnection Connection, params SqlParameter[] Params)
+        {
+            if (Query.Trim() == string.Empty)
+                throw new ArgumentException("Пустая строка", Query);
+            if (Params == null)
+                throw new NullReferenceException("Params");
+            if (Connection == null)
+                throw new ArgumentNullException("Connection");
+
+            var cmd = new SqlCommand(Query);
+            foreach (var param in Params)
+            {
+                cmd.Parameters.Add(param);
+            }
+
+            return ExecuteNonQuery(cmd, Connection);
+        }
+
         /// <summary>
         /// Выполнить запрос (не на выборку)
         /// </summary>
@@ -190,33 +237,61 @@ namespace InformationCenter.DBUtils
         /// <returns>Имя временной таблицы</returns>
         public string CreateFieldsTempTable(IEnumerable<Field> fields)
         {
-            string tempTableName = "#FieldsTempTable_" + Guid.NewGuid().ToString("N");
+            string tempTableName = "##FieldsTempTable_" + Guid.NewGuid().ToString("N");
             string query = GenQueryCreateTable(tempTableName, new ColumnDescription[]
             {
                 new ColumnDescription{Name = "FieldID", Type = SqlDbType.UniqueIdentifier}
             });
 
+            int i = 0;
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            query += Environment.NewLine;
+            foreach (var field in fields)
+            {
+                query += Environment.NewLine +
+                    " INSERT INTO " + tempTableName +
+                        @"(FieldID)
+                    VALUES
+                    (@id" + i.ToString() + ") ";
+                
+                parameters.Add(new SqlParameter("@id" + i.ToString(), field.ID) { DbType = DbType.Guid });
+                
+                ++i;
+            }
+
+            query += Environment.NewLine + //" select * from " + tempTableName;
+            @"EXECUTE [AddTemplate] 
+                   'Шаблонъ'
+                  ,@tempFieldsTableName
+                  ,@tId";
+
+            //var
+            parameters.Add(new SqlParameter("@tempFieldsTableName", tempTableName));
+            var pId = new SqlParameter("@tID", Guid.NewGuid()) { DbType = DbType.Guid, Direction = ParameterDirection.Output };
+            parameters.Add(pId);
+            
             var con = provider.GetConnection(csb) as SqlConnection;
             if (con != null)
             {
                 try
                 {
-                    con.Open();
-                    ExecuteNonQuery(new SqlCommand(query), con);
-                    query = "select * from " + tempTableName;
-                    DataTable table = ExecuteQuery(new SqlCommand(query), con);
-                    foreach (var field in fields)
-                    {
-                        table.Rows.Add(field.ID);
-                    }
-                    table.AcceptChanges();
-                    DataTable table1 = ExecuteQuery(new SqlCommand(query), con);
-                    con.Close();
+                    //con.Open();
+                    ExecuteNonQuery(query, parameters.ToArray());
+                    //var table1 = ExecuteQuery(query, parameters.ToArray());
+                    //query = "select * from " + tempTableName;
+                    //DataTable table = ExecuteQuery(new SqlCommand(query), con);
+                    //foreach (var field in fields)
+                    //{
+                    //    table.Rows.Add(field.ID);
+                    //}
+                    //table.AcceptChanges();
+                    //DataTable table1 = ExecuteQuery(new SqlCommand(query), con);
+                    //con.Close();
 
-                    foreach (var item in table1.AsEnumerable())
-                    {
-                        Debug.WriteLine(item.Field<Guid>(0));
-                    }
+                    //foreach (var item in table1.AsEnumerable())
+                    //{
+                    //    Debug.WriteLine(item.Field<Guid>(0));
+                    //}
                     //query += Environment.NewLine + " insert into " + tempTableName + " (";
                 }
                 catch (Exception exc)
@@ -226,11 +301,39 @@ namespace InformationCenter.DBUtils
                 }
                 finally
                 {
-                    con.Dispose();
+                    try
+                    {
+                        //if (con.State != ConnectionState.Open)
+                        //    con.Open();
+                        query = "drop table " + tempTableName;
+                        ExecuteNonQuery(new SqlCommand(query));//, con);
+                    }
+                    catch (Exception)
+                    {
+                    }
+                    finally
+                    {
+                        //con.Dispose();
+                    }
                 }
 
             }
             return tempTableName;
+        }
+
+        public void SelectFromTable(string tableName)
+        {
+            try
+            {
+                var table = ExecuteQuery("select * from "+ tableName);
+                foreach (var item in table.AsEnumerable())
+                {
+                    Debug.WriteLine(item.Field<Guid>(0));
+                }
+            }
+            catch (Exception exc)
+            {
+            }
         }
 
         public string CreateSearchTempTable(IEnumerable<SearchItem> searchItems)
