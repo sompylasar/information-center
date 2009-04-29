@@ -4,7 +4,7 @@ using InformationCenter.Data;
 namespace InformationCenter.Services
 {
 
-    public class FieldView : ViewItem
+    public class FieldView : ViewItem, IEquatable<FieldView>
     {
 
         #region Поля
@@ -52,6 +52,12 @@ namespace InformationCenter.Services
         {
             return new object[] { };
         }
+
+        public override int GetHashCode() { return ID.GetHashCode(); }
+
+        public override bool Equals(object obj) { return Equals(obj as FieldView); }      
+
+        public bool Equals(FieldView other) { return object.ReferenceEquals(other, this) || (other != null && other.ID == ID); }
 
         #endregion
 
