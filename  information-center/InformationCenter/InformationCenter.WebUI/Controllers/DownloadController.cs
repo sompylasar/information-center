@@ -10,29 +10,46 @@ namespace InformationCenter.WebUI.Controllers
         //
         // GET: /Download/
 
-        private ServiceCenter serviceCenter = new ServiceCenter(AppSettings.CONNECTION_STRING); 
+        private ServiceCenterClient _client;
+        private void InitServiceCenterClient()
+        {
+            _client = new ServiceCenterClient(Session["UserName"] as string, Session["Password"] as string);
+        }
 
         public ActionResult Index()
         {
-            try
+            if (AuthHelper.NeedRedirectToAuth(this)) return RedirectToAction("LogOn", "Account");
+
+            ActionResult actionResult = View("Error");
+            InitServiceCenterClient();
+            if (_client.Available)
             {
-                if (Request["id"] == null)
-                    throw new Exception("Идентификатор документа не задан");
+                actionResult = View("Index");
+                try
+                {
+                    if (Request["id"] == null)
+                        throw new Exception("Идентификатор документа не задан");
 
-                Guid documentId = new Guid(Request["id"]);
-                DocumentView document = serviceCenter.DownloadService.GetDocument(documentId);
-                if (document == null)
-                    throw new Exception("Документ с указанным идентификатором не найден");
+                    Guid documentId = new Guid(Request["id"]);
+                    DocumentView document = _client.ServiceCenter.DownloadService.GetDocument(documentId);
+                    if (document == null)
+                        throw new Exception("Документ с указанным идентификатором не найден");
 
-                ViewData["Document"] = document;
-                return View("Download");
+                    ViewData["Document"] = document;
+
+                    actionResult = View("Download");
+                }
+                catch (Exception ex)
+                {
+                    ViewData["error"] = ex.Message;
+                }
             }
-            catch (Exception ex)
+            else
             {
-                ViewData["error"] = ex.Message;
-
-                return View();
+                ViewData["error"] = "Сервис выдачи документов в данный момент недоступен.";
             }
+
+            return actionResult;
         }
     }
 }

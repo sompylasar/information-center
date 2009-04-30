@@ -28,6 +28,7 @@
                 <%}%>
             </ol>
         </p>
-        <p><%=Html.ActionLink("Вернуться к форме поиска", "Index", "Search") %></p>
+        <p><a href="javascript:window.history.go(-1)">Назад к поиску</a><br />
+        <%=Html.ActionLink("Новый поиск", "Index", "Search") %></p>
     </div>
 </asp:Content>

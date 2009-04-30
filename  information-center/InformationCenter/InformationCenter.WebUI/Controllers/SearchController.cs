@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using InformationCenter.Data;
 using InformationCenter.Services;
 using InformationCenter.WebUI.Models;
+using System.Web;
 
 namespace InformationCenter.WebUI.Controllers
 {
@@ -11,56 +12,97 @@ namespace InformationCenter.WebUI.Controllers
         //
         // GET: /Search/
 
-        private ServiceCenter serviceCenter = new ServiceCenter(AppSettings.CONNECTION_STRING); 
+        private ServiceCenterClient _client;
+        private void InitServiceCenterClient()
+        {
+            _client = new ServiceCenterClient(Session["UserName"] as string, Session["Password"] as string);
+        }
 
         public ActionResult Index()
         {
-            ViewData["Fields"] = serviceCenter.SearchService.GetFields();
-            ViewData["SearchRequest"] = (Session["SearchPrevRequest"] ?? new SearchRequest());
-            ViewData["UseAdditionalFields"] = (Session["SearchUseAdditionalFields"] ?? false);
+            if (AuthHelper.NeedRedirectToAuth(this)) return RedirectToAction("LogOn", "Account");
 
-            return View();
+            ActionResult actionResult = View("Error");
+            InitServiceCenterClient();
+            if (_client.Available)
+            {
+                ViewData["Fields"] = _client.ServiceCenter.SearchService.GetFields();
+                ViewData["SearchRequest"] = (Session["SearchPrevRequest"] ?? new SearchRequest());
+                ViewData["UseAdditionalFields"] = (Session["SearchUseAdditionalFields"] ?? false);
+
+                actionResult = View();
+            }
+            else
+            {
+                ViewData["error"] = "—ервис поиска в данный момент недоступен." 
+                    + " "+_client.ServiceCenterException;
+            }
+
+            return actionResult;
         }
 
         public ActionResult Query(bool? more)
         {
-            bool useAdditional = more ?? false;
+            if (AuthHelper.NeedRedirectToAuth(this,"Index")) return RedirectToAction("LogOn", "Account");
 
-            var request = new SearchRequest();
-
-            ViewData["Fields"] = serviceCenter.SearchService.GetFields();
-            ViewData["SearchRequest"] = request;
-            ViewData["UseAdditionalFields"] = useAdditional;
-
-            foreach (string fieldKey in HttpContext.Request.QueryString)
+            ActionResult actionResult = View("Error");
+            InitServiceCenterClient();
+            if (_client.Available)
             {
-                var fieldValue = HttpContext.Request[fieldKey];
+                actionResult = View("Index");
 
-                if (fieldKey.StartsWith("_"))
+                bool useAdditional = more ?? false;
+
+                var request = new SearchRequest();
+
+                ViewData["Fields"] = _client.ServiceCenter.SearchService.GetFields();
+                ViewData["SearchRequest"] = request;
+                ViewData["UseAdditionalFields"] = useAdditional;
+
+                foreach (string fieldKey in HttpContext.Request.QueryString)
                 {
-                    Guid fieldId = new Guid(fieldKey.Substring(1));
+                    var fieldValue = HttpContext.Request[fieldKey];
 
-                    request.Items.Add(new SearchItem(fieldId, fieldValue));
+                    if (fieldKey.StartsWith("_"))
+                    {
+                        Guid fieldId = new Guid(fieldKey.Substring(1));
+
+                        try
+                        {
+                            request.Items.Add(new SearchItem(fieldId, fieldValue));
+                        }
+                        catch (Exception ex)
+                        {
+                            ModelState.AddModelError(fieldId + "_error", ex.Message);
+                        }
+                    }
+                }
+
+                if (ModelState.IsValid)
+                {
+                    Session["SearchPrevRequest"] = request;
+                    Session["SearchUseAdditionalFields"] = useAdditional;
+
+                    try
+                    {
+                        var results = _client.ServiceCenter.SearchService.Query(request);
+
+                        ViewData["SearchResultItems"] = results;
+
+                        actionResult = View("SearchResults");
+                    }
+                    catch (Exception ex)
+                    {
+                        ViewData["error"] = ex.Message;
+                    }
                 }
             }
-
-            Session["SearchPrevRequest"] = request;
-            Session["SearchUseAdditionalFields"] = useAdditional;
-
-            try
+            else
             {
-                var results = serviceCenter.SearchService.Query(request);
-
-                ViewData["SearchResultItems"] = results;
-
-                return View("SearchResults");
+                ViewData["error"] = "—ервис поиска в данный момент недоступен.";
             }
-            catch (Exception ex)
-            {
-                ViewData["error"] = ex.Message;
 
-                return View("Index");
-            }
+            return actionResult;
         }
     }
 }

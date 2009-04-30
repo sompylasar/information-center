@@ -5,10 +5,10 @@
 </asp:Content>
 
 <asp:Content ID="errorMainHeader" ContentPlaceHolderID="MainHeaderContent" runat="server">
-Ошибка - Информационный центр ВУЗа
+Информационный центр ВУЗа
 </asp:Content>
 
 <asp:Content ID="errorContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Ошибка</h2>
-    <p><%=ViewData["error"] %></p>
+    <p class="error"><%=ViewData["error"] %></p>
 </asp:Content>
