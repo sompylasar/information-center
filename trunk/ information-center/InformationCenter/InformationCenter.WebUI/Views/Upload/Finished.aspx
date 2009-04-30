@@ -17,7 +17,9 @@
         <%}else{ %>
         <p>Загрузка документа завершена с ошибкой.</p>
         <p class="error"><%=ViewData["error"] %></p>
+        <!--<p>Чтобы вернуться к редактированию, используйте кнопку &laquo;Назад&raquo; Вашего браузера.</p>-->
         <%} %>
-        <p><%=Html.ActionLink("Вернуться к форме загрузки", "Index", "Upload") %></p>
+        <p><a href="javascript:window.history.go(-1)">Назад к редактированию</a><br />
+        <%=Html.ActionLink("Загрузка нового документа", "Index", "Upload") %></p>
     </div>
 </asp:Content>

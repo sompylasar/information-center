@@ -23,7 +23,8 @@
             
             <div id="menucontainer">
                 <ul id="menu">              
-                    <li><%= Html.ActionLink("Выбор сервиса", "Index", "Home")%></li>
+                    <li><%= Html.ActionLink("Поиск", "Index", "Search")%></li>
+                    <li><%= Html.ActionLink("Загрузка", "Index", "Upload")%></li>
                     <li><%= Html.ActionLink("Об авторах", "About", "Home")%></li>
                 </ul>
             </div>

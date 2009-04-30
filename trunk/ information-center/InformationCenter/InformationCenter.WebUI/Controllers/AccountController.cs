@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
 using System.Security.Principal;
@@ -7,6 +8,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using System.Web.UI;
+using InformationCenter.Services;
+using InformationCenter.WebUI.Models;
+using System.Web.Routing;
 
 namespace InformationCenter.WebUI.Controllers
 {
@@ -14,7 +18,6 @@ namespace InformationCenter.WebUI.Controllers
     [HandleError]
     public class AccountController : Controller
     {
-
         // This constructor is used by the MVC framework to instantiate the controller using
         // the default forms authentication and membership providers.
 
@@ -61,10 +64,18 @@ namespace InformationCenter.WebUI.Controllers
                 return View();
             }
 
+            Session["UserName"] = userName;
+            Session["Password"] = password;
+
             FormsAuth.SignIn(userName, rememberMe);
+
             if (!String.IsNullOrEmpty(returnUrl))
             {
                 return Redirect(returnUrl);
+            }
+            else if (Session["ReturnRedirect"] is ActionResult)
+            {
+                return (ActionResult)Session["ReturnRedirect"];
             }
             else
             {
@@ -176,19 +187,19 @@ namespace InformationCenter.WebUI.Controllers
         {
             if (String.IsNullOrEmpty(currentPassword))
             {
-                ModelState.AddModelError("currentPassword", "You must specify a current password.");
+                ModelState.AddModelError("currentPassword", "Вы должны указать текущий пароль.");
             }
             if (newPassword == null || newPassword.Length < MembershipService.MinPasswordLength)
             {
                 ModelState.AddModelError("newPassword",
                     String.Format(CultureInfo.CurrentCulture,
-                         "You must specify a new password of {0} or more characters.",
+                         "Новый пароль должен состоять из {0} или более символов.",
                          MembershipService.MinPasswordLength));
             }
 
             if (!String.Equals(newPassword, confirmPassword, StringComparison.Ordinal))
             {
-                ModelState.AddModelError("_FORM", "The new password and confirmation password do not match.");
+                ModelState.AddModelError("_FORM", "Новый пароль и подтверждение пароля не совпадают.");
             }
 
             return ModelState.IsValid;
@@ -198,40 +209,54 @@ namespace InformationCenter.WebUI.Controllers
         {
             if (String.IsNullOrEmpty(userName))
             {
-                ModelState.AddModelError("username", "You must specify a username.");
+                ModelState.AddModelError("username", "Вы должны ввести имя пользователя.");
             }
             if (String.IsNullOrEmpty(password))
             {
-                ModelState.AddModelError("password", "You must specify a password.");
+                ModelState.AddModelError("password", "Вы должны ввести пароль.");
             }
-            if (!MembershipService.ValidateUser(userName, password))
+            //if (!MembershipService.ValidateUser(userName, password))
+            if (!TryInitServiceCenterClient(userName, password))
             {
-                ModelState.AddModelError("_FORM", "The username or password provided is incorrect.");
+                ModelState.AddModelError("_FORM", "Неверное имя пользователя, или пароль к нему не подходит.");
             }
 
             return ModelState.IsValid;
+        }
+        private bool TryInitServiceCenterClient(string userName, string password)
+        {
+            try
+            {
+                var client = new ServiceCenterClient(userName, password);
+
+                return client.Available;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         private bool ValidateRegistration(string userName, string email, string password, string confirmPassword)
         {
             if (String.IsNullOrEmpty(userName))
             {
-                ModelState.AddModelError("username", "You must specify a username.");
+                ModelState.AddModelError("username", "Вы должны ввести имя пользователя.");
             }
-            if (String.IsNullOrEmpty(email))
+            /*if (String.IsNullOrEmpty(email))
             {
-                ModelState.AddModelError("email", "You must specify an email address.");
-            }
+                ModelState.AddModelError("email", "Вы должны ввести адрес электронной почты.");
+            }*/
             if (password == null || password.Length < MembershipService.MinPasswordLength)
             {
                 ModelState.AddModelError("password",
                     String.Format(CultureInfo.CurrentCulture,
-                         "You must specify a password of {0} or more characters.",
+                         "Пароль должен состоять из {0} или более символов.",
                          MembershipService.MinPasswordLength));
             }
             if (!String.Equals(password, confirmPassword, StringComparison.Ordinal))
             {
-                ModelState.AddModelError("_FORM", "The new password and confirmation password do not match.");
+                ModelState.AddModelError("_FORM", "Пароль и подтверждение пароля не совпадают.");
             }
             return ModelState.IsValid;
         }

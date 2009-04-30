@@ -21,6 +21,7 @@ namespace InformationCenter.Services.ServicesImpl
         public SearchService(string ConnectionString)
         {
             connectionString = ConnectionString;
+            var e = Engine; // дернуть Engine, чтобы он проверил соединение по указанному connectionString
         }
 
         #endregion

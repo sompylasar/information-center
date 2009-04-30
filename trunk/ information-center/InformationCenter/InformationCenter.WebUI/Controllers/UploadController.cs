@@ -11,88 +11,129 @@ namespace InformationCenter.WebUI.Controllers
         //
         // GET: /Upload/
 
-        private ServiceCenter serviceCenter = new ServiceCenter(AppSettings.CONNECTION_STRING); 
-
+        private ServiceCenterClient _client;
+        private void InitServiceCenterClient()
+        {
+            _client = new ServiceCenterClient(Session["UserName"] as string, Session["Password"] as string);
+        }
 
         public ActionResult Index()
         {
+            //if (NeedRedirectToAuth("Index")) return RedirectToAction("LogOn", "Account");
+
             return RedirectToAction("SelectTemplate");
         }
 
         public ActionResult SelectTemplate()
         {
-            var templates = serviceCenter.UploadService.GetTemplates();
+            if (AuthHelper.NeedRedirectToAuth(this, "SelectTemplate")) return RedirectToAction("LogOn", "Account");
 
-            // skip template selection if no templates found
-            if (templates.Length <= 0) return RedirectToAction("FillDescription");
+            ActionResult actionResult = View("Error");
+            InitServiceCenterClient();
+            if (_client.Available)
+            {
+                var templates = _client.ServiceCenter.UploadService.GetTemplates();
 
-            ViewData["Templates"] = templates;
+                // skip template selection if no templates found
+                if (templates.Length <= 0) return RedirectToAction("FillDescription");
 
-            return View();
+                ViewData["Templates"] = templates;
+
+                actionResult = View();
+            }
+            else
+            {
+                ViewData["error"] = "Сервис загрузки документов в данный момент недоступен.";
+            }
+
+            return actionResult;
         }
 
         public ActionResult FillDescription()
         {
-            string templateIdStr = (Request["TemplateId"] ?? "");
-            bool useEmptyTemplate = string.IsNullOrEmpty(templateIdStr);
+            if (AuthHelper.NeedRedirectToAuth(this, "SelectTemplate")) return RedirectToAction("LogOn", "Account");
 
-            TemplateView selectedTemplate = null;
-
-            if (!useEmptyTemplate)
+            ActionResult actionResult = View("Error");
+            InitServiceCenterClient();
+            if (_client.Available)
             {
-                Guid templateId = new Guid(templateIdStr);
-                var templates = serviceCenter.UploadService.GetTemplates();
-                
-                foreach (TemplateView template in templates)
+                actionResult = View();
+
+                string templateIdStr = (Request["tpl"] ?? "");
+                bool useEmptyTemplate = string.IsNullOrEmpty(templateIdStr);
+
+                TemplateView selectedTemplate = null;
+
+                if (!useEmptyTemplate)
                 {
-                    if (template.ID == templateId)
+                    Guid templateId = new Guid(templateIdStr);
+                    var templates = _client.ServiceCenter.UploadService.GetTemplates();
+
+                    foreach (TemplateView template in templates)
                     {
-                        selectedTemplate = template;
-                        break;
+                        if (template.ID == templateId)
+                        {
+                            selectedTemplate = template;
+                            break;
+                        }
                     }
                 }
+
+                ViewData["Fields"] = _client.ServiceCenter.SearchService.GetFields();
+
+                try
+                {
+                    if (!useEmptyTemplate && selectedTemplate == null)
+                        throw new Exception("Указанный шаблон не найден.");
+
+                    ViewData["SelectedFields"] = (selectedTemplate == null
+                                                      ? new FieldView[0]
+                                                      : _client.ServiceCenter.UploadService.GetFieldsOfTemplate(selectedTemplate));
+                }
+                catch (Exception ex)
+                {
+                    ViewData["error"] = ex.Message;
+                }
             }
-
-            ViewData["Fields"] = serviceCenter.SearchService.GetFields();
-
-            try
+            else
             {
-                if (!useEmptyTemplate && selectedTemplate == null)
-                    throw new Exception("Указанный шаблон не найден");
-                
-                ViewData["SelectedFields"] = (selectedTemplate == null 
-                    ? new FieldView[0] 
-                    : serviceCenter.UploadService.GetFieldsOfTemplate(selectedTemplate));
-
-                return View();
+                ViewData["error"] = "Сервис загрузки документов в данный момент недоступен.";
             }
-            catch (Exception ex)
-            {
-                ViewData["error"] = ex.Message;
 
-                return View();
-            }
+            return actionResult;
         }
 
         public ActionResult Start()
         {
-            var file = HttpContext.Request.Files["f"];
+            if (AuthHelper.NeedRedirectToAuth(this, "SelectTemplate")) return RedirectToAction("LogOn", "Account");
 
-            try
+            ActionResult actionResult = View("Error");
+            InitServiceCenterClient();
+            if (_client.Available)
             {
-                if (file == null || string.IsNullOrEmpty(file.ContentType))
-                    throw new Exception("Файл не загружен.");
+                actionResult = View("Finished");
 
-                serviceCenter.UploadService.Upload(file.InputStream, file.FileName, file.ContentType, file.ContentLength);
+                var file = HttpContext.Request.Files["f"];
 
-                ViewData["error"] = "";
+                try
+                {
+                    if (file == null || string.IsNullOrEmpty(file.ContentType))
+                        throw new Exception("Файл не загружен.");
+
+                    _client.ServiceCenter.UploadService.Upload(file.InputStream, file.FileName, file.ContentType,
+                                                       file.ContentLength);
+                }
+                catch (Exception ex)
+                {
+                    ViewData["error"] = ex.Message;
+                }
             }
-            catch (Exception ex)
+            else
             {
-                ViewData["error"] = ex.Message;
+                ViewData["error"] = "Сервис загрузки документов в данный момент недоступен.";
             }
 
-            return View("Finished");
+            return actionResult;
         }
     }
 }

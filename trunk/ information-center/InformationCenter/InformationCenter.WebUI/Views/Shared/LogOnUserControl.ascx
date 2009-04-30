@@ -2,7 +2,7 @@
 <%
     if (Request.IsAuthenticated) {
 %>
-        Welcome <b><%= Html.Encode(Page.User.Identity.Name) %></b>!
+        Вы вошли как <b><%= Html.Encode(Page.User.Identity.Name) %></b>.
         [ <%= Html.ActionLink("Выйти", "LogOff", "Account") %> ]
 <%
     }
