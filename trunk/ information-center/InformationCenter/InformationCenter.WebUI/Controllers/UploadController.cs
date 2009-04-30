@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Web.Mvc;
 using InformationCenter.Services;
 using InformationCenter.WebUI.Models;
@@ -80,15 +81,18 @@ namespace InformationCenter.WebUI.Controllers
                 }
 
                 ViewData["Fields"] = _client.ServiceCenter.SearchService.GetFields();
+                ViewData["Templates"] = _client.ServiceCenter.UploadService.GetTemplates();
+                ViewData["SelectedTemplate"] = selectedTemplate;
 
                 try
                 {
                     if (!useEmptyTemplate && selectedTemplate == null)
                         throw new Exception("”казанный шаблон не найден.");
 
-                    ViewData["SelectedFields"] = (selectedTemplate == null
-                                                      ? new FieldView[0]
-                                                      : _client.ServiceCenter.UploadService.GetFieldsOfTemplate(selectedTemplate));
+                    ViewData["SelectedFields"] = (TempData["SelectedFields"] 
+                        ?? (selectedTemplate == null 
+                             ? new FieldView[0]
+                             : _client.ServiceCenter.UploadService.GetFieldsOfTemplate(selectedTemplate)) );
                 }
                 catch (Exception ex)
                 {
@@ -111,17 +115,44 @@ namespace InformationCenter.WebUI.Controllers
             InitServiceCenterClient();
             if (_client.Available)
             {
-                actionResult = View("Finished");
+                actionResult = View("FillDescription");
 
                 var file = HttpContext.Request.Files["f"];
 
+                var fields = (IEnumerable<FieldView>)_client.ServiceCenter.SearchService.GetFields();
+                var selectedFields = new List<FieldView>();
+                foreach (string fieldKey in HttpContext.Request.Params)
+                {
+                    var fieldValue = HttpContext.Request[fieldKey];
+
+                    if (fieldKey.StartsWith("_"))
+                    {
+                        Guid fieldId = new Guid(fieldKey.Substring(1));
+
+                        TempData[fieldKey] = fieldValue;
+                        foreach (FieldView field in fields)
+                        {
+                            if (field.ID.ToString() == fieldId.ToString())
+                            {
+                                selectedFields.Add(field);
+                                Debug.WriteLine(field); 
+                            }
+                        }
+                    }
+                }
+
+                ViewData["Fields"] = fields;
+                ViewData["SelectedFields"] = selectedFields;
+
                 try
                 {
-                    if (file == null || string.IsNullOrEmpty(file.ContentType))
-                        throw new Exception("‘айл не загружен.");
+                    if (file == null)
+                        throw new Exception("‘айл не был отправлен.");
 
-                    _client.ServiceCenter.UploadService.Upload(file.InputStream, file.FileName, file.ContentType,
-                                                       file.ContentLength);
+                    _client.ServiceCenter.UploadService.Upload(file.InputStream, 
+                        file.FileName, file.ContentType, file.ContentLength);
+
+                    actionResult = View("Finished");
                 }
                 catch (Exception ex)
                 {

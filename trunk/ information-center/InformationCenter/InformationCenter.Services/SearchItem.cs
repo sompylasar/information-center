@@ -18,7 +18,7 @@ namespace InformationCenter.Services
         public SearchItem(Guid FieldID, object Value)
         {
             id = FieldID;
-            val = Value;
+            val = Value; // TODO: проверить валидность Value
         }
 
         #endregion

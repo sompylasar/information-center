@@ -5,7 +5,7 @@ to use a different color start by replacing all instances of
 ----------------------------------------------------------*/
 body
 {
-    background-color: #5c87b2;
+    background: #5cb257 url(/Content/Images/InformationCenterLogo.png) no-repeat left top;
     font-size: .75em;
     font-family: Verdana, Helvetica, Sans-Serif;
     margin: 0;
@@ -15,21 +15,21 @@ body
 
 a:link
 {
-    color: #034af3;
+    color: #50bc5a; /*#03f34a*/
     text-decoration: underline;
 }
 a:visited
 {
-    color: #505abc;
+	color: #50bc5a;
 }
 a:hover
 {
-    color: #1d60ff;
+    color: #1ddd40;
     text-decoration: none;
 }
 a:active
 {
-    color: #12eb87;
+    color: #127b37;
 }
 
 p, ul
@@ -89,9 +89,9 @@ first child of the left and right table columns */
 page width. Or, you can specify an exact pixel width. */
 .page
 {
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
+    width: auto;
+    margin-left: 100px;
+    margin-right: 100px;
 }
 
 #header
@@ -136,7 +136,7 @@ page width. Or, you can specify an exact pixel width. */
 ----------------------------------------------------------*/
 ul#menu
 {
-    border-bottom: 1px #5C87B2 solid;
+    border-bottom: 1px #5CB257 solid;
     padding: 0 0 2px;
     position: relative;
     margin: 0;
@@ -165,7 +165,7 @@ ul#menu li a
     text-decoration: none;
     line-height: 2.8em;
     background-color: #e8eef4;
-    color: #034af3;
+    color: #03932a;
 }
 
 ul#menu li a:hover
@@ -263,7 +263,7 @@ table th
 
 .error
 {
-    color:Red;
+    color: red;
 }
 
 #menucontainer
@@ -276,6 +276,11 @@ div#title
     display:block;
     float:left;
     text-align:left;
+}
+
+div#title h1 
+{
+	margin-left: 60px;
 }
 
 #logindisplay
@@ -305,7 +310,7 @@ div#title
     text-decoration: none;
 }
 
-.field-validation-error, .error
+.field-validation-error
 {
     color: #ff0000;
 }

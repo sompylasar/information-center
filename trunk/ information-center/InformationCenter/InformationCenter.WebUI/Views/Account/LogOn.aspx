@@ -11,7 +11,7 @@
 <asp:Content ID="loginContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Вход</h2>
     <p>
-        Введите имя пользователя и пароль. Если у Вас нет учетной записи, <%= Html.ActionLink("зарегистрируйтесь", "Register") %>.
+        Введите имя пользователя и пароль.<!-- Если у Вас нет учетной записи, <%= Html.ActionLink("зарегистрируйтесь", "Register") %>.-->
     </p>
     <%= Html.ValidationSummary("Вход запрещен. Исправьте ошибки и попробуйте снова.") %>
 

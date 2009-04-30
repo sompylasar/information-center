@@ -13,7 +13,5 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Получение документа</h2>
-    <div>
-        <p>Начинается скачивание документа с ID=<%=((DocumentView)ViewData["Document"]).ID %>...</p>
-    </div>
+    <p>Начинается скачивание документа с ID=<%=((DocumentView)ViewData["Document"]).ID %>...</p>
 </asp:Content>

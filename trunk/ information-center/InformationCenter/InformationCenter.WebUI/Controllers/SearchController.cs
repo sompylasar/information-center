@@ -27,7 +27,7 @@ namespace InformationCenter.WebUI.Controllers
             if (_client.Available)
             {
                 ViewData["Fields"] = _client.ServiceCenter.SearchService.GetFields();
-                ViewData["SearchRequest"] = (Session["SearchPrevRequest"] ?? new SearchRequest());
+                ViewData["SearchRequest"] = new SearchRequest();
                 ViewData["UseAdditionalFields"] = (Session["SearchUseAdditionalFields"] ?? false);
 
                 actionResult = View();
@@ -55,28 +55,55 @@ namespace InformationCenter.WebUI.Controllers
 
                 var request = new SearchRequest();
 
-                ViewData["Fields"] = _client.ServiceCenter.SearchService.GetFields();
-                ViewData["SearchRequest"] = request;
-                ViewData["UseAdditionalFields"] = useAdditional;
+                var fields = _client.ServiceCenter.SearchService.GetFields();
 
-                foreach (string fieldKey in HttpContext.Request.QueryString)
+                foreach (string fieldKey in HttpContext.Request.Params)
                 {
-                    var fieldValue = HttpContext.Request[fieldKey];
+                    var fieldValueStr = HttpContext.Request[fieldKey];
+                    bool use = (HttpContext.Request["use" + fieldKey] == "true");
+                    if (!use) continue;
 
                     if (fieldKey.StartsWith("_"))
                     {
                         Guid fieldId = new Guid(fieldKey.Substring(1));
 
+                        TempData[fieldKey] = fieldValueStr;
+
+                        FieldTypeView fieldTypeView = null;
+                        Type fieldType = typeof(string);
+                        foreach (FieldView field in fields)
+                        {
+                            if (field.ID == fieldId)
+                            {
+                                fieldTypeView = field.FieldTypeView;
+                                fieldType = field.FieldTypeView.TypeOfField;
+                                break;
+                            }
+                        }
+                        
+                        object fieldValue = fieldValueStr;
                         try
                         {
-                            request.Items.Add(new SearchItem(fieldId, fieldValue));
+                            fieldValue = Convert.ChangeType(fieldValueStr, fieldType);
+
+                            try
+                            {
+                                request.Items.Add(new SearchItem(fieldId, fieldValue));
+                            }
+                            catch (Exception ex)
+                            {
+                                ModelState.AddModelError(fieldKey, ex.Message);
+                            }
                         }
                         catch (Exception ex)
                         {
-                            ModelState.AddModelError(fieldId + "_error", ex.Message);
+                            ModelState.AddModelError(fieldKey, ex.Message +  (fieldTypeView == null ? "" : " ќжидаемый тип: "+fieldTypeView.FieldTypeName));
                         }
                     }
                 }
+                ViewData["Fields"] = fields;
+                ViewData["SearchRequest"] = request;
+                ViewData["UseAdditionalFields"] = useAdditional;
 
                 if (ModelState.IsValid)
                 {

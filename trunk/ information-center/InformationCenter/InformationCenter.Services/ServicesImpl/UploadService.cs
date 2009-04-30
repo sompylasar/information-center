@@ -65,11 +65,11 @@ namespace InformationCenter.Services.ServicesImpl
         {
             if (Stream == null) return new ArgumentNullException("stream");
             if (FileName == null) return new ArgumentNullException("fileName");
-            if (ContentType == null) return new ArgumentNullException("contentType");
+            //if (ContentType == null) return new ArgumentNullException("contentType");
             if (FileName.Trim() == "") return new Exception("Имя файла не указано.");
             if (ContentLength <= 0) return new Exception("Файл пуст.");
             if (ContentLength > MaxFileSizeInBytes) return new FileSizeOverflowException(ContentLength, maxFileSizeInBytes, FileName);
-            if (ContentType != "text/plain") return new Exception("Тип файла " + ContentType + " запрещен к загрузке.");
+            //if (ContentType != "text/plain") return new Exception("Тип файла " + ContentType + " запрещен к загрузке.");
             return null;
         }
 

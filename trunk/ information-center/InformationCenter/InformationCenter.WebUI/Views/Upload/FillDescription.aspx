@@ -26,6 +26,7 @@
         {
         	display: block;
         	list-style-type: none;
+        	width: 100%;
         	margin: 0px;
         	padding: 0px;
         	/*min-width: 288px;
@@ -90,10 +91,10 @@
         }
         #fields #fields-from-container, #fields #fields-to-container
         {
-        	height: 80%;
+        	height: 180px;
         	margin: 0px;
         }
-        #fields #fields-from-container .listbox-from, #fields #fields-to-container .listbox-to
+        #fields #fields-from-container .listbox-from, #fields #fields-to-container .listbox-to-wrapper 
         {
         	display: block;
         	min-width: 150px;
@@ -104,7 +105,8 @@
         }
         #fields #fields-from-container .listbox-from
         {
-        	padding-right: 0px;
+        	margin-right: 1px;
+        	padding-right: 7px;
         }
         #fields #fields-buttons-container
         {
@@ -285,35 +287,45 @@
             <table id="fields"><tr id="fields_row"><td class="listbox-section">
                 <fieldset id="fields-from-container">
                     <legend>Доступные поля описания</legend>
-                    <span class="listbox-from-empty">(список пуст)</span>
+                    <span class="listbox-from-empty"><%=(fields.Count() + selectedFields.Count() > 0 ? "(все доступные поля выбраны)" : "(список пуст)") %></span>
                     <ul class="listbox-from">
                         <% foreach (FieldView field in fields) { %>
-                        <li rel="_<%=field.ID %>" order="<%=field.Order %>"><span class="unselectable"><%=field.Name %></span></li>
+                        <li rel="_<%=field.ID %>" order="<%=field.Order %>"><span class="unselectable"><%=field.Name %> (<%=field.FieldTypeView.FieldTypeName %>)</span></li>
                         <% } %>
                     </ul>
                 </fieldset>
             </td><td id="fields-buttons-container">
                 <div>
-                    <button type="button" class="button-add">&gt;</button>
-                    <button type="button" class="button-add-all">&gt;&gt;</button>
+                    <button type="button" class="button-add" title="Добавить выделенные">&gt;</button>
+                    <button type="button" class="button-add-all" title="Добавить все">&gt;&gt;</button>
                 </div>
                 <br />
                 <div>
-                    <button type="button" class="button-remove">&lt;</button>
-                    <button type="button" class="button-remove-all">&lt;&lt;</button>
+                    <button type="button" class="button-remove" title="Убрать выделенные">&lt;</button>
+                    <button type="button" class="button-remove-all" title="Убрать все">&lt;&lt;</button>
                 </div>
             </td><td class="listbox-section">
                 <fieldset id="fields-to-container">
                     <legend>Выбранные поля описания</legend>
                     <span class="listbox-to-empty">(добавьте необходимые поля)</span>
-                    <table class="listbox-to">
-                        <% foreach (FieldView field in selectedFields) { %>
-                        <tr order="<%=field.Order %>"><td class="fieldName"><span class="unselectable"><%=field.Name %></span></td><td class="fieldValue"><input type="text" name="_<%=field.ID %>" value="" /></td></tr>
-                        <% } %>
-                    </table>
+                    <div class="listbox-to-wrapper">
+                        <table class="listbox-to">
+                            <% foreach (FieldView field in selectedFields) { %>
+                            <tr order="<%=field.Order %>"><td class="fieldName"><span class="unselectable"><%=field.Name %> (<%=field.FieldTypeView.FieldTypeName %>)</span></td><td class="fieldValue"><input type="text" name="_<%=field.ID %>" value="<%=((string)TempData["_"+field.ID]) ?? "" %>" /></td></tr>
+                            <% } %>
+                        </table>
+                    </div>
                 </fieldset>
             </td></tr></table>
         </div>
         <p><button type="submit">Загрузить</button></p>
+        <p>
+        <% if (ViewData["Templates"] != null && ((IEnumerable<TemplateView>)ViewData["Templates"]).Count() > 0)
+           { %>
+            <a href="javascript:window.history.go(-1)">Назад к выбору шаблона</a>
+        <% } else { %>
+            <%=Html.ActionLink("Выбор шаблона", "SelectTemplate", "Upload")%>
+        <% } %>
+        </p>
     </form>
 </asp:Content>

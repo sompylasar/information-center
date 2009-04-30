@@ -75,7 +75,9 @@ namespace InformationCenter.WebUI.Controllers
             }
             else if (Session["ReturnRedirect"] is ActionResult)
             {
-                return (ActionResult)Session["ReturnRedirect"];
+                var redirect = (ActionResult)Session["ReturnRedirect"];
+                Session["ReturnRedirect"] = null;
+                return redirect;
             }
             else
             {
@@ -85,6 +87,8 @@ namespace InformationCenter.WebUI.Controllers
 
         public ActionResult LogOff()
         {
+            Session["UserName"] = null;
+            Session["Password"] = null;
 
             FormsAuth.SignOut();
 
@@ -93,6 +97,7 @@ namespace InformationCenter.WebUI.Controllers
 
         public ActionResult Register()
         {
+            return RedirectToAction("LogOn");
 
             ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
 
@@ -102,6 +107,7 @@ namespace InformationCenter.WebUI.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Register(string userName, string email, string password, string confirmPassword)
         {
+            return RedirectToAction("LogOn");
 
             ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
 
@@ -128,6 +134,7 @@ namespace InformationCenter.WebUI.Controllers
         [Authorize]
         public ActionResult ChangePassword()
         {
+            return RedirectToAction("LogOn");
 
             ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
 
@@ -140,6 +147,7 @@ namespace InformationCenter.WebUI.Controllers
             Justification = "Exceptions result in password not being changed.")]
         public ActionResult ChangePassword(string currentPassword, string newPassword, string confirmPassword)
         {
+            return RedirectToAction("LogOn");
 
             ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
 
@@ -177,7 +185,7 @@ namespace InformationCenter.WebUI.Controllers
         {
             if (filterContext.HttpContext.User.Identity is WindowsIdentity)
             {
-                throw new InvalidOperationException("Windows authentication is not supported.");
+                throw new InvalidOperationException("Авторизация Windows не поддерживается.");
             }
         }
 

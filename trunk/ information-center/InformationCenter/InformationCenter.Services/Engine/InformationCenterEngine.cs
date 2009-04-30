@@ -70,28 +70,29 @@ namespace InformationCenter.Services
 
         public Guid AddDocument(string FileName, byte[] Data)
         {
-            ObjectParameter g = new ObjectParameter("id", null);
+            ObjectParameter g = new ObjectParameter("id", typeof(Guid));
             int result = Entities.AddDocument(FileName, Data, g).First().Value;
             return result == 0 ? (Guid)g.Value : Guid.Empty;
         }
 
         public Guid AddDocumentDescription(string Name, Guid DocumentID)
         {
-            ObjectParameter g = new ObjectParameter("id", null);
-            int result = Entities.AddDocumentDescription(Name, DocumentID, "", g).First().Value;
+            ObjectParameter g = new ObjectParameter("id", typeof(Guid));
+            // TODO: создать временную таблицу с полями и передать ее имя
+            int result = Entities.AddDocumentDescription(Name, DocumentID, "" /*tempFieldsTableName*/, g).First().Value;
             return result == 0 ? (Guid)g.Value : Guid.Empty;
         }
 
         public Guid AddField(string Name, Guid FieldTypeID)
         {
-            ObjectParameter g = new ObjectParameter("id", null);
+            ObjectParameter g = new ObjectParameter("id", typeof(Guid));
             int result = Entities.AddField(Name, FieldTypeID, g).First().Value;
             return result == 0 ? (Guid)g.Value : Guid.Empty;
         }
 
         public Guid AddTemplate(string Name)
         {
-            ObjectParameter g = new ObjectParameter("id", null);
+            ObjectParameter g = new ObjectParameter("id", typeof(Guid));
             int result = Entities.AddTemplate(Name, "", g).First().Value;
             return result == 0 ? (Guid)g.Value : Guid.Empty;
         }
