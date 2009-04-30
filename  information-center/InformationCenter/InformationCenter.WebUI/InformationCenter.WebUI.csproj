@@ -76,6 +76,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Images\AboutPhotos\BabakIA.jpg" />
+    <Content Include="Content\Images\AboutPhotos\BabakIA_small.png" />
+    <Content Include="Content\Images\AboutPhotos\KretovKA.jpg" />
+    <Content Include="Content\Images\AboutPhotos\KretovKA_small.png" />
+    <Content Include="Content\Images\AboutPhotos\MaksimovIA.jpg" />
+    <Content Include="Content\Images\AboutPhotos\MaksimovIA_small.png" />
+    <Content Include="Content\Images\AboutPhotos\SemenikhinaOS.jpg" />
+    <Content Include="Content\Images\AboutPhotos\SemenikhinaOS_small.png" />
+    <Content Include="Content\Images\AboutPhotos\ShlyapenkoDA.jpg" />
+    <Content Include="Content\Images\AboutPhotos\ShlyapenkoDA_small.png" />
+    <Content Include="Content\Images\InformationCenterLogo.png" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery.listbox_pair.js" />

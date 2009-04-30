@@ -18,7 +18,7 @@
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript">
         jQuery(function($) {
-            function check() {
+            function check_additional() {
                 //alert('check');
                 if ($('#chkUseAdditional').is(":checked")) {
                     $('#frmSearchDocument_additional .additional').appendTo( $('#frmSearchDocument .search-fields-additional') );
@@ -42,15 +42,24 @@
 
             $('#chkUseAdditional')
                 .change(function () {
-                    check();
+                    check_additional();
                 });
                 
-            check();
+            check_additional();
+            
+            $(':text[name^=_]').change(function () {
+                $input = $(this);
+                var fieldKey = $input.attr('name');
+                $use_cb = $(':checkbox[name=use'+fieldKey+']');
+                $input.next('span.field-validation-error').hide();
+                if ($input.val() == '') $use_cb.removeAttr('checked');
+                else $use_cb.attr('checked', 'checked');
+            });
         });
     </script>
     
     <h2>Поиск документов</h2>
-    <form action="/Search/Query" method="get" id="frmSearchDocument" class="search-form">
+    <form action="/Search/Query" method="post" id="frmSearchDocument" class="search-form">
         <%
             var fields = (IEnumerable<FieldView>)(ViewData["Fields"] ?? new FieldView[0]);
             fields = fields.OrderBy(field => field.Order);
@@ -70,23 +79,29 @@
                     <% foreach (FieldView field in fields)
                        { 
                            object value = "";
+                           bool found = false;
                            foreach (SearchItem item in request.Items)
                            {
                                if (item.FieldID == field.ID)
                                {
                                    value = item.FieldValue;
+                                   found = true;
                                    break;
                                }
                            }
                     %>
-                    <tr><td><label for="txt_<%=field.ID %>"><%=field.Name %></label></td><td><input type="text" id="txt_<%=field.ID %>" name="_<%=field.ID %>" value="<%=value %>" /></td></tr>
+                    <tr>
+                        <td><input type="checkbox" name="use_<%=field.ID %>" id="cbx_<%=field.ID %>" value="true"<%= found ? " checked=\"checked\"" : "" %> /></td>
+                        <td><label for="cbx_<%=field.ID %>"><%=field.Name %> (<%=field.FieldTypeView.FieldTypeName %>)</label></td>
+                        <td><input type="text" id="txt_<%=field.ID %>" name="_<%=field.ID %>" value="<%=value %>" /><%=Html.ValidationMessage("_"+field.ID) %></td>
+                    </tr>
                     <% } %>
                 </table>
             </fieldset>
             </div>
         </p>
         <p>
-            <span id="chkUseAdditional_span" style="display:none;"><label for="chkUseAdditional" id="chkUseAdditional_label">Использовать дополнительные поля</label><input type="checkbox" id="chkUseAdditional" name="more" value="true"<%= useAdditional ? " checked=\"checked\"" : "" %> /></span>
+            <span id="chkUseAdditional_span" style="display:none;"><label for="chkUseAdditional" id="chkUseAdditional_label">Показывать дополнительные поля</label><input type="checkbox" id="chkUseAdditional" name="more" value="true"<%= useAdditional ? " checked=\"checked\"" : "" %> /></span>
             <div id="frmSearchDocument_additional_in_form" style="display:none;">
             <fieldset>
                 <legend>Дополнительные поля</legend>
@@ -102,16 +117,22 @@
             <% foreach (FieldView field in additionalFields)
                { 
                    object value = "";
+                   bool found = false;
                    foreach (SearchItem item in request.Items)
                    {
                        if (item.FieldID == field.ID)
                        {
                            value = item.FieldValue;
+                           found = true;
                            break;
                        }
                    }
             %>
-            <tr class="additional"><td><label for="txt_<%=field.ID %>"><%=field.Name %></label></td><td><input type="text" id="Text1" name="_<%=field.ID %>" value="<%=value %>" /></td></tr>
+            <tr class="additional">
+                <td><input type="checkbox" name="use_<%=field.ID %>" id="cbx_<%=field.ID %>" value="true"<%= found ? " checked=\"checked\"" : "" %> /></td>
+                <td><label for="cbx_<%=field.ID %>"><%=field.Name %> (<%=field.FieldTypeView.FieldTypeName %>)</label></td>
+                <td><input type="text" id="Text1" name="_<%=field.ID %>" value="<%=value %>" /><%=Html.ValidationMessage("_"+field.ID) %></td>
+            </tr>
             <% } %>
         </table>
     </div>

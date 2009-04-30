@@ -28,12 +28,12 @@ namespace InformationCenter.WebUI.Controllers
                 try
                 {
                     if (Request["id"] == null)
-                        throw new Exception("Идентификатор документа не задан");
+                        throw new Exception("Идентификатор документа не задан.");
 
                     Guid documentId = new Guid(Request["id"]);
                     DocumentView document = _client.ServiceCenter.DownloadService.GetDocument(documentId);
                     if (document == null)
-                        throw new Exception("Документ с указанным идентификатором не найден");
+                        throw new Exception("Документ с указанным идентификатором не найден.");
 
                     ViewData["Document"] = document;
 
