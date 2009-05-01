@@ -48,12 +48,20 @@ namespace InformationCenter.Services.ServicesImpl
 
         #region Ìועמהû
 
+        public DocumentView GetDocument(Guid ID)
+        {
+            Document doc = Engine.GetDocument(ID);
+            return doc == null ? null : new DocumentView(doc);
+        }
+
         public string[] GetFileNames(bool WithExtensions) { return Engine.GetFileNames(WithExtensions); }
 
         public FieldView[] GetFields()
         {
             return Array.ConvertAll<Field, FieldView>(Engine.GetFields(), input => new FieldView(input));
         }
+
+        public object GetValue(FieldValue Value) { return Value == null ? null : Engine.GetFieldValue(Value); }
 
         public object[] GetValuesOfField(FieldView FieldView) { return Engine.GetFieldValues(FieldView.ID); }
 

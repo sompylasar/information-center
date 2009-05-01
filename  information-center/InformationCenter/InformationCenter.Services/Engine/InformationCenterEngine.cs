@@ -120,6 +120,11 @@ namespace InformationCenter.Services
 
         #region Get
 
+        public Document GetDocument(Guid ID)
+        {
+            return Entities.Document.Where(d => d.ID == ID).FirstOrDefault();
+        }
+        
         public string[] GetFileNames(bool WithExtensions)
         {
             string[] set = Entities.Document.Select(d => d.FileName).ToArray();
@@ -154,6 +159,15 @@ namespace InformationCenter.Services
             List<object> result = new List<object>();
             DoFetch("[dbo].[GetFieldValues]", reader => { while (reader.Read()) result.Add(reader[0]); }, new SqlParameter("@fieldId", FieldID));
             return result.ToArray();
+        }
+
+        public object GetFieldValue(FieldValue Value) { return GetFieldValue(Value.ID); }
+
+        public object GetFieldValue(Guid FieldValueID)
+        {
+            object result = null;
+            DoFetch("[dbo].[GetFieldConcreteValue]", reader => { if (reader.Read()) result = reader[0]; }, new SqlParameter("@@fieldValueId", FieldValueID));
+            return result;
         }
 
         public T[] GetFieldValues<T>(Guid FieldID)

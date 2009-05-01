@@ -53,6 +53,7 @@
     <Compile Include="Items\DocumentView.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="Items\FieldTypeView.cs" />
+    <Compile Include="Items\FieldValueView.cs" />
     <Compile Include="Items\FieldView.cs" />
     <Compile Include="Engine\InformationCenterEngine.cs" />
     <Compile Include="Engine\InformationCenterEngineLoader.cs" />
