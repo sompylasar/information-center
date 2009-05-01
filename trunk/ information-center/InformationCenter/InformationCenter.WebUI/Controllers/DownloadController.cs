@@ -36,6 +36,10 @@ namespace InformationCenter.WebUI.Controllers
                         throw new Exception("Документ с указанным идентификатором не найден.");
 
                     ViewData["Document"] = document;
+                    string filename, contentType;
+                    FileHelper.SplitFilename(document.FileName, out filename, out contentType);
+                    ViewData["Document.FileName"] = filename;
+                    ViewData["Document.ContentType"] = filename;
 
                     actionResult = View("Download");
                 }

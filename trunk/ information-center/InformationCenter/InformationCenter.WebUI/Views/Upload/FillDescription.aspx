@@ -290,7 +290,7 @@
                     <span class="listbox-from-empty"><%=(fields.Count() + selectedFields.Count() > 0 ? "(все доступные поля выбраны)" : "(список пуст)") %></span>
                     <ul class="listbox-from">
                         <% foreach (FieldView field in fields) { %>
-                        <li rel="_<%=field.ID %>" order="<%=field.Order %>"><span class="unselectable"><%=field.Name %> (<%=field.FieldTypeView.FieldTypeName %>)</span></li>
+                        <li rel="_<%=field.ID %>" order="<%=field.Order %>"><span class="unselectable"><%=Html.Encode(field.Name) %> (<%=Html.Encode(field.FieldTypeView.FieldTypeName) %>)</span></li>
                         <% } %>
                     </ul>
                 </fieldset>
@@ -311,7 +311,7 @@
                     <div class="listbox-to-wrapper">
                         <table class="listbox-to">
                             <% foreach (FieldView field in selectedFields) { %>
-                            <tr order="<%=field.Order %>"><td class="fieldName"><span class="unselectable"><%=field.Name %> (<%=field.FieldTypeView.FieldTypeName %>)</span></td><td class="fieldValue"><input type="text" name="_<%=field.ID %>" value="<%=((string)TempData["_"+field.ID]) ?? "" %>" /></td></tr>
+                            <tr order="<%=field.Order %>"><td class="fieldName"><span class="unselectable"><%=Html.Encode(field.Name) %> (<%=Html.Encode(field.FieldTypeView.FieldTypeName) %>)</span></td><td class="fieldValue"><input type="text" name="_<%=field.ID %>" value="<%=Html.Encode(((string)TempData["_"+field.ID]) ?? "") %>" /></td></tr>
                             <% } %>
                         </table>
                     </div>

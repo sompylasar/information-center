@@ -150,7 +150,8 @@ namespace InformationCenter.WebUI.Controllers
                         throw new Exception("Файл не был отправлен.");
 
                     _client.ServiceCenter.UploadService.Upload(file.InputStream, 
-                        file.FileName, file.ContentType, file.ContentLength);
+                       FileHelper.CombineFilename(file.FileName, file.ContentType), 
+                       file.ContentType, file.ContentLength);
 
                     actionResult = View("Finished");
                 }

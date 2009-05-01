@@ -36,14 +36,14 @@
         int resultsCount = results.Count();
     %>
     <div>
-        <p><label>Запрос:</label><span id="query"><%=query %></span></p>
-        <p><span class="error"><%=resultsCount <= 0 ? "По Вашему запросу не найдено ни одного документа." : ViewData["error"]??""%></span></p>
+        <p><label>Запрос:</label><span id="query"><%=Html.Encode(query) %></span></p>
+        <p><span class="error"><%=resultsCount <= 0 ? "По Вашему запросу не найдено ни одного документа." : Html.Encode(ViewData["error"] ?? "") %></span></p>
         <p class="search-results">
             <span id="total"><%=resultsCount==0 ? "" : "Найдено документов: "+resultsCount.ToString() %></span>
             <ol>
                 <%foreach (SearchResultItem result in results){%>
                 <li>
-                    <div><%=result.Header %></div>
+                    <div><%=Html.Encode(result.Header) %></div>
                     <div><%=Html.ActionLink("Просмотр", "Index", "Download", new { id = result.ID }, null)%></div>
                 </li>
                 <%}%>
