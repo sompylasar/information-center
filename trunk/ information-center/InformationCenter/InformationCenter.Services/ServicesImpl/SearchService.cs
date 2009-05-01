@@ -61,7 +61,7 @@ namespace InformationCenter.Services.ServicesImpl
             return Array.ConvertAll<Field, FieldView>(Engine.GetFields(), input => new FieldView(input));
         }
 
-        public object GetValue(FieldValue Value) { return Value == null ? null : Engine.GetFieldValue(Value); }
+        public object GetValue(FieldValueView Value) { return Value == null ? null : Engine.GetFieldValue(Value.ID); }
 
         public object[] GetValuesOfField(FieldView FieldView) { return Engine.GetFieldValues(FieldView.ID); }
 
