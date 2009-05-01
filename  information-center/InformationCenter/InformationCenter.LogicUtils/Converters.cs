@@ -329,6 +329,7 @@ namespace LogicUtils
         #endregion
 
     }
+    
     /// <summary> Преобразователь для типа bool </summary>
     /// <remarks> Для лузеров, которые не понимают true и false </remarks>
     [Description("Преобразователь для типа bool")]
