@@ -54,8 +54,12 @@ namespace InformationCenter.Services
             if (s.CanRead)
             {
                 int readed = s.Read(buffer, 0, buffer.Length);
-                byte[] block = new byte[readed];
-                STD.CopyBytes(block, buffer, 0, readed);
+                if (readed > 0)
+                {
+                    byte[] block = new byte[readed];
+                    STD.CopyBytes(block, buffer, 0, readed);
+                    blocks.Add(block);
+                }
                 return readed;
             }
             else return 0;
