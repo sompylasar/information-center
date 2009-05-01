@@ -10,5 +10,5 @@
 
 <asp:Content ID="errorContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Ошибка</h2>
-    <p class="error"><%=ViewData["error"] %></p>
+    <p class="error"><%=Html.Encode(ViewData["error"]) %></p>
 </asp:Content>

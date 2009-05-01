@@ -12,5 +12,5 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Получение документа</h2>
-    <p><span class="error"><%=ViewData["error"]%></span></p>
+    <p><span class="error"><%=Html.Encode(ViewData["error"])%></span></p>
 </asp:Content>

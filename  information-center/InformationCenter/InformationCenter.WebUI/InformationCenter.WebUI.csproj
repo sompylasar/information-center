@@ -72,6 +72,7 @@
     </Compile>
     <Compile Include="Models\AppSettings.cs" />
     <Compile Include="Models\AuthHelper.cs" />
+    <Compile Include="Models\FileHelper.cs" />
     <Compile Include="Models\ServiceCenterClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

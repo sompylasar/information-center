@@ -92,8 +92,8 @@
                     %>
                     <tr>
                         <td><input type="checkbox" name="use_<%=field.ID %>" id="cbx_<%=field.ID %>" value="true"<%= found ? " checked=\"checked\"" : "" %> /></td>
-                        <td><label for="cbx_<%=field.ID %>"><%=field.Name %> (<%=field.FieldTypeView.FieldTypeName %>)</label></td>
-                        <td><input type="text" id="txt_<%=field.ID %>" name="_<%=field.ID %>" value="<%=value %>" /><%=Html.ValidationMessage("_"+field.ID) %></td>
+                        <td><label for="cbx_<%=field.ID %>"><%=Html.Encode(field.Name) %> (<%=Html.Encode(field.FieldTypeView.FieldTypeName) %>)</label></td>
+                        <td><input type="text" id="txt_<%=field.ID %>" name="_<%=field.ID %>" value="<%=Html.Encode(value) %>" /><%=Html.ValidationMessage("_"+field.ID) %></td>
                     </tr>
                     <% } %>
                 </table>
@@ -130,8 +130,8 @@
             %>
             <tr class="additional">
                 <td><input type="checkbox" name="use_<%=field.ID %>" id="cbx_<%=field.ID %>" value="true"<%= found ? " checked=\"checked\"" : "" %> /></td>
-                <td><label for="cbx_<%=field.ID %>"><%=field.Name %> (<%=field.FieldTypeView.FieldTypeName %>)</label></td>
-                <td><input type="text" id="Text1" name="_<%=field.ID %>" value="<%=value %>" /><%=Html.ValidationMessage("_"+field.ID) %></td>
+                <td><label for="cbx_<%=field.ID %>"><%=Html.Encode(field.Name) %> (<%=Html.Encode(field.FieldTypeView.FieldTypeName) %>)</label></td>
+                <td><input type="text" id="Text1" name="_<%=field.ID %>" value="<%=Html.Encode(value) %>" /><%=Html.ValidationMessage("_"+field.ID) %></td>
             </tr>
             <% } %>
         </table>
