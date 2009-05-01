@@ -4,13 +4,16 @@ using InformationCenter.Data;
 namespace InformationCenter.Services
 {
 
+    /// <summary>
+    /// Представление поля.
+    /// </summary>
     public class FieldView : ViewItem, IEquatable<FieldView>
     {
 
         #region Поля
 
         private FieldTypeView ftView = null;
-        
+
         #endregion
 
         #region Конструкторы
@@ -21,25 +24,38 @@ namespace InformationCenter.Services
 
         #region Свойства
 
+        /// <summary>
+        /// уникальный идентификатор
+        /// </summary>
         public Guid ID { get { return Field.ID; } }
 
         protected Field Field { get { return entity as Field; } }
 
+        /// <summary>
+        /// порядковый номер
+        /// </summary>
         public int Order { get { return Field.OrderNumber; } }
 
+        /// <summary>
+        /// может ли принимать значение null
+        /// </summary>
         public bool Nullable { get { return Field.Nullable; } }
 
+        /// <summary>
+        /// название поля
+        /// </summary>
         public string Name { get { return Field.Text; } }
 
+        /// <summary>
+        /// представление типа поля
+        /// </summary>
         public FieldTypeView FieldTypeView
         {
             get
             {
-                if (ftView == null)
-                {
-                    if (!Field.FieldTypeReference.IsLoaded) Field.FieldTypeReference.Load();
-                    ftView = new FieldTypeView(Field.FieldType);
-                }
+                Field.FieldTypeReference.Load();
+                if (ftView == null && Field.FieldType != null) ftView = new FieldTypeView(Field.FieldType);
+                else if (ftView != null && Field.FieldType == null) ftView = null;
                 return ftView;
             }
         }
@@ -47,11 +63,6 @@ namespace InformationCenter.Services
         #endregion
 
         #region Методы
-
-        public object[] GetSourceValues()
-        {
-            return new object[] { };
-        }
 
         public override int GetHashCode() { return ID.GetHashCode(); }
 
