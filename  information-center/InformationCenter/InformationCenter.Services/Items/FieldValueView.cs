@@ -27,6 +27,11 @@ namespace InformationCenter.Services
 
         #region Свойства
 
+        /// <summary>
+        /// уникальный идентификатор
+        /// </summary>
+        public Guid ID { get { return FieldValue.ID; } }
+
         protected FieldValue FieldValue { get { return entity as FieldValue; } }
 
         /// <summary>
