@@ -4,6 +4,9 @@ using System;
 namespace InformationCenter.Services
 {
 
+    /// <summary>
+    /// Сервисный центр для управления системой.
+    /// </summary>
     public class ServiceCenter : IDisposable
     {
 
@@ -18,15 +21,19 @@ namespace InformationCenter.Services
 
         #region Конструкторы
 
-        public ServiceCenter(string ConnectionString)
-        {
-            connectionString = ConnectionString;
-        }
+        /// <summary>
+        /// конструктор
+        /// </summary>
+        /// <param name="ConnectionString">строка соединения к центру</param>
+        public ServiceCenter(string ConnectionString) { connectionString = ConnectionString; }
 
         #endregion
 
         #region События
 
+        /// <summary>
+        /// событие изменения строки подключения
+        /// </summary>
         public event EventHandler ConnectionStringChanged;
 
         protected virtual void OnConnectionStringChanged()
@@ -39,6 +46,9 @@ namespace InformationCenter.Services
 
         #region Свойства
 
+        /// <summary>
+        /// строка соединения
+        /// </summary>
         public string ConnectionString
         {
             get { return connectionString; }
@@ -52,6 +62,9 @@ namespace InformationCenter.Services
             }
         }
 
+        /// <summary>
+        /// сервис для поиска
+        /// </summary>
         public SearchService SearchService
         {
             get
@@ -61,6 +74,9 @@ namespace InformationCenter.Services
             }
         }
 
+        /// <summary>
+        /// сервис для скачивания документов (download)
+        /// </summary>
         public DownloadService DownloadService
         {
             get
@@ -70,6 +86,9 @@ namespace InformationCenter.Services
             }
         }
 
+        /// <summary>
+        /// зарвис для заливки документов (upload)
+        /// </summary>
         public UploadService UploadService
         {
             get
@@ -93,6 +112,9 @@ namespace InformationCenter.Services
             searchService = null;
         }
 
+        /// <summary>
+        /// освоводить ресурсы
+        /// </summary>
         public void Dispose() { DisposeResources(); }
 
         #endregion

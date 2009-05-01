@@ -12,7 +12,10 @@ using System.Collections.Generic;
 namespace InformationCenter.Services
 {
 
-    public sealed class InformationCenterEngine : EF_Engine, IDbConnectionProviderBase
+    /// <summary>
+    /// Движок для доступа к объектам хранилища.
+    /// </summary>
+    public sealed class InformationCenterEngine : EF_Engine
     {
 
         #region Поля
@@ -24,11 +27,9 @@ namespace InformationCenter.Services
         #region Конструкторы
 
         /// <summary>
-        /// основной и единственный конструктор
+        /// конструктор
         /// </summary>
-        /// <param name="Context">обёртка над БД</param>
-        public InformationCenterEngine(Entities Context) : base(Context) { }
-
+        /// <param name="ConnectionString">строка подключения</param>
         public InformationCenterEngine(string ConnectionString) : base(new Entities(ConnectionString)) { }
 
         #endregion
@@ -37,18 +38,10 @@ namespace InformationCenter.Services
 
         private Entities Entities { get { return Context as Entities; } }
 
-        public IDbConnection GetConnection(DbConnectionStringBuilder connectionStringBuilder) { return null; }
-
+        /// <summary>
+        /// используемое подключение к источнику данных
+        /// </summary>
         public IDbConnection CurrentConnection { get { return Context.Connection; } }
-
-        public string DbConnectionString
-        {
-            get
-            {
-                int a = Context.Connection.ConnectionString.IndexOf('\'');
-                return Context.Connection.ConnectionString.Substring(a).Trim('\'');
-            }
-        }
 
         /// <summary>
         /// получить текущего пользователя
