@@ -120,6 +120,25 @@ namespace InformationCenter.Services
 
         #region Get
 
+        public string[] GetFileNames(bool WithExtensions)
+        {
+            string[] set = Entities.Document.Select(d => d.FileName).ToArray();
+            if (WithExtensions) return set;
+            List<string> result = new List<string>();
+            foreach (string s in set)
+            {
+                if (!string.IsNullOrEmpty(s))
+                {
+                    int i = s.LastIndexOf('.'); 
+                    if (i != -1)
+                    {
+                        result.Add(s.Substring(0, i));
+                    }
+                }
+            }
+            return result.ToArray();
+        }
+
         public Field[] GetTemplateFields(Template Template) { return GetTemplateFields(Template.ID); }
 
         public Field[] GetTemplateFields(Guid TemplateID) { return Entities.GetTemplateFields(TemplateID).ToArray(); }
