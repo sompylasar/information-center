@@ -48,10 +48,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ByteBlockReader.cs" />
+    <Compile Include="Helpers\ByteBlockReader.cs" />
     <Compile Include="Items\DocDescriptionView.cs" />
     <Compile Include="Items\DocumentView.cs" />
-    <Compile Include="Exceptions.cs" />
+    <Compile Include="Helpers\Exceptions.cs" />
     <Compile Include="Items\FieldTypeView.cs" />
     <Compile Include="Items\FieldValueView.cs" />
     <Compile Include="Items\FieldView.cs" />
@@ -60,10 +60,10 @@
     <Compile Include="Items\TemplateView.cs" />
     <Compile Include="Items\ViewItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SearchItem.cs" />
-    <Compile Include="SearchRequest.cs" />
-    <Compile Include="SearchResultItem.cs" />
-    <Compile Include="ServiceCenter.cs" />
+    <Compile Include="Search\SearchItem.cs" />
+    <Compile Include="Search\SearchRequest.cs" />
+    <Compile Include="Search\SearchResultItem.cs" />
+    <Compile Include="Main\ServiceCenter.cs" />
     <Compile Include="ServicesImpl\DownloadService.cs" />
     <Compile Include="ServicesImpl\SearchService.cs" />
     <Compile Include="ServicesImpl\UploadService.cs" />

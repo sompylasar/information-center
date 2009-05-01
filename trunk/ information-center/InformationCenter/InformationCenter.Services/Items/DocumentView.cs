@@ -13,10 +13,15 @@ namespace InformationCenter.Services
     public class DocumentView : ViewItem
     {
 
+        #region Поля
+
+        private Dictionary<DocDescription, DocDescriptionView> descriptions = null;
+
+        #endregion
+
         #region Конструкторы
 
         internal DocumentView(Document Doc) : base(Doc) { }
-        private Dictionary<DocDescription, DocDescriptionView> descriptions = null;
 
         #endregion
 
