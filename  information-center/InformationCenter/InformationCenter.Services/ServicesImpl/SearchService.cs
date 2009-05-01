@@ -48,6 +48,8 @@ namespace InformationCenter.Services.ServicesImpl
 
         #region Ìועמהû
 
+        public string[] GetFileNames(bool WithExtensions) { return Engine.GetFileNames(WithExtensions); }
+
         public FieldView[] GetFields()
         {
             return Array.ConvertAll<Field, FieldView>(Engine.GetFields(), input => new FieldView(input));
