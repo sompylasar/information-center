@@ -63,7 +63,7 @@ namespace InformationCenter.Services
         public IUploadService UploadService { get { return InternalService; } }
 
         /// <summary>
-        /// сервис для работы с шаблонами
+        /// сервис для работы с описаниями документов и шаблонами описаний
         /// </summary>
         public IDocumentDescriptionService DocumentDescriptionService { get { return InternalService; } }
 
