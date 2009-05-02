@@ -88,12 +88,6 @@ namespace InformationCenter.Services
             return worker.AddTemplate(Name, Fields);
         }
 
-        public IEnumerable<DocDescription> SearchDocDescription(SearchRequest Request)
-        {
-            DBWorker worker = new DBWorker(CurrentConnection.ConnectionString);
-            return worker.SearchDocDescription(Request);
-        }
-
         public Guid AddField(string Name, Guid FieldTypeID)
         {
             ObjectParameter g = new ObjectParameter("id", typeof(Guid));
@@ -133,6 +127,12 @@ namespace InformationCenter.Services
         #endregion
 
         #region Get
+
+        public IEnumerable<DocDescription> SearchDocDescription(SearchRequest Request)
+        {
+            DBWorker worker = new DBWorker(CurrentConnection.ConnectionString);
+            return worker.SearchDocDescription(Request);
+        }
 
         /// <summary>
         /// получает документ по его идентификатору

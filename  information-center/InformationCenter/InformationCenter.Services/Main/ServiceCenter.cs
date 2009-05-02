@@ -1,4 +1,3 @@
-using InformationCenter.Services.ServicesImpl;
 using System;
 using System.Data.SqlClient;
 
@@ -13,9 +12,7 @@ namespace InformationCenter.Services
 
         #region ѕол€
 
-        private UploadService uploadService;
-        private SearchService searchService;
-        private DownloadService downloadService;
+        private ServiceSet set;
         private string connectionString = null;
 
         #endregion
@@ -29,99 +26,54 @@ namespace InformationCenter.Services
         public ServiceCenter(string ConnectionString)
         {
             connectionString = ConnectionString;
-            using (SqlConnection con = new SqlConnection(ConnectionString))
-                con.Open();
-        }
-
-        #endregion
-
-        #region —обыти€
-
-        /// <summary>
-        /// событие изменени€ строки подключени€
-        /// </summary>
-        public event EventHandler ConnectionStringChanged;
-
-        protected virtual void OnConnectionStringChanged()
-        {
-            DisposeResources();
-            if (ConnectionStringChanged != null) ConnectionStringChanged(this, EventArgs.Empty);
+            using (SqlConnection con = new SqlConnection(ConnectionString)) con.Open();
         }
 
         #endregion
 
         #region —войства
 
+        private ServiceSet InternalService
+        {
+            get
+            {
+                if (set == null) set = new ServiceSet(ConnectionString);
+                return set;
+            }
+        }
+
         /// <summary>
         /// строка соединени€
         /// </summary>
-        public string ConnectionString
-        {
-            get { return connectionString; }
-            set
-            {
-                if (connectionString != value)
-                {
-                    connectionString = value;
-                    OnConnectionStringChanged();
-                }
-            }
-        }
+        public string ConnectionString { get { return connectionString; } }      
 
         /// <summary>
         /// сервис дл€ поиска
         /// </summary>
-        public SearchService SearchService
-        {
-            get
-            {
-                if (searchService == null) searchService = new SearchService(ConnectionString);
-                return searchService;
-            }
-        }
+        public ISearchService SearchService { get { return InternalService; } }
 
         /// <summary>
         /// сервис дл€ скачивани€ документов (download)
         /// </summary>
-        public DownloadService DownloadService
-        {
-            get
-            {
-                if (downloadService == null) downloadService = new DownloadService(ConnectionString);
-                return downloadService;
-            }
-        }
+        public IDownloadService DownloadService { get { return InternalService; } }
 
         /// <summary>
         /// зарвис дл€ заливки документов (upload)
         /// </summary>
-        public UploadService UploadService
-        {
-            get
-            {
-                if (uploadService == null) uploadService = new UploadService(ConnectionString);
-                return uploadService;
-            }
-        }
+        public IUploadService UploadService { get { return InternalService; } }
 
         #endregion
 
         #region ћетоды
 
-        private void DisposeResources()
-        {
-            if (uploadService != null) uploadService.Dispose();
-            if (downloadService != null) downloadService.Dispose();
-            if (searchService != null) searchService.Dispose();
-            uploadService = null;
-            downloadService = null;
-            searchService = null;
-        }
-
         /// <summary>
         /// освоводить ресурсы
         /// </summary>
-        public void Dispose() { DisposeResources(); }
+        public void Dispose()
+        {
+            if (set != null) set.Dispose();
+            set = null; ;
+        }
 
         /// <summary>
         /// преобразовать в строку
