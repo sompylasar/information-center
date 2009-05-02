@@ -34,7 +34,7 @@
             sep = " " + (request.Mode == SearchMode.And ? "И" : "ИЛИ") + " ";
         }
         
-        var results = (IEnumerable<SearchResultItem>)(ViewData["SearchResultItems"] ?? new SearchResultItem[0]);
+        var results = (IEnumerable<DocDescriptionView>)(ViewData["SearchResultItems"] ?? new DocDescriptionView[0]);
         int resultsCount = results.Count();
     %>
     <div>
@@ -43,15 +43,15 @@
         <p class="search-results">
             <span id="total"><%=resultsCount==0 ? "" : "Найдено документов: "+resultsCount.ToString() %></span>
             <ol>
-                <%foreach (SearchResultItem result in results){
+                <%foreach (DocDescriptionView result in results){
                       string filename, contentType;
                       FileHelper.SplitFilename(result.Document.FileName, out filename, out contentType);
                       %>
                 <li>
                     <div><%=Html.Encode(filename) %> (<%=Html.Encode(contentType) %>)</div>
                     <div>
-                        <label><%=Html.Encode(result.Description.Name) %></label>
-                        <% foreach (FieldValueView descriptionField in result.Description.DescriptionFields) { %>
+                        <label><%=Html.Encode(result.Name) %></label>
+                        <% foreach (FieldValueView descriptionField in result.DescriptionFields) { %>
                         <ul><%=Html.Encode(descriptionField.Field.Name + "=\"" + descriptionField.Value + "\"") %></ul>
                         <% } %>
                     </div>
