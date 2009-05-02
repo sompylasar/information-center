@@ -18,6 +18,10 @@
     <%
         var fields = (IEnumerable<FieldView>)(ViewData["Fields"] ?? new FieldView[0]);
         var request = (SearchRequest)(ViewData["SearchRequest"] ?? new SearchRequest());
+
+        var results = (IEnumerable<DocDescriptionView>)(ViewData["SearchResultItems"] ?? new DocDescriptionView[0]);
+        int resultsCount = results.Count();
+        
         string query = "", sep = "";
         foreach (SearchItem searchItem in request.Items)
         {
@@ -33,9 +37,6 @@
             query += sep + fieldName + "=\"" + fieldValue + "\"";
             sep = " " + (request.Mode == SearchMode.And ? "И" : "ИЛИ") + " ";
         }
-        
-        var results = (IEnumerable<DocDescriptionView>)(ViewData["SearchResultItems"] ?? new DocDescriptionView[0]);
-        int resultsCount = results.Count();
     %>
     <div>
         <p><label>Запрос:</label><span id="query"><%=Html.Encode(query) %></span></p>
