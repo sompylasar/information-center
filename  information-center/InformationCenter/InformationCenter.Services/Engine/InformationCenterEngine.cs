@@ -62,6 +62,13 @@ namespace InformationCenter.Services
 
         #region Add
 
+        /// <summary>
+        /// добавить документ
+        /// </summary>
+        /// <param name="FileName">название документа (имя файла документа)</param>
+        /// <param name="Data">данные документа</param>
+        /// <returns>идентификатор документа</returns>
+        /// <exception cref="">в случае провала генерирует исключение</exception>
         public Guid AddDocument(string FileName, byte[] Data)
         {
             ObjectParameter g = new ObjectParameter("id", typeof(Guid));
@@ -75,6 +82,18 @@ namespace InformationCenter.Services
             return worker.AddDocDescription(Name, DocumentID, FieldsWithValues);
         }
 
+        public bool AddTemplate(string Name, IEnumerable<Field> Fields)
+        {
+            DBWorker worker = new DBWorker(CurrentConnection.ConnectionString);
+            return worker.AddTemplate(Name, Fields);
+        }
+
+        public IEnumerable<DocDescription> SearchDocDescription(SearchRequest Request)
+        {
+            DBWorker worker = new DBWorker(CurrentConnection.ConnectionString);
+            return worker.SearchDocDescription(Request);
+        }
+
         public Guid AddField(string Name, Guid FieldTypeID)
         {
             ObjectParameter g = new ObjectParameter("id", typeof(Guid));
@@ -82,29 +101,44 @@ namespace InformationCenter.Services
             return (Guid)g.Value;
         }
 
-        public Guid AddTemplate(string Name)
-        {
-            ObjectParameter g = new ObjectParameter("id", typeof(Guid));
-            Entities.AddTemplate(Name, "", g).First();
-            return (Guid)g.Value;
-        }
-
         #endregion
 
         #region Delete
 
+        /// <summary>
+        /// удаляет документ по его идентификатору
+        /// </summary>
+        /// <param name="ID">идентификатор документа</param>
         public void DeleteDocument(Guid ID) { Entities.DeleteDocument(ID).First(); }
 
+        /// <summary>
+        /// удаляет поле по его идентификатору
+        /// </summary>
+        /// <param name="ID">идентификатор поля</param>
         public void DeleteField(Guid ID) { Entities.DeleteField(ID).First(); }
 
+        /// <summary>
+        /// удаляет шаблон по его идентификатору
+        /// </summary>
+        /// <param name="ID">идентификатор шаблона</param>
         public void DeleteTemplate(Guid ID) { Entities.DeleteTemplate(ID).First(); }
 
+        /// <summary>
+        /// удаляет поле из шаблона
+        /// </summary>
+        /// <param name="TemplateID">идентификатор шаблона</param>
+        /// <param name="FieldID">идентификатор поля</param>
         public void RemoveFieldFromTemplate(Guid TemplateID, Guid FieldID) { Entities.RemoveFieldFromTemplate(TemplateID, FieldID).First(); }
 
         #endregion
 
         #region Get
 
+        /// <summary>
+        /// получает документ по его идентификатору
+        /// </summary>
+        /// <param name="ID">идентификатор документа</param>
+        /// <returns>документ</returns>
         public Document GetDocument(Guid ID) { return Entities.Document.Where(d => d.ID == ID).FirstOrDefault(); }
 
         public Document[] GetDocuments() { return Entities.Document.ToArray(); }
@@ -134,6 +168,10 @@ namespace InformationCenter.Services
 
         public Template[] GetTemplates() { return Entities.GetTemplates().ToArray(); }
 
+        /// <summary>
+        /// все поля в хранилище
+        /// </summary>
+        /// <returns>массив полей</returns>
         public Field[] GetFields() { return Entities.GetFields().ToArray(); }
 
         public object[] GetFieldValues(Field Field) { return GetFieldValues(Field.ID); }

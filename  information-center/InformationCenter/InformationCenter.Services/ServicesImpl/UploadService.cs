@@ -66,6 +66,11 @@ namespace InformationCenter.Services.ServicesImpl
             Engine.RemoveFieldFromTemplate(TemplateView.ID, FieldView.ID);
         }
 
+        public bool AddTemplate(string Name, IEnumerable<FieldView> FieldViews)
+        {
+            return Engine.AddTemplate(Name, FieldViews.Select(fv => fv.Field));
+        }
+
         private Exception ValidateFile(Stream Stream, string FileName, string ContentType, int ContentLength)
         {
             if (Stream == null) return new ArgumentNullException("stream");

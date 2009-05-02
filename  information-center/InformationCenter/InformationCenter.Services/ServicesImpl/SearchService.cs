@@ -21,11 +21,7 @@ namespace InformationCenter.Services.ServicesImpl
 
         #region Конструкторы
 
-        public SearchService(string ConnectionString)
-        {
-            connectionString = ConnectionString;
-            var e = Engine; // дернуть Engine, чтобы он проверил соединение по указанному connectionString
-        }
+        public SearchService(string ConnectionString) { connectionString = ConnectionString; }
 
         #endregion
 
@@ -51,6 +47,13 @@ namespace InformationCenter.Services.ServicesImpl
 
         #region Методы
 
+        #region Get
+
+        /// <summary>
+        /// возвращает представление документа по его идентификатору
+        /// </summary>
+        /// <param name="ID">идентификатор документа</param>
+        /// <returns>представление документа</returns>
         public DocumentView GetDocument(Guid ID)
         {
             Document doc = Engine.GetDocument(ID);
@@ -67,6 +70,8 @@ namespace InformationCenter.Services.ServicesImpl
         public object GetValue(FieldValueView Value) { return Value == null ? null : Engine.GetFieldValue(Value.ID); }
 
         public object[] GetValuesOfField(FieldView FieldView) { return Engine.GetFieldValues(FieldView.ID); }
+
+        #endregion
 
         private Exception ValidateRequest(SearchRequest Request)
         {
@@ -92,13 +97,19 @@ namespace InformationCenter.Services.ServicesImpl
             return null;
         }
 
-        public SearchResultItem[] Query(SearchRequest Request)
+        /// <summary>
+        /// поиск документов
+        /// </summary>
+        /// <param name="Request">запрос с параметрами и условиями поиска</param>
+        /// <returns>коллекция результатов поиска - массив описаний документов</returns>
+        public DocDescriptionView[] Query(SearchRequest Request)
         {
             if (Request == null) throw new ArgumentNullException("Request");
-
             Exception ex = ValidateRequest(Request);
             if (ex != null) throw ex;
+            return Engine.SearchDocDescription(Request).Select(d => new DocDescriptionView(d)).ToArray();
 
+            /*
             var results = new List<SearchResultItem>();
             
             // TODO: fetch SearchResultItems from Mapper
@@ -141,13 +152,14 @@ namespace InformationCenter.Services.ServicesImpl
 
 
             return results.ToArray();
+             */
         }
 
-        private bool AreValuesEqual(object requestValue, object storedValue)
-        {
+       // private bool AreValuesEqual(object requestValue, object storedValue)
+       // {
             // TODO: properly test values for equality
-            return (requestValue.ToString().Trim() == storedValue.ToString().Trim());
-        }
+        //    return (requestValue.ToString().Trim() == storedValue.ToString().Trim());
+        //}
 
         /// <summary>
         /// освободить ресурсы

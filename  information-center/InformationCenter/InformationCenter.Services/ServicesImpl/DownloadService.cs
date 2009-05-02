@@ -46,12 +46,11 @@ namespace InformationCenter.Services.ServicesImpl
 
         #region Методы
 
-        public DocumentView GetDocument(SearchResultItem Item)
-        {
-            if (Item == null) throw new ArgumentNullException("Item");
-            return GetDocument(Item.Document.ID);
-        }
-
+        /// <summary>
+        /// получить представление документа по его идентификатору
+        /// </summary>
+        /// <param name="ID">идентификатор документа</param>
+        /// <returns>представление документа</returns>
         public DocumentView GetDocument(Guid ID)
         {
             Document doc = Engine.CreateQuery<Document>().Where(d => d.ID == ID).FirstOrDefault();

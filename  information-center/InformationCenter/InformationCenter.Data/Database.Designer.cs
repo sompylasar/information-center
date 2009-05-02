@@ -20,7 +20,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("InformationCenterModel", "FK_FieldTemplate_Template", "Template", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(InformationCenter.Data.Template), "NNFieldTemplate", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(InformationCenter.Data.NNFieldTemplate))]
 
 // Original file name:
-// Generation date: 02.05.2009 20:12:31
+// Generation date: 02.05.2009 21:20:06
 namespace InformationCenter.Data
 {
     
@@ -423,31 +423,6 @@ namespace InformationCenter.Data
                 fieldTypeIdParameter = new global::System.Data.Objects.ObjectParameter("fieldTypeId", typeof(global::System.Guid));
             }
             return base.ExecuteFunction<IntValue>("AddField", textParameter, fieldTypeIdParameter, id);
-        }
-        /// <summary>
-        /// There are no comments for InformationCenterModel.AddTemplate in the schema.
-        /// </summary>
-        public global::System.Data.Objects.ObjectResult<IntValue> AddTemplate(string name, string tempFieldsTableName, global::System.Data.Objects.ObjectParameter id)
-        {
-            global::System.Data.Objects.ObjectParameter nameParameter;
-            if ((name != null))
-            {
-                nameParameter = new global::System.Data.Objects.ObjectParameter("name", name);
-            }
-            else
-            {
-                nameParameter = new global::System.Data.Objects.ObjectParameter("name", typeof(string));
-            }
-            global::System.Data.Objects.ObjectParameter tempFieldsTableNameParameter;
-            if ((tempFieldsTableName != null))
-            {
-                tempFieldsTableNameParameter = new global::System.Data.Objects.ObjectParameter("tempFieldsTableName", tempFieldsTableName);
-            }
-            else
-            {
-                tempFieldsTableNameParameter = new global::System.Data.Objects.ObjectParameter("tempFieldsTableName", typeof(string));
-            }
-            return base.ExecuteFunction<IntValue>("AddTemplate", nameParameter, tempFieldsTableNameParameter, id);
         }
         /// <summary>
         /// There are no comments for InformationCenterModel.DeleteDocument in the schema.
