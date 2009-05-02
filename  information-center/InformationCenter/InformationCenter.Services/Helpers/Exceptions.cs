@@ -256,5 +256,24 @@ namespace InformationCenter.Services
         #endregion
 
     }
-    
+
+    public class DocumentNotFoundException : Exception
+    {
+
+        private Guid id;
+
+        public DocumentNotFoundException(Guid ID) { id = ID; }
+
+        public Guid DocumentID { get { return id; } }
+
+        public override string Message
+        {
+            get
+            {
+                return string.Format("Документ с идентификатором {0} не найден.", DocumentID);
+            }
+        }
+
+    }
+
 }

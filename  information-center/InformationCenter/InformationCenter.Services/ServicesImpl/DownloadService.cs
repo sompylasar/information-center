@@ -17,11 +17,7 @@ namespace InformationCenter.Services.ServicesImpl
 
         #region Конструкторы
 
-        public DownloadService(string ConnectionString)
-        {
-            connectionString = ConnectionString;
-            var e = Engine; // дернуть Engine, чтобы он проверил соединение по указанному connectionString
-        }
+        public DownloadService(string ConnectionString) { connectionString = ConnectionString; }
 
         #endregion
 

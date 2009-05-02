@@ -69,16 +69,10 @@ namespace InformationCenter.Services
             return (Guid)g.Value;
         }
 
-        public Guid AddDocumentDescription(string Name, Guid DocumentID, Dictionary<Field, object> fieldsWithValues)
+        public bool AddDocumentDescription(string Name, Guid DocumentID, Dictionary<Field, object> FieldsWithValues)
         {
-            ObjectParameter g = new ObjectParameter("id", typeof(Guid));
-           // DBWorker worker = new DBWorker(CurrentConnection.ConnectionString);
-           // worker.AddDocDescription(Name, DocumentID, 
-            // TODO: создать временную таблицу с полями и передать ее имя
-
-
-            int result = Entities.AddDocumentDescription(Name, DocumentID, "" /*tempFieldsTableName*/, g).First().Value;
-            return result == 0 ? (Guid)g.Value : Guid.Empty;
+            DBWorker worker = new DBWorker(CurrentConnection.ConnectionString);
+            return worker.AddDocDescription(Name, DocumentID, FieldsWithValues);
         }
 
         public Guid AddField(string Name, Guid FieldTypeID)
