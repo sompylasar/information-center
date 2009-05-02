@@ -1,10 +1,8 @@
-﻿using LogicUtils;
+﻿using System;
 using System.Linq;
 using System.Data;
-using System.Data.Common;
 using InformationCenter.EFEngine;
 using InformationCenter.Data;
-using System;
 using System.Data.Objects;
 using System.Data.SqlClient;
 using System.Collections.Generic;
@@ -66,14 +64,14 @@ namespace InformationCenter.Services
         public Guid AddDocument(string FileName, byte[] Data)
         {
             ObjectParameter g = new ObjectParameter("id", typeof(Guid));
-            int result = Entities.AddDocument(FileName, Data, g).First().Value;
-            return result == 0 ? (Guid)g.Value : Guid.Empty;
+            Entities.AddDocument(FileName, Data, g).First();
+            return (Guid)g.Value;
         }
 
-        public Guid AddDocumentDescription(string Name, Guid DocumentID, Dictionary<Field,object> fieldsWithValues)
+        public Guid AddDocumentDescription(string Name, Guid DocumentID, Dictionary<Field, object> fieldsWithValues)
         {
             ObjectParameter g = new ObjectParameter("id", typeof(Guid));
-            
+           // DBWorker
             // TODO: создать временную таблицу с полями и передать ее имя
 
 
@@ -84,49 +82,36 @@ namespace InformationCenter.Services
         public Guid AddField(string Name, Guid FieldTypeID)
         {
             ObjectParameter g = new ObjectParameter("id", typeof(Guid));
-            int result = Entities.AddField(Name, FieldTypeID, g).First().Value;
-            return result == 0 ? (Guid)g.Value : Guid.Empty;
+            Entities.AddField(Name, FieldTypeID, g).First();
+            return (Guid)g.Value;
         }
 
         public Guid AddTemplate(string Name)
         {
             ObjectParameter g = new ObjectParameter("id", typeof(Guid));
-            int result = Entities.AddTemplate(Name, "", g).First().Value;
-            return result == 0 ? (Guid)g.Value : Guid.Empty;
+            Entities.AddTemplate(Name, "", g).First();
+            return (Guid)g.Value;
         }
 
         #endregion
 
         #region Delete
 
-        public int DeleteDocument(Guid ID)
-        {
-            return Entities.DeleteDocument(ID).First().Value;
-        }
+        public void DeleteDocument(Guid ID) { Entities.DeleteDocument(ID).First(); }
 
-        public int DeleteField(Guid ID)
-        {
-            return Entities.DeleteField(ID).First().Value;
-        }
+        public void DeleteField(Guid ID) { Entities.DeleteField(ID).First(); }
 
-        public int DeleteTemplate(Guid ID)
-        {
-            return Entities.DeleteTemplate(ID).First().Value;
-        }
+        public void DeleteTemplate(Guid ID) { Entities.DeleteTemplate(ID).First(); }
+
+        public void RemoveFieldFromTemplate(Guid TemplateID, Guid FieldID) { Entities.RemoveFieldFromTemplate(TemplateID, FieldID).First(); }
 
         #endregion
 
         #region Get
 
-        public Document GetDocument(Guid ID)
-        {
-            return Entities.Document.Where(d => d.ID == ID).FirstOrDefault();
-        }
+        public Document GetDocument(Guid ID) { return Entities.Document.Where(d => d.ID == ID).FirstOrDefault(); }
 
-        public Document[] GetDocuments()
-        {
-            return Entities.Document.ToArray();
-        }
+        public Document[] GetDocuments() { return Entities.Document.ToArray(); }
         
         public string[] GetFileNames(bool WithExtensions)
         {

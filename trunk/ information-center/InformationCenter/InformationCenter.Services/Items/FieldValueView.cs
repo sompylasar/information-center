@@ -55,42 +55,22 @@ namespace InformationCenter.Services
         {
             get 
             {  
-                // TODO: check the code below
-                if (value == null)
-                {
-                    FieldView field = Field;
-                    if (field != null)
-                    {
-                        Type fieldType = field.FieldTypeView.TypeOfField;
-                        string fieldSqlType = field.FieldTypeView.SqlName;
-
-                        PropertyInfo valueEntityProp = FieldValue.GetType().GetProperty(fieldSqlType);
-                        if (valueEntityProp != null)
-                        {
-                            PropertyInfo referenceProp = FieldValue.GetType().GetProperty(fieldSqlType + "Reference");
-                            if (referenceProp != null)
-                            {
-                                EntityReference reference =
-                                    (EntityReference) referenceProp.GetValue(FieldValue, new object[] {});
-                                reference.Load();
-                            } // if referenceProp
-                            EntityObject valueEntity = (EntityObject) valueEntityProp.GetValue(FieldValue, new object[] {});
-                            if (valueEntity != null)
-                            {
-                                PropertyInfo valueProp = valueEntity.GetType().GetProperty("Value");
-                                if (valueProp != null)
-                                {
-                                    object v = valueProp.GetValue(valueEntity, new object[] {});
-                                    if (v.GetType() == fieldType)
-                                    {
-                                        value = v;
-                                    }
-                                }
-                            } // if obj
-                        }
-                    }
-                }
-                return value;
+                FieldView field = Field;
+                if (field == null) throw new Exception("Ошибка");
+                FieldTypeView ftv = field.FieldTypeView;
+                if (ftv == null) throw new Exception("Ошибка");
+                Type fieldType = ftv.TypeOfField;
+                string fieldSqlType = ftv.SqlName;
+                PropertyInfo valueEntityProp = FieldValue.GetType().GetProperty(fieldSqlType);
+                if (valueEntityProp == null) throw new NotSupportedFieldTypeException(fieldType);
+                PropertyInfo referenceProp = FieldValue.GetType().GetProperty(fieldSqlType + "Reference");
+                ((EntityReference)referenceProp.GetValue(FieldValue, new object[] { })).Load();
+                EntityObject valueEntity = (EntityObject)valueEntityProp.GetValue(FieldValue, new object[] {});
+                if (valueEntity == null) throw new Exception("Ошибка");
+                object v = valueEntity.GetType().GetProperty("Value").GetValue(valueEntity, new object[] { });
+                if (v == null && !field.Nullable) throw new NullableValueNotAllowedException(field);
+                if (v != null && v.GetType() != fieldType) throw new TypeMismatchException(fieldType, v.GetType());
+                return value = v;
             }
         }
 
