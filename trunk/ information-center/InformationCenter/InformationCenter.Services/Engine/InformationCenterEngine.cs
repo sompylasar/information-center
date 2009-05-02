@@ -32,6 +32,8 @@ namespace InformationCenter.Services
         /// <param name="ConnectionString">строка подключения</param>
         public InformationCenterEngine(string ConnectionString) : base(new Entities(ConnectionString)) { }
 
+        public InformationCenterEngine(Entities Context) : base(Context) { }
+
         #endregion
 
         #region Свойства
@@ -68,10 +70,13 @@ namespace InformationCenter.Services
             return result == 0 ? (Guid)g.Value : Guid.Empty;
         }
 
-        public Guid AddDocumentDescription(string Name, Guid DocumentID)
+        public Guid AddDocumentDescription(string Name, Guid DocumentID, Dictionary<Field,object> fieldsWithValues)
         {
             ObjectParameter g = new ObjectParameter("id", typeof(Guid));
+            
             // TODO: создать временную таблицу с полями и передать ее имя
+
+
             int result = Entities.AddDocumentDescription(Name, DocumentID, "" /*tempFieldsTableName*/, g).First().Value;
             return result == 0 ? (Guid)g.Value : Guid.Empty;
         }
@@ -116,6 +121,11 @@ namespace InformationCenter.Services
         public Document GetDocument(Guid ID)
         {
             return Entities.Document.Where(d => d.ID == ID).FirstOrDefault();
+        }
+
+        public Document[] GetDocuments()
+        {
+            return Entities.Document.ToArray();
         }
         
         public string[] GetFileNames(bool WithExtensions)

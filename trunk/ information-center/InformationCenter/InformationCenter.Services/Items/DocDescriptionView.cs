@@ -28,12 +28,14 @@ namespace InformationCenter.Services
 
         #region Свойства
 
-        protected DocDescription Description { get { return entity as DocDescription; } }
+        internal DocDescription Description { get { return entity as DocDescription; } }
 
         /// <summary>
         /// уникальный идентификатор
         /// </summary>
         public Guid ID { get { return Description.ID; } }
+
+        public string Name { get { return Description.Name; } }
 
         /// <summary>
         /// документ, описываемый объектом

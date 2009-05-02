@@ -50,7 +50,7 @@ namespace InformationCenter.Services.ServicesImpl
         public DocumentView GetDocument(SearchResultItem Item)
         {
             if (Item == null) throw new ArgumentNullException("Item");
-            return GetDocument(Item.ID);
+            return GetDocument(Item.Document.ID);
         }
 
         public DocumentView GetDocument(Guid ID)

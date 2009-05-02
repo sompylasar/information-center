@@ -101,7 +101,49 @@ namespace InformationCenter.Services.ServicesImpl
             // TODO: fetch SearchResultItems from Mapper
             //results.Add(new SearchResultItem(new DocDescription()));
 
+            // HACK: search implemented in middle layer
+            var requestFields = new Dictionary<Guid, SearchItem>();
+            foreach (SearchItem searchItem in Request.Items)
+            {
+                requestFields.Add(searchItem.FieldID, searchItem);
+            }
+            Document[] documents = Engine.GetDocuments();
+            foreach (Document document in documents)
+            {
+                document.DocDescription.Load();
+                DocDescription[] descriptions = document.DocDescription.ToArray();
+                foreach (DocDescription description in descriptions)
+                {
+                    var descriptionView = new DocDescriptionView(description);
+                    FieldValueView[] fields = descriptionView.DescriptionFields;
+
+                    bool interested = false;
+                    bool relevant = (Request.Mode == SearchMode.And ? true : false);
+                    foreach (FieldValueView valueView in fields)
+                    {
+                        Guid fieldId = valueView.Field.ID;
+                        if (!requestFields.ContainsKey(fieldId)) continue;
+
+                        bool matchField = AreValuesEqual(requestFields[fieldId].FieldValue, valueView.Value);
+
+                        interested = true;
+                        relevant = (Request.Mode == SearchMode.And ? relevant && matchField : relevant || matchField);
+                    }
+                    if (interested && relevant)
+                    {
+                        results.Add(new SearchResultItem(descriptionView));
+                    }
+                } // foreach descriptions
+            } // foreach documents
+
+
             return results.ToArray();
+        }
+
+        private bool AreValuesEqual(object requestValue, object storedValue)
+        {
+            // TODO: properly test values for equality
+            return (requestValue.ToString().Trim() == storedValue.ToString().Trim());
         }
 
         public void Dispose()

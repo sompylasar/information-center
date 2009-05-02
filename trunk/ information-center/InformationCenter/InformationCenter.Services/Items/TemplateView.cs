@@ -19,7 +19,7 @@ namespace InformationCenter.Services
 
         public Guid ID { get { return Template.ID; } }
 
-        protected Template Template { get { return entity as Template; } }
+        internal Template Template { get { return entity as Template; } }
 
         public string Name { get { return Template.Name; } }
 

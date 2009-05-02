@@ -9,15 +9,15 @@ namespace InformationCenter.Services
 
         #region Поля
 
-        private DocDescription desc = null;
+        private DocDescriptionView desc = null;
 
         #endregion
 
         #region Конструкторы
 
-        internal SearchResultItem(DocDescription Description)
+        internal SearchResultItem(DocDescriptionView Description)
         {
-            if (desc == null) throw new ArgumentNullException("Description");
+            if (Description == null) throw new ArgumentNullException("Description");
             desc = Description;
         }
 
@@ -25,9 +25,9 @@ namespace InformationCenter.Services
 
         #region Свойства
 
-        public Guid ID { get { return desc.ID; } }
-
-        public string Header { get { return desc.Name; } }
+        public DocDescriptionView Description { get { return desc; } }
+        
+        public DocumentView Document { get { return desc.Document; } }
 
         #endregion
 

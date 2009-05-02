@@ -32,12 +32,12 @@ namespace InformationCenter.Services
         /// </summary>
         public Guid ID { get { return (entity as Document).ID; } }
 
-        protected Document Document { get { return entity as Document; } }
+        internal Document Document { get { return entity as Document; } }
 
         /// <summary>
         /// название - имя
         /// </summary>
-        public string Name { get { return Document.FileName; } }
+        public string FileName { get { return Document.FileName; } }
 
         /// <summary>
         /// данные документа
