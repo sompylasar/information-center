@@ -149,37 +149,48 @@ namespace InformationCenter.WebUI.Controllers
         public ActionResult Autocomplete(Guid? id)
         {
             string query = (Request["query"] ?? "");
-            List<string> suggestions = new List<string>();
-            //List<string> callbackData = new List<string>();
+            var suggestions = new List<string>();
+            var callbackData = new List<object>();
 
             if (!AuthHelper.NeedRedirectToAuth(this, "Index"))
             {
                 InitServiceCenterClient();
                 if (_client.Available)
                 {
-                    FieldView field = _client.ServiceCenter.SearchService.GetFields().Where(f => f.ID == id).FirstOrDefault();
-                    if (field != null)
+                    try
                     {
-                        object[] values = _client.ServiceCenter.SearchService.GetValuesOfField(field);
-                        foreach (var value in values)
+                        FieldView field =
+                            _client.ServiceCenter.SearchService.GetFields().Where(f => f.ID == id).FirstOrDefault();
+                        if (field != null)
                         {
-                            string valueStr = value.ToString();
-                            if (valueStr.ToUpperInvariant().IndexOf(query.ToUpperInvariant()) < 0) continue;
-                            suggestions.Add(valueStr);
-                            //callbackData.Add("");
+                            object[] values = _client.ServiceCenter.SearchService.GetValuesOfField(field);
+                            foreach (var value in values)
+                            {
+                                string valueStr = value.ToString();
+                                if (valueStr.ToUpperInvariant().IndexOf(query.ToUpperInvariant()) < 0) continue;
+                                suggestions.Add(valueStr);
+                                callbackData.Add(true);
+                            }
                         }
+                    }
+                    catch (Exception)
+                    {
+                        // TODO: remove this try/catch
                     }
                 }
             }
 
             if (suggestions.Count <= 0)
+            {
                 suggestions.Add("(нет вариантов)");
+                callbackData.Add(false);
+            }
 
             object autocomplete = new
             {
                 query = query,
                 suggestions = suggestions
-                //,data = callbackData
+                ,data = callbackData
             };
 
             return Json(autocomplete);

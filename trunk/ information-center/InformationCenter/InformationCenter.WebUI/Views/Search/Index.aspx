@@ -43,13 +43,17 @@
             }
             
             $(':text').each(function () {
-                $input = $(this);
+                var $input = $(this);
                 $input.autocomplete({ 
                     serviceUrl: '/Search/Autocomplete/'+$input.attr('name').replace(/^_/, ''),
                     minChars: 1, 
                     delimiter: /(,|;)\s*/, // regex or character
                     maxHeight: 400,
                     deferRequestBy: 200, //miliseconds
+                    onSelect: function (value, data) { 
+                        if (!data) 
+                            $input.val(''); 
+                    }
                 });
             });
 
