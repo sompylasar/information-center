@@ -37,7 +37,7 @@ namespace InformationCenter.WebUI.Controllers
             InitServiceCenterClient();
             if (_client.Available)
             {
-                var templates = _client.ServiceCenter.UploadService.GetTemplates();
+                var templates = _client.ServiceCenter.DocumentDescriptionService.GetTemplates();
 
 
                 if (templates.Length <= 0)
@@ -71,7 +71,7 @@ namespace InformationCenter.WebUI.Controllers
                 if (!TemplateSelected)
                 {
                     Guid templateId = new Guid(templateIdStr);
-                    var templates = _client.ServiceCenter.UploadService.GetTemplates();
+                    var templates = _client.ServiceCenter.DocumentDescriptionService.GetTemplates();
 
                     foreach (TemplateView template in templates)
                     {
@@ -92,7 +92,7 @@ namespace InformationCenter.WebUI.Controllers
                     ViewData["SelectedFields"] = (TempData["SelectedFields"]
                         ?? (selectedTemplate == null
                              ? new FieldView[0]
-                             : _client.ServiceCenter.UploadService.GetFieldsOfTemplate(selectedTemplate)));
+                             : _client.ServiceCenter.DocumentDescriptionService.GetFieldsOfTemplate(selectedTemplate)));
                 }
                 catch (Exception ex)
                 {
