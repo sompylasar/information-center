@@ -32,6 +32,8 @@ namespace InformationCenter.Services
         /// </summary>
         internal string SqlName { get { return FieldType.SqlName; } }
 
+        internal string SqlType { get { return FieldType.SqlType; } }
+
         /// <summary>
         /// уникальный идентификатор
         /// </summary>
