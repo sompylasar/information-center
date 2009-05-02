@@ -4,6 +4,9 @@ using InformationCenter.Data;
 namespace InformationCenter.Services
 {
 
+    /// <summary>
+    /// Представление типа поля.
+    /// </summary>
     public class FieldTypeView : ViewItem
     {
 
@@ -19,12 +22,24 @@ namespace InformationCenter.Services
 
         #region Свойства
 
+        /// <summary>
+        /// внутренний объект
+        /// </summary>
         internal FieldType FieldType { get { return entity as FieldType; } }
 
+        /// <summary>
+        /// по этому свойству (полю в БД) осуществляется завязка на конкретную таблицу
+        /// </summary>
+        internal string SqlName { get { return FieldType.SqlName; } }
+
+        /// <summary>
+        /// уникальный идентификатор
+        /// </summary>
         public Guid ID { get { return FieldType.ID; } }
 
-        public string SqlName { get { return FieldType.SqlName; } }
-
+        /// <summary>
+        /// тип поля в терминах классов .NET
+        /// </summary>
         public Type TypeOfField
         {
             get
@@ -35,7 +50,20 @@ namespace InformationCenter.Services
             }
         }
 
+        /// <summary>
+        /// строковое представление типа поля
+        /// </summary>
         public string FieldTypeName { get { return FieldType.Name; } }
+
+        #endregion
+
+        #region Методы
+
+        /// <summary>
+        /// преобразовать в строку
+        /// </summary>
+        /// <returns>строка</returns>
+        public override string ToString() { return FieldTypeName; }
 
         #endregion
 

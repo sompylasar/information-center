@@ -25,11 +25,14 @@ namespace InformationCenter.Services
         #region Свойства
 
         /// <summary>
+        /// внутренний объект
+        /// </summary>
+        internal Field Field { get { return entity as Field; } }
+
+        /// <summary>
         /// уникальный идентификатор
         /// </summary>
         public Guid ID { get { return Field.ID; } }
-
-        internal Field Field { get { return entity as Field; } }
 
         /// <summary>
         /// порядковый номер
@@ -64,11 +67,21 @@ namespace InformationCenter.Services
 
         #region Методы
 
+        /// <summary>
+        /// получить хеш-код
+        /// </summary>
+        /// <returns>хеш-код</returns>
         public override int GetHashCode() { return ID.GetHashCode(); }
 
         public override bool Equals(object obj) { return Equals(obj as FieldView); }      
 
         public bool Equals(FieldView other) { return object.ReferenceEquals(other, this) || (other != null && other.ID == ID); }
+
+        /// <summary>
+        /// преобразовать в строку
+        /// </summary>
+        /// <returns>строка</returns>
+        public override string ToString() { return Name; }
 
         #endregion
 

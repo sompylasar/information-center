@@ -5,6 +5,9 @@ using InformationCenter.Data;
 namespace InformationCenter.Services.ServicesImpl
 {
 
+    /// <summary>
+    /// Сервис для загрузки документов на клиент.
+    /// </summary>
     public class DownloadService : IDisposable
     {
         
@@ -55,6 +58,9 @@ namespace InformationCenter.Services.ServicesImpl
             return doc == null ? null : new DocumentView(doc);
         }
         
+        /// <summary>
+        /// освободить ресурсы
+        /// </summary>
         public void Dispose()
         {
             if (engine != null)
@@ -63,6 +69,12 @@ namespace InformationCenter.Services.ServicesImpl
                 engine = null;
             }
         }
+
+        /// <summary>
+        /// преобразовать в строку
+        /// </summary>
+        /// <returns>строка</returns>
+        public override string ToString() { return "Сервис загрузки на клиент."; }
 
         #endregion
 

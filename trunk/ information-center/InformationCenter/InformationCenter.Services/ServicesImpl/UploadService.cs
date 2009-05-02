@@ -7,6 +7,9 @@ using InformationCenter.Data;
 namespace InformationCenter.Services.ServicesImpl
 {
 
+    /// <summary>
+    /// Сервис для загрузки документов и их описаний на сервер.
+    /// </summary>
     public class UploadService : IDisposable
     {
 
@@ -92,6 +95,9 @@ namespace InformationCenter.Services.ServicesImpl
             return Engine.AddDocumentDescription(Name, DocumentID, param);
         }
 
+        /// <summary>
+        /// освободить ресурсы
+        /// </summary>
         public void Dispose()
         {
             if (engine != null)
@@ -100,6 +106,12 @@ namespace InformationCenter.Services.ServicesImpl
                 engine = null;
             }
         }
+
+        /// <summary>
+        /// преобразовать в строку
+        /// </summary>
+        /// <returns>строка</returns>
+        public override string ToString() { return "Сервис загрузки на сервер."; }
 
         #endregion
 

@@ -18,6 +18,7 @@ namespace InformationCenter.Services
         #region Поля
 
         private FieldView fv = null;
+        private DocDescriptionView desc = null;
         private object value = null;
 
         #endregion
@@ -31,12 +32,15 @@ namespace InformationCenter.Services
         #region Свойства
 
         /// <summary>
+        /// внутренний объект
+        /// </summary>
+        internal FieldValue FieldValue { get { return entity as FieldValue; } }
+
+        /// <summary>
         /// уникальный идентификатор
         /// </summary>
         public Guid ID { get { return FieldValue.ID; } }
-
-        internal FieldValue FieldValue { get { return entity as FieldValue; } }
-
+        
         /// <summary>
         /// описание поля
         /// </summary>
@@ -51,6 +55,23 @@ namespace InformationCenter.Services
             }
         }
 
+        /// <summary>
+        /// представление описания документа
+        /// </summary>
+        public DocDescriptionView DocDescription
+        {
+            get
+            {
+                FieldValue.DocDescriptionReference.Load();
+                if (desc == null && FieldValue.DocDescription != null) desc = new DocDescriptionView(FieldValue.DocDescription);
+                else if (desc != null && FieldValue.DocDescription == null) desc = null;
+                return desc;
+            }
+        }
+
+        /// <summary>
+        /// значение поля
+        /// </summary>
         public object Value
         {
             get 
@@ -72,6 +93,20 @@ namespace InformationCenter.Services
                 if (v != null && v.GetType() != fieldType) throw new TypeMismatchException(fieldType, v.GetType());
                 return value = v;
             }
+        }
+
+        #endregion
+
+        #region Методы
+
+        /// <summary>
+        /// преобразовать в строку
+        /// </summary>
+        /// <returns>строка</returns>
+        public override string ToString()
+        {
+            object v = Value; 
+            return v == null ? "null" : v.ToString();
         }
 
         #endregion
