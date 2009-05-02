@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data.Objects;
 using System.Text;
 using System.Data.SqlClient;
-using InformationCenter.Services;
 using InformationCenter.Data;
 using System.Data;
 using LogicUtils;
@@ -302,7 +301,7 @@ namespace InformationCenter.DBUtils
             return result;
         }
 
-        public bool AddDocDescription(string docDescriptionName, Guid documentId, IEnumerable<Field> fields)
+        public bool AddDocDescription(string docDescriptionName, Guid documentId, Dictionary<Field, object> fields)
         {
             bool result = false;
 
@@ -313,6 +312,11 @@ namespace InformationCenter.DBUtils
                                                                           {
                                                                               Name = "FieldID",
                                                                               Type = SqlDbType.UniqueIdentifier
+                                                                          },
+                                                                          new ColumnDescription
+                                                                          {
+                                                                              Name = "FieldValue",
+                                                                              Type = SqlDbType.NVarChar
                                                                           }
                                                                   });
 
@@ -323,11 +327,12 @@ namespace InformationCenter.DBUtils
             {
                 query += Environment.NewLine +
                          " INSERT INTO " + tempTableName +
-                         @"(FieldID)
+                         @"(FieldID, FieldValue)
                     VALUES
-                    (@id" + i.ToString() + ") ";
+                    (@id" + i.ToString() + ", @value" + i + ") ";
 
-                parameters.Add(new SqlParameter("@id" + i.ToString(), field.ID) {DbType = DbType.Guid});
+                parameters.Add(new SqlParameter("@id" + i.ToString(), field.Key.ID) {DbType = DbType.Guid});
+                parameters.Add(new SqlParameter("@value" + i.ToString(), field.Key.ID));
 
                 ++i;
             }
