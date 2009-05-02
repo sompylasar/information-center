@@ -163,7 +163,9 @@ namespace InformationCenter.WebUI.Controllers
                         object[] values = _client.ServiceCenter.SearchService.GetValuesOfField(field);
                         foreach (var value in values)
                         {
-                            suggestions.Add(value.ToString());
+                            string valueStr = value.ToString();
+                            if (valueStr.ToUpperInvariant().IndexOf(query.ToUpperInvariant()) < 0) continue;
+                            suggestions.Add(valueStr);
                             data.Add("");
                         }
                     }
