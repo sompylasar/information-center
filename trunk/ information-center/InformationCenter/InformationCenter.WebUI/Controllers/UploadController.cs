@@ -83,6 +83,7 @@ namespace InformationCenter.WebUI.Controllers
                 ViewData["Fields"] = _client.ServiceCenter.SearchService.GetFields();
                 ViewData["Templates"] = _client.ServiceCenter.UploadService.GetTemplates();
                 ViewData["SelectedTemplate"] = selectedTemplate;
+                TempData["SelectedTemplate"] = selectedTemplate;
 
                 try
                 {
@@ -118,25 +119,63 @@ namespace InformationCenter.WebUI.Controllers
                 actionResult = View("FillDescription");
 
                 var file = HttpContext.Request.Files["f"];
+                if (file == null)
+                {
+                    ModelState.AddModelError("f", "Файл не был отправлен");
+                }
+
+                var descriptionFieldsWithValues = new Dictionary<FieldView,object>();
 
                 var fields = (IEnumerable<FieldView>)_client.ServiceCenter.SearchService.GetFields();
                 var selectedFields = new List<FieldView>();
                 foreach (string fieldKey in HttpContext.Request.Params)
                 {
-                    var fieldValue = HttpContext.Request[fieldKey];
+                    var fieldValueStr = HttpContext.Request[fieldKey];
 
                     if (fieldKey.StartsWith("_"))
                     {
                         Guid fieldId = new Guid(fieldKey.Substring(1));
 
-                        TempData[fieldKey] = fieldValue;
-                        foreach (FieldView field in fields)
+                        TempData[fieldKey] = fieldValueStr;
+
+                        FieldView field = null;
+                        FieldTypeView fieldTypeView = null;
+                        Type fieldType = typeof(string);
+                        foreach (FieldView f in fields)
                         {
-                            if (field.ID.ToString() == fieldId.ToString())
+                            if (f.ID == fieldId)
                             {
-                                selectedFields.Add(field);
-                                Debug.WriteLine(field); 
+                                field = f;
+                                selectedFields.Add(f);
+
+                                fieldTypeView = f.FieldTypeView;
+                                fieldType = f.FieldTypeView.TypeOfField;
+                                
+                                break;
                             }
+                        }
+                        if (field == null)
+                        {
+                            ModelState.AddModelError(fieldKey, "Поле с идентификатором " + fieldId + " не найдено");
+                            continue;
+                        }
+
+                        try
+                        {
+                            object fieldValue = Convert.ChangeType(fieldValueStr, fieldType);
+
+                            try
+                            {
+                                descriptionFieldsWithValues.Add(field, fieldValue);
+                            }
+                            catch (Exception ex)
+                            {
+                                ModelState.AddModelError(fieldKey, ex.Message);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            ModelState.AddModelError(fieldKey, ex.Message + (fieldTypeView == null ? "" : " Ожидаемый тип: " + fieldTypeView.FieldTypeName));
                         }
                     }
                 }
@@ -144,20 +183,28 @@ namespace InformationCenter.WebUI.Controllers
                 ViewData["Fields"] = fields;
                 ViewData["SelectedFields"] = selectedFields;
 
-                try
+                if (ModelState.IsValid)
                 {
-                    if (file == null)
-                        throw new Exception("Файл не был отправлен.");
+                    try
+                    {
+                        if (file != null)
+                        {
+                            Guid documentId = _client.ServiceCenter.UploadService.Upload(file.InputStream,
+                                                                       FileHelper.CombineFilename(file.FileName,
+                                                                                                  file.ContentType),
+                                                                       file.ContentType, file.ContentLength);
 
-                    _client.ServiceCenter.UploadService.Upload(file.InputStream, 
-                       FileHelper.CombineFilename(file.FileName, file.ContentType), 
-                       file.ContentType, file.ContentLength);
+                            // TODO: fill description Name properly
+                            string descriptionName = (TempData["SelectedTemplate"] != null ? ((TemplateView)TempData["SelectedTemplate"]).Name : "");
+                            _client.ServiceCenter.UploadService.AddDescription(documentId, descriptionName, descriptionFieldsWithValues);
+                        }
 
-                    actionResult = View("Finished");
-                }
-                catch (Exception ex)
-                {
-                    ViewData["error"] = ex.Message;
+                        actionResult = View("Finished");
+                    }
+                    catch (Exception ex)
+                    {
+                        ViewData["error"] = ex.Message;
+                    }
                 }
             }
             else

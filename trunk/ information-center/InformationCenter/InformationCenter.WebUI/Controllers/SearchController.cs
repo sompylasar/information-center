@@ -69,22 +69,30 @@ namespace InformationCenter.WebUI.Controllers
 
                         TempData[fieldKey] = fieldValueStr;
 
+                        bool found = false;
                         FieldTypeView fieldTypeView = null;
                         Type fieldType = typeof(string);
-                        foreach (FieldView field in fields)
+                        foreach (FieldView f in fields)
                         {
-                            if (field.ID == fieldId)
+                            if (f.ID == fieldId)
                             {
-                                fieldTypeView = field.FieldTypeView;
-                                fieldType = field.FieldTypeView.TypeOfField;
+                                found = true;
+
+                                fieldTypeView = f.FieldTypeView;
+                                fieldType = f.FieldTypeView.TypeOfField;
+
                                 break;
                             }
                         }
-                        
-                        object fieldValue = fieldValueStr;
+                        if (!found)
+                        {
+                            ModelState.AddModelError(fieldKey, "Поле с идентификатором " + fieldId + " не найдено");
+                            continue;
+                        }
+
                         try
                         {
-                            fieldValue = Convert.ChangeType(fieldValueStr, fieldType);
+                            object fieldValue = Convert.ChangeType(fieldValueStr, fieldType);
 
                             try
                             {
