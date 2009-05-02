@@ -233,10 +233,13 @@ namespace InformationCenter.DBUtils
         /// <summary>
         /// Создаёт временную таблицу состоящую из полей описания
         /// </summary>
+        /// <param name="templateName">Имя шаблона</param>
         /// <param name="fields">Коллекция полей описания</param>
-        /// <returns>Имя временной таблицы</returns>
-        public string CreateFieldsTempTable(IEnumerable<Field> fields)
+        /// <returns>Добавило или нет</returns>
+        public bool AddTemplate(string templateName, IEnumerable<Field> fields)
         {
+            bool result = false;
+
             string tempTableName = "##FieldsTempTable_" + Guid.NewGuid().ToString("N");
             string query = GenQueryCreateTable(tempTableName, new ColumnDescription[]
             {
@@ -259,13 +262,13 @@ namespace InformationCenter.DBUtils
                 ++i;
             }
 
-            query += Environment.NewLine + //" select * from " + tempTableName;
+            query += Environment.NewLine +
             @"EXECUTE [AddTemplate] 
-                   'Шаблонъ'
+                   @name
                   ,@tempFieldsTableName
                   ,@tId";
 
-            //var
+            parameters.Add(new SqlParameter("@name", templateName));
             parameters.Add(new SqlParameter("@tempFieldsTableName", tempTableName));
             var pId = new SqlParameter("@tID", Guid.NewGuid()) { DbType = DbType.Guid, Direction = ParameterDirection.Output };
             parameters.Add(pId);
@@ -275,24 +278,7 @@ namespace InformationCenter.DBUtils
             {
                 try
                 {
-                    //con.Open();
-                    ExecuteNonQuery(query, parameters.ToArray());
-                    //var table1 = ExecuteQuery(query, parameters.ToArray());
-                    //query = "select * from " + tempTableName;
-                    //DataTable table = ExecuteQuery(new SqlCommand(query), con);
-                    //foreach (var field in fields)
-                    //{
-                    //    table.Rows.Add(field.ID);
-                    //}
-                    //table.AcceptChanges();
-                    //DataTable table1 = ExecuteQuery(new SqlCommand(query), con);
-                    //con.Close();
-
-                    //foreach (var item in table1.AsEnumerable())
-                    //{
-                    //    Debug.WriteLine(item.Field<Guid>(0));
-                    //}
-                    //query += Environment.NewLine + " insert into " + tempTableName + " (";
+                    result = ExecuteNonQuery(query, parameters.ToArray()) > 0;
                 }
                 catch (Exception exc)
                 {
@@ -303,22 +289,83 @@ namespace InformationCenter.DBUtils
                 {
                     try
                     {
-                        //if (con.State != ConnectionState.Open)
-                        //    con.Open();
                         query = "drop table " + tempTableName;
-                        ExecuteNonQuery(new SqlCommand(query));//, con);
+                        ExecuteNonQuery(new SqlCommand(query));
                     }
                     catch (Exception)
                     {
                     }
-                    finally
+                }
+
+            }
+            return result;
+        }
+
+        public bool AddDocDescription(string docDescriptionName, Guid documentId, IEnumerable<Field> fields)
+        {
+            bool result = false;
+
+            string tempTableName = "##FieldsTempTable_" + Guid.NewGuid().ToString("N");
+            string query = GenQueryCreateTable(tempTableName, new ColumnDescription[]
+            {
+                new ColumnDescription{Name = "FieldID", Type = SqlDbType.UniqueIdentifier}
+            });
+
+            int i = 0;
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            query += Environment.NewLine;
+            foreach (var field in fields)
+            {
+                query += Environment.NewLine +
+                    " INSERT INTO " + tempTableName +
+                        @"(FieldID)
+                    VALUES
+                    (@id" + i.ToString() + ") ";
+
+                parameters.Add(new SqlParameter("@id" + i.ToString(), field.ID) { DbType = DbType.Guid });
+
+                ++i;
+            }
+
+            query += Environment.NewLine +
+            @"EXECUTE [AddDocDescription] 
+                   @name
+                  ,@documentId
+                  ,@tempFieldsTableName
+                  ,@id";
+
+            parameters.Add(new SqlParameter("@name", docDescriptionName));
+            parameters.Add(new SqlParameter("@tempFieldsTableName", tempTableName));
+            parameters.Add(new SqlParameter("@documentId", documentId) { DbType = DbType.Guid });
+            var pId = new SqlParameter("@tID", Guid.NewGuid()) { DbType = DbType.Guid, Direction = ParameterDirection.Output };
+            parameters.Add(pId);
+
+            var con = provider.GetConnection(csb) as SqlConnection;
+            if (con != null)
+            {
+                try
+                {
+                    result = ExecuteNonQuery(query, parameters.ToArray()) > 0;
+                }
+                catch (Exception exc)
+                {
+                    tempTableName = string.Empty;
+                    Debug.WriteLine("CreateFieldsTempTable > " + exc.Message);
+                }
+                finally
+                {
+                    try
                     {
-                        //con.Dispose();
+                        query = "drop table " + tempTableName;
+                        ExecuteNonQuery(new SqlCommand(query));
+                    }
+                    catch (Exception)
+                    {
                     }
                 }
 
             }
-            return tempTableName;
+            return result;
         }
 
         public void SelectFromTable(string tableName)
