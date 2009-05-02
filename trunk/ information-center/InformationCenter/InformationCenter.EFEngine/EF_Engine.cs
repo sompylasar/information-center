@@ -50,6 +50,15 @@ namespace InformationCenter.EFEngine
 
         #region Методы
 
+        protected string DbConnectionString
+        {
+            get
+            {
+                int a = context.Connection.ConnectionString.IndexOf('\'');
+                return context.Connection.ConnectionString.Substring(a).Trim('\'');
+            }
+        }
+
         public IQueryable<T> Get<T>(IEnumerable<Guid> Identifiers) where T : EntityObject
         {
             string tName = typeof(T).Name;
@@ -81,7 +90,7 @@ namespace InformationCenter.EFEngine
                 DbCommand cmd = null;
                 try
                 {
-                    cn = new SqlConnection(context.Connection.ConnectionString);
+                    cn = new SqlConnection(DbConnectionString);
                     cn.Open();
                     cmd = cn.CreateCommand();
                     cmd.CommandType = CommandType.StoredProcedure;
