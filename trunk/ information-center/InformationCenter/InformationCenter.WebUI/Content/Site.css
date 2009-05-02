@@ -147,6 +147,7 @@ ul#menu li
 {
     display: inline;
     list-style: none;
+    white-space: nowrap;
 }
 
 ul#menu li#greeting
@@ -268,14 +269,16 @@ table th
 
 #menucontainer
 {
-    margin-top:40px;
+    /*margin-top:40px;*/
 }
 
 div#title
 {
     display:block;
-    float:left;
+    /*float:left;*/
     text-align:left;
+    min-height: 80px;
+    _height: 80px;
 }
 
 div#title h1 
@@ -285,11 +288,14 @@ div#title h1
 
 #logindisplay
 {
+	position: absolute;
+	top: 5px;
+	right: 0;
     font-size:1.1em;
     display:block;
     text-align:right;
     margin:10px;
-    color:White;
+    color:white;
 }
 
 #logindisplay a:link
