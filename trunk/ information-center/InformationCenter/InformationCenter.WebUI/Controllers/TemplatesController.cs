@@ -57,7 +57,7 @@ namespace InformationCenter.WebUI.Controllers
 
         public ActionResult EditTemplate()
         {
-            if (AuthHelper.NeedRedirectToAuth(this, "SelectTemplate")) return RedirectToAction("LogOn", "Account");
+            if (AuthHelper.NeedRedirectToAuth(this, "EditTemplate")) return RedirectToAction("LogOn", "Account");
 
             ActionResult actionResult = View();
             InitServiceCenterClient();
@@ -70,7 +70,15 @@ namespace InformationCenter.WebUI.Controllers
 
                 if (!TemplateSelected)
                 {
-                    Guid templateId = new Guid(templateIdStr);
+                    Guid templateId;
+                    try
+                    {
+                        templateId = new Guid(templateIdStr);
+                    }
+                    catch (FormatException ex)
+                    {
+                        templateId = Guid.Empty;
+                    }
                     var templates = _client.ServiceCenter.DocumentDescriptionService.GetTemplates();
 
                     foreach (TemplateView template in templates)
@@ -85,7 +93,7 @@ namespace InformationCenter.WebUI.Controllers
 
                 try
                 {
-                    if (!TemplateSelected && selectedTemplate == null)
+                    if (selectedTemplate == null)
                         throw new Exception("Указанный шаблон не найден.");
                     ViewData["SelectedTemplate"] = selectedTemplate;
 
@@ -105,6 +113,62 @@ namespace InformationCenter.WebUI.Controllers
             }
 
             return actionResult;
+        }
+
+        public ActionResult CommitChanges()
+        {
+            if (AuthHelper.NeedRedirectToAuth(this, "CommitChanges")) return RedirectToAction("LogOn", "Account");
+
+            ActionResult actionResult = View();
+            InitServiceCenterClient();
+            if (_client.Available)
+            {
+                var fields = (IEnumerable<FieldView>)_client.ServiceCenter.SearchService.GetFields();
+                var selectedFields = new List<FieldView>();
+                foreach (string fieldKey in HttpContext.Request.Params)
+                {
+                    var fieldValueStr = HttpContext.Request[fieldKey];
+
+                    if (fieldKey.StartsWith("_"))
+                    {
+                        Guid fieldId = new Guid(fieldKey.Substring(1));
+
+                        TempData[fieldKey] = fieldValueStr;
+
+                        FieldView field = null;
+                        
+                        Type fieldType = typeof(string);
+                        foreach (FieldView f in fields)
+                        {
+                            if (f.ID == fieldId)
+                            {
+                                field = f;
+                                selectedFields.Add(f);
+                                break;
+                            }
+                        }
+                        if (field == null)
+                        {
+                            ModelState.AddModelError(fieldKey, "Поле с идентификатором " + fieldId + " не найдено");
+                            continue;
+                        }
+
+                        
+                    }
+                }
+
+                ViewData["Fields"] = fields;
+                ViewData["SelectedFields"] = selectedFields;
+
+
+            }
+            else
+            {
+                ViewData["error"] = "Сервис редактирования шаблонов в данный момент недоступен.";
+            }
+
+            return actionResult;
+
         }
 
 
