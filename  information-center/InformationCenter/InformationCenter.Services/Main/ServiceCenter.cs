@@ -1,5 +1,6 @@
 using InformationCenter.Services.ServicesImpl;
 using System;
+using System.Data.SqlClient;
 
 namespace InformationCenter.Services
 {
@@ -25,7 +26,12 @@ namespace InformationCenter.Services
         /// конструктор
         /// </summary>
         /// <param name="ConnectionString">строка соединения к центру</param>
-        public ServiceCenter(string ConnectionString) { connectionString = ConnectionString; }
+        public ServiceCenter(string ConnectionString)
+        {
+            connectionString = ConnectionString;
+            using (SqlConnection con = new SqlConnection(ConnectionString))
+                con.Open();
+        }
 
         #endregion
 
