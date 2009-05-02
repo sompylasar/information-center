@@ -6,6 +6,9 @@ using InformationCenter.Data;
 namespace InformationCenter.Services.ServicesImpl
 {
 
+    /// <summary>
+    /// —ервис дл€ поиска документов.
+    /// </summary>
     public class SearchService : IDisposable
     {
 
@@ -146,6 +149,9 @@ namespace InformationCenter.Services.ServicesImpl
             return (requestValue.ToString().Trim() == storedValue.ToString().Trim());
         }
 
+        /// <summary>
+        /// освободить ресурсы
+        /// </summary>
         public void Dispose()
         {
             if (engine != null)
@@ -154,6 +160,12 @@ namespace InformationCenter.Services.ServicesImpl
                 engine = null;
             }
         }
+
+        /// <summary>
+        /// преобразовать в строку
+        /// </summary>
+        /// <returns>строка</returns>
+        public override string ToString() { return "—ервис поиска"; }
 
         #endregion
 

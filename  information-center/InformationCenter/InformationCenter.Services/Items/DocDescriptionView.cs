@@ -28,6 +28,9 @@ namespace InformationCenter.Services
 
         #region Свойства
 
+        /// <summary>
+        /// внутренний объект описания
+        /// </summary>
         internal DocDescription Description { get { return entity as DocDescription; } }
 
         /// <summary>
@@ -35,6 +38,9 @@ namespace InformationCenter.Services
         /// </summary>
         public Guid ID { get { return Description.ID; } }
 
+        /// <summary>
+        /// название описания
+        /// </summary>
         public string Name { get { return Description.Name; } }
 
         /// <summary>
@@ -72,6 +78,16 @@ namespace InformationCenter.Services
                 return fields.Values.ToArray();
             }
         }
+
+        #endregion
+
+        #region Методы
+        
+        /// <summary>
+        /// преобразовать в строку
+        /// </summary>
+        /// <returns>строка</returns>
+        public override string ToString() { return Name; }
 
         #endregion
 

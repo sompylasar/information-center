@@ -28,11 +28,14 @@ namespace InformationCenter.Services
         #region Свойства
 
         /// <summary>
+        /// внутренний объект документа
+        /// </summary>
+        internal Document Document { get { return entity as Document; } }
+
+        /// <summary>
         /// уникальный идентификатор
         /// </summary>
-        public Guid ID { get { return (entity as Document).ID; } }
-
-        internal Document Document { get { return entity as Document; } }
+        public Guid ID { get { return Document.ID; } }
 
         /// <summary>
         /// название - имя
@@ -65,6 +68,16 @@ namespace InformationCenter.Services
                 return descriptions.Values.ToArray();
             }
         }
+
+        #endregion
+
+        #region Методы
+
+        /// <summary>
+        /// преобразовать в строку
+        /// </summary>
+        /// <returns>строка</returns>
+        public override string ToString() { return FileName; }
 
         #endregion
 

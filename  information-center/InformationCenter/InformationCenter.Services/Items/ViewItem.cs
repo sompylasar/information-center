@@ -5,7 +5,10 @@ using System.Data.Objects.DataClasses;
 namespace InformationCenter.Services
 {
 
-    public class ViewItem : INotifyPropertyChanging, INotifyPropertyChanged
+    /// <summary>
+    /// Базовый класс для инкапсуляции объектов, используемых в Entity Framework.
+    /// </summary>
+    public abstract class ViewItem : INotifyPropertyChanging, INotifyPropertyChanged
     {
 
         #region Поля
@@ -26,17 +29,33 @@ namespace InformationCenter.Services
 
         #region События
 
+        /// <summary>
+        /// изменяется какое-то свойство
+        /// </summary>
         public event PropertyChangingEventHandler PropertyChanging
         {
             add { entity.PropertyChanging += value; }
             remove { entity.PropertyChanging -= value; }
         }
 
+        /// <summary>
+        /// свойство изменено
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged
         {
             add { entity.PropertyChanged += value; }
             remove { entity.PropertyChanged -= value; }
         }
+
+        #endregion
+
+        #region Свойства
+
+        /// <summary>
+        /// преобразовать в строку
+        /// </summary>
+        /// <returns>строка</returns>
+        public override string ToString() { return entity.ToString(); }
 
         #endregion
 

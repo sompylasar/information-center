@@ -123,6 +123,12 @@ namespace InformationCenter.Services
         /// </summary>
         public void Dispose() { DisposeResources(); }
 
+        /// <summary>
+        /// преобразовать в строку
+        /// </summary>
+        /// <returns>строка</returns>
+        public override string ToString() { return "Информационный центр ВУЗа"; }
+
         #endregion
 
     }
