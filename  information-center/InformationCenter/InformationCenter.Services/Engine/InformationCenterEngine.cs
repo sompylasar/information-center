@@ -40,20 +40,11 @@ namespace InformationCenter.Services
 
         protected Entities Entities { get { return Context as Entities; } }
 
-        protected string DbConnectionString
-        {
-            get
-            {
-                int a = CurrentConnection.ConnectionString.IndexOf('\'');
-                return CurrentConnection.ConnectionString.Substring(a).Trim('\'');
-            }
-        }
-
         protected DBWorker Worker
         {
             get
             {
-                if (worker == null) worker = new DBWorker(DbConnectionString);
+                if (worker == null) worker = new DBWorker(CurrentConnection.ConnectionString);
                 return worker;
             }
         }

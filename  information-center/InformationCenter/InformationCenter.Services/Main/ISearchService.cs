@@ -7,7 +7,7 @@ namespace InformationCenter.Services
     public interface ISearchService
     {
         DocumentView GetDocument(Guid ID);
-        string[] GetFileNames(bool WithExtensions);
+        //string[] GetFileNames(bool WithExtensions);
         FieldView[] GetFields();
         object GetValue(FieldValueView Value);
         object[] GetValuesOfField(FieldView FieldView);
