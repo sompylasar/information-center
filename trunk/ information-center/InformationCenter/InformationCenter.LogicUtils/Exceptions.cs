@@ -30,7 +30,7 @@ namespace LogicUtils
         /// <param name="Parameters">параметры конструктора, который не был найден</param>
         public ConstructorNotFoundException(Type T, Type[] Parameters)
         {
-            if (t == null) throw new ArgumentNullException("T");
+            if (T == null) throw new ArgumentNullException("T");
             if (Parameters == null) throw new ArgumentNullException("Parameters");
             t = T;
             prms = Parameters;
