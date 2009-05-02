@@ -20,7 +20,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("InformationCenterModel", "FK_FieldTemplate_Template", "Template", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(InformationCenter.Data.Template), "NNFieldTemplate", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(InformationCenter.Data.NNFieldTemplate))]
 
 // Original file name:
-// Generation date: 02.05.2009 21:20:06
+// Generation date: 03.05.2009 1:07:44
 namespace InformationCenter.Data
 {
     
@@ -1139,13 +1139,15 @@ namespace InformationCenter.Data
         /// <param name="name">Initial value of Name.</param>
         /// <param name="sqlName">Initial value of SqlName.</param>
         /// <param name="dotNetType">Initial value of DotNetType.</param>
-        public static FieldType CreateFieldType(global::System.Guid id, string name, string sqlName, string dotNetType)
+        /// <param name="sqlType">Initial value of SqlType.</param>
+        public static FieldType CreateFieldType(global::System.Guid id, string name, string sqlName, string dotNetType, string sqlType)
         {
             FieldType fieldType = new FieldType();
             fieldType.ID = id;
             fieldType.Name = name;
             fieldType.SqlName = sqlName;
             fieldType.DotNetType = dotNetType;
+            fieldType.SqlType = sqlType;
             return fieldType;
         }
         /// <summary>
@@ -1240,6 +1242,29 @@ namespace InformationCenter.Data
         private string _DotNetType;
         partial void OnDotNetTypeChanging(string value);
         partial void OnDotNetTypeChanged();
+        /// <summary>
+        /// There are no comments for Property SqlType in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string SqlType
+        {
+            get
+            {
+                return this._SqlType;
+            }
+            set
+            {
+                this.OnSqlTypeChanging(value);
+                this.ReportPropertyChanging("SqlType");
+                this._SqlType = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("SqlType");
+                this.OnSqlTypeChanged();
+            }
+        }
+        private string _SqlType;
+        partial void OnSqlTypeChanging(string value);
+        partial void OnSqlTypeChanged();
         /// <summary>
         /// There are no comments for Field in the schema.
         /// </summary>
