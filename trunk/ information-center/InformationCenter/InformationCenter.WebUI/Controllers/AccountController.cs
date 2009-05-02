@@ -58,14 +58,15 @@ namespace InformationCenter.WebUI.Controllers
             Justification = "Needs to take same parameter type as Controller.Redirect()")]
         public ActionResult LogOn(string userName, string password, bool rememberMe, string returnUrl)
         {
-
-            if (!ValidateLogOn(userName, password))
+            bool integratedSecurity = (Request["loginType"] == "integrated");
+            if (!ValidateLogOn(userName, password, integratedSecurity))
             {
                 return View();
             }
 
             Session["UserName"] = userName;
             Session["Password"] = password;
+            Session["IntegratedSecurity"] = integratedSecurity;
 
             FormsAuth.SignIn(userName, rememberMe);
 
@@ -89,6 +90,7 @@ namespace InformationCenter.WebUI.Controllers
         {
             Session["UserName"] = null;
             Session["Password"] = null;
+            Session["IntegratedSecurity"] = true;
 
             FormsAuth.SignOut();
 
@@ -193,7 +195,7 @@ namespace InformationCenter.WebUI.Controllers
 
         private bool ValidateChangePassword(string currentPassword, string newPassword, string confirmPassword)
         {
-            if (String.IsNullOrEmpty(currentPassword))
+            if (currentPassword == null)
             {
                 ModelState.AddModelError("currentPassword", "Вы должны указать текущий пароль.");
             }
@@ -213,29 +215,29 @@ namespace InformationCenter.WebUI.Controllers
             return ModelState.IsValid;
         }
 
-        private bool ValidateLogOn(string userName, string password)
+        private bool ValidateLogOn(string userName, string password, bool integratedSecurity)
         {
-            if (String.IsNullOrEmpty(userName))
+            if (!integratedSecurity && String.IsNullOrEmpty(userName))
             {
                 ModelState.AddModelError("username", "Вы должны ввести имя пользователя.");
             }
-            if (String.IsNullOrEmpty(password))
+            if (!integratedSecurity && password == null)
             {
                 ModelState.AddModelError("password", "Вы должны ввести пароль.");
             }
             //if (!MembershipService.ValidateUser(userName, password))
-            if (!TryInitServiceCenterClient(userName, password))
+            if (!TryInitServiceCenterClient(userName, password, integratedSecurity))
             {
                 ModelState.AddModelError("_FORM", "Неверное имя пользователя, или пароль к нему не подходит.");
             }
 
             return ModelState.IsValid;
         }
-        private bool TryInitServiceCenterClient(string userName, string password)
+        private bool TryInitServiceCenterClient(string userName, string password, bool integratedSecurity)
         {
             try
             {
-                var client = new ServiceCenterClient(userName, password);
+                var client = new ServiceCenterClient(userName, password, integratedSecurity);
 
                 return client.Available;
             }
