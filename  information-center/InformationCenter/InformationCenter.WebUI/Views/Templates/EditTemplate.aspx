@@ -97,12 +97,12 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript">
         jQuery(function($) {
-            $('.unselectable').attr({ 'unselectable':'on' }).bind('selectstart', function(){return false;});
-        
+            $('.unselectable').attr({ 'unselectable': 'on' }).bind('selectstart', function() { return false; });
+
             var isCtrlDown = false;
-            $(document).keydown(function (event) {
+            $(document).keydown(function(event) {
                 isCtrlDown = (event.ctrlKey || event.metaKey);
-            }).keyup(function (event) {
+            }).keyup(function(event) {
                 isCtrlDown = (event.ctrlKey || event.metaKey);
             });
             var check_selected = function() {
@@ -111,13 +111,13 @@
                 else
                     $("#fields .button-remove").removeAttr('disabled');
 
-                    
+
                 if ($("#fields .listbox-from li[selected]").length <= 0)
                     $("#fields .button-add").attr({ disabled: 'disabled' });
                 else
                     $("#fields .button-add").removeAttr('disabled');
             };
-            var check_empty = function () {
+            var check_empty = function() {
                 if ($("#fields .listbox-to li").length <= 0) {
                     $("#fields .listbox-to-empty").show();
                     $("#fields .button-remove-all").attr({ disabled: 'disabled' });
@@ -125,11 +125,11 @@
                 else {
                     $("#fields .listbox-to-empty").hide();
                     $("#fields .button-remove-all").removeAttr('disabled');
-                    $( $.makeArray( $("#fields .listbox-to li") )
-                        .sort(function (a,b) { return parseInt($(a).attr('order'))-parseInt($(b).attr('order')); }) )
-                            .appendTo( $("#fields .listbox-to") );
+                    $($.makeArray($("#fields .listbox-to li"))
+                        .sort(function(a, b) { return parseInt($(a).attr('order')) - parseInt($(b).attr('order')); }))
+                            .appendTo($("#fields .listbox-to"));
                 }
-                    
+
                 if ($("#fields .listbox-from li").length <= 0) {
                     $("#fields .listbox-from-empty").show();
                     $("#fields .button-add-all").attr({ disabled: 'disabled' });
@@ -137,99 +137,117 @@
                 else {
                     $("#fields .listbox-from-empty").hide();
                     $("#fields .button-add-all").removeAttr('disabled');
-                    $( $.makeArray( $("#fields .listbox-from li") )
-                        .sort(function (a,b) { return parseInt($(a).attr('order'))-parseInt($(b).attr('order')); }) )
-                            .appendTo( $("#fields .listbox-from") );
+                    $($.makeArray($("#fields .listbox-from li"))
+                        .sort(function(a, b) { return parseInt($(a).attr('order')) - parseInt($(b).attr('order')); }))
+                            .appendTo($("#fields .listbox-from"));
                 }
-                
+
                 check_selected();
             };
-            var deselect_all = function (items, except) {
+            var deselect_all = function(items, except) {
                 except = $(except);
                 $(items)
-                    .filter(function () {return ($.inArray(this, except) < 0);})
+                    .filter(function() { return ($.inArray(this, except) < 0); })
                     .removeAttr('selected').removeClass('selected');
             }
 
-            var extend_li = function (li, item) {
-            var $li = $(li);
-            var $item = $(item);
-                
-                $li.unbind('.select').bind('click.select', function () {
+            var extend_li = function(li, item) {
+                var $li = $(li);
+                var $item = $(item);
+
+                $li.unbind('.select').bind('click.select', function() {
                     if (false && !isCtrlDown) {
                         deselect_all($item, $li);
                     }
-                    
+
                     if ($li.is('[selected]')) $li.removeAttr('selected').removeClass('selected');
                     else $li.attr('selected', 'selected').addClass('selected');
-                    
+
                     check_selected();
                 });
             };
-            
-            var add_one = function (li) {
+
+            var add_one = function(li) {
                 var $itemFrom = $(li);
 
                 var $itemTo = $('<li></li>')
                     .html($itemFrom.html());
 
+
+
+                var id = $itemFrom.attr("field:id");
+
                 $itemFrom.remove();
 
-                              
+                //$itemTo.removeAttr("field:id");
+
+
+                $('<input />').attr({ name: id, type: "text", style: "display: none;" }).appendTo($itemTo);
+
                 $itemTo.appendTo('#fields .listbox-to');
 
                 extend_li($itemTo, '#fields .listbox-to li');
-                
+
                 check_empty();
             };
-            var remove_one = function (li) {
+            var remove_one = function(li) {
                 var $itemFrom = $(li);
                 var $itemTo = $('<li></li>')
                     .html($itemFrom.html());
 
                 $itemFrom.remove();
-                
+                var id = $itemTo.find("input").attr("name");
+
+                $itemTo.attr("field:id", id);
+                $itemTo.find("input").remove();
+
                 $itemTo.appendTo('#fields .listbox-from');
-                
+
                 extend_li($itemTo, '#fields .listbox-from li');
-                
+
                 check_empty();
             };
 
             $("#fields .listbox-to li").each(function() { extend_li(this, '#fields .listbox-to li'); });
             $("#fields .listbox-from li").each(function() { extend_li(this, '#fields .listbox-from li'); });
-            
+
             check_empty();
             check_selected();
-            
+
             $("#fields .button-add").click(function() {
-                $("#fields .listbox-from > li[selected]").each(function () {
+                $("#fields .listbox-from > li[selected]").each(function() {
                     add_one(this);
                 });
             });
             $("#fields .button-add-all").click(function() {
-                $("#fields .listbox-from > li").each(function () {
+                $("#fields .listbox-from > li").each(function() {
                     add_one(this);
                 });
             });
             $("#fields .button-remove").click(function() {
-                $("#fields .listbox-to   li[selected]").each(function () {
+                $("#fields .listbox-to   li[selected]").each(function() {
                     remove_one(this);
                 });
             });
             $("#fields .button-remove-all").click(function() {
-                $("#fields .listbox-to   li").each(function () {
+                $("#fields .listbox-to   li").each(function() {
                     remove_one(this);
                 });
             });
         });
     </script>
-
-    <h2>Редактирование шаблона <% (ViewData["SelectedTemplate"] as TemplateView).Name.ToString();  %></h2>
+    <%TemplateView Current = (TemplateView)ViewData["SelectedTemplate"];
+        string TemplateName = "";
+        if (Current != null)
+            TemplateName = Current.Name;
+          
+      %>
+    
+    <h2>Редактирование шаблона "<%=Html.Encode(TemplateName)  %>"</h2>
     
     <%= Html.ValidationSummary("Введенные данные некорректны. Проверьте их и повторите попытку.") %>
     
-    <form action="/Templates/CommitChanges" id="frmUpload" method="post" enctype="multipart/form-data">
+    <form action="/Templates/CommitChanges" id="frmTemplate" method="post" enctype="multipart/form-data">
         <%
             var selectedFields = (IEnumerable<FieldView>)(ViewData["SelectedFields"] ?? new FieldView[0]);
             selectedFields = selectedFields.OrderBy(field => field.Order);
@@ -266,7 +284,7 @@
                     <div class="listbox-to-wrapper">
                          <ul class="listbox-to">
                             <% foreach (FieldView field in selectedFields) { %>
-                            <li rel="_<%=field.ID %>" order="<%=field.Order %>"><span class="unselectable"><%=Html.Encode(field.Name) %> (<%=Html.Encode(field.FieldTypeView.FieldTypeName) %>)</span></li>
+                            <li rel="_<%=field.ID %>" order="<%=field.Order %>"><span class="unselectable"><%=Html.Encode(field.Name) %> (<%=Html.Encode(field.FieldTypeView.FieldTypeName) %>)</span><input style="Display:none;" type="text" name="_<%=field.ID %>" /></li>
                             <% } %>
                         </ul>
                         <!--
@@ -280,13 +298,13 @@
                 </fieldset>
             </td></tr></table>
         </div>
-        <p><button type="submit">Загрузить</button></p>
+        <p><button type="submit">Сохранить</button></p>
         <p>
         <% if (ViewData["Templates"] != null && ((IEnumerable<TemplateView>)ViewData["Templates"]).Count() > 0)
            { %>
             <a href="javascript:window.history.go(-1)">Назад к выбору шаблона</a>
         <% } else { %>
-            <%=Html.ActionLink("Выбор шаблона", "SelectTemplate", "Upload")%>
+            <%=Html.ActionLink("Выбор шаблона", "SelectTemplate", "Templates")%>
         <% } %>
         </p>
     </form>
