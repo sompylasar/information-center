@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using InformationCenter.Data;
 using InformationCenter.Services;
@@ -141,6 +143,41 @@ namespace InformationCenter.WebUI.Controllers
             }
 
             return actionResult;
+        }
+
+
+        public ActionResult Autocomplete(Guid? id)
+        {
+            string query = (Request["query"] ?? "");
+            List<string> suggestions = new List<string>();
+            List<string> data = new List<string>();
+
+            if (!AuthHelper.NeedRedirectToAuth(this, "Index"))
+            {
+                InitServiceCenterClient();
+                if (_client.Available)
+                {
+                    FieldView field = _client.ServiceCenter.SearchService.GetFields().Where(f => f.ID == id).FirstOrDefault();
+                    if (field != null)
+                    {
+                        object[] values = _client.ServiceCenter.SearchService.GetValuesOfField(field);
+                        foreach (var value in values)
+                        {
+                            suggestions.Add(value.ToString());
+                            data.Add("");
+                        }
+                    }
+                }
+            }
+
+            object autocomplete = new
+            {
+                query = query,
+                suggestions = suggestions,
+                data = data
+            };
+
+            return Json(autocomplete);
         }
     }
 }
