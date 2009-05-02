@@ -377,7 +377,7 @@ namespace InformationCenter.DBUtils
             return result;
         }
 
-        public IEnumerable<DocDescription> SearchDocDescription(IEnumerable<SearchItem> searchItems)
+        public IEnumerable<DocDescription> SearchDocDescription(SearchRequest Request)
         {
             List<DocDescription> result = new List<DocDescription>();
 
@@ -399,7 +399,7 @@ namespace InformationCenter.DBUtils
             int i = 0;
             List<SqlParameter> parameters = new List<SqlParameter>();
             query += Environment.NewLine;
-            foreach (var searchItem in searchItems)
+            foreach (var searchItem in Request.Items)
             {
                 query += Environment.NewLine +
                          " INSERT INTO " + tempTableName +

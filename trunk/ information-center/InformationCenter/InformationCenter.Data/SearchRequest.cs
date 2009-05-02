@@ -5,6 +5,9 @@ using System.ComponentModel;
 namespace InformationCenter.Data
 {
 
+    /// <summary>
+    /// Запрос поиска.
+    /// </summary>
     public class SearchRequest
     {
 
@@ -17,14 +20,15 @@ namespace InformationCenter.Data
 
         #region Конструкторы
 
-        public SearchRequest()
-        {
-        }
+        public SearchRequest() { }
 
         #endregion
 
         #region Свойства
 
+        /// <summary>
+        /// режим поиска
+        /// </summary>
         [DefaultValue(typeof(SearchMode), "SearchMode.And")]
         public SearchMode Mode
         {
@@ -32,19 +36,31 @@ namespace InformationCenter.Data
             set { mode = value; }
         }
 
+        /// <summary>
+        /// коллекция критериев поиска
+        /// </summary>
         public List<SearchItem> Items { get { return items; } }
 
         #endregion
 
     }
 
+    /// <summary>
+    /// Режим поиска.
+    /// </summary>
     [Description("Режим поиска")]
     public enum SearchMode
     {
 
+        /// <summary>
+        /// И
+        /// </summary>
         [Description("И")]
         And,
 
+        /// <summary>
+        /// Или
+        /// </summary>
         [Description("Или")]
         Or
 
