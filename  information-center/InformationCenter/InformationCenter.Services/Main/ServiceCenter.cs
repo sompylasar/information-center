@@ -58,9 +58,14 @@ namespace InformationCenter.Services
         public IDownloadService DownloadService { get { return InternalService; } }
 
         /// <summary>
-        /// зарвис для заливки документов (upload)
+        /// сервис для заливки документов (upload)
         /// </summary>
         public IUploadService UploadService { get { return InternalService; } }
+
+        /// <summary>
+        /// сервис для работы с шаблонами
+        /// </summary>
+        public IDocumentDescriptionService DocumentDescriptionService { get { return InternalService; } }
 
         #endregion
 

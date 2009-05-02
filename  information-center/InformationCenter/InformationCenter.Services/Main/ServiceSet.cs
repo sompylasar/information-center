@@ -10,7 +10,7 @@ namespace InformationCenter.Services
     /// <summary>
     /// Сервис для загрузки документов на клиент.
     /// </summary>
-    public class ServiceSet : IDownloadService, IUploadService, ISearchService, IDisposable
+    public class ServiceSet : IDownloadService, IUploadService, ISearchService, IDocumentDescriptionService, IDisposable
     {
         
         #region Поля
@@ -150,6 +150,11 @@ namespace InformationCenter.Services
             Dictionary<Field, object> param = new Dictionary<Field, object>();
             foreach (var pair in FieldsWithValues) param.Add(pair.Key.Field, pair.Value);
             return Engine.AddDocumentDescription(Name, DocumentID, param);
+        }
+
+        public void AddFieldToTemplate(Guid TemplateID, Guid FieldID)
+        {
+            Engine.AddFieldToTemplate(TemplateID, FieldID);
         }
 
         #endregion
