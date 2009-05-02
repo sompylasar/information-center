@@ -1,9 +1,9 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl" %>
 <%
     if (Request.IsAuthenticated) {
-        string userName = Page.User.Identity.Name;
+        string userName = Html.Encode(Page.User.Identity.Name);
 %>
-        Вы вошли как <b><%= Html.Encode(string.IsNullOrEmpty(userName) ? "суперсекретный пользователь" : userName) %></b>.
+        Вы вошли как <%= (string.IsNullOrEmpty(userName) ? "суперсекретный пользователь" : "<strong>"+userName+"</strong>") %>.
         [ <%= Html.ActionLink("Выйти", "LogOff", "Account") %> ]
 <%
     }

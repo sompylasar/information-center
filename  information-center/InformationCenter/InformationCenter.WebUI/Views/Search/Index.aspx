@@ -46,7 +46,7 @@
                 $input = $(this);
                 $input.autocomplete({ 
                     serviceUrl: '/Search/Autocomplete/'+$input.attr('name').replace(/^_/, ''),
-                    minChars: 2, 
+                    minChars: 1, 
                     delimiter: /(,|;)\s*/, // regex or character
                     maxHeight: 400,
                     deferRequestBy: 200, //miliseconds
