@@ -150,7 +150,7 @@ namespace InformationCenter.WebUI.Controllers
         {
             string query = (Request["query"] ?? "");
             List<string> suggestions = new List<string>();
-            List<string> data = new List<string>();
+            //List<string> callbackData = new List<string>();
 
             if (!AuthHelper.NeedRedirectToAuth(this, "Index"))
             {
@@ -166,17 +166,20 @@ namespace InformationCenter.WebUI.Controllers
                             string valueStr = value.ToString();
                             if (valueStr.ToUpperInvariant().IndexOf(query.ToUpperInvariant()) < 0) continue;
                             suggestions.Add(valueStr);
-                            data.Add("");
+                            //callbackData.Add("");
                         }
                     }
                 }
             }
 
+            if (suggestions.Count <= 0)
+                suggestions.Add("(нет вариантов)");
+
             object autocomplete = new
             {
                 query = query,
-                suggestions = suggestions,
-                data = data
+                suggestions = suggestions
+                //,data = callbackData
             };
 
             return Json(autocomplete);
