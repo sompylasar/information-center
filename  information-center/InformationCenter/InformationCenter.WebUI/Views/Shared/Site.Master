@@ -25,6 +25,7 @@
                 <ul id="menu">              
                     <li><%= Html.ActionLink("Поиск", "Index", "Search")%></li>
                     <li><%= Html.ActionLink("Загрузка", "Index", "Upload")%></li>
+                    <li><%= Html.ActionLink("Управление шаблонами", "Index", "Templates")%></li>
                     <li><%= Html.ActionLink("Об авторах", "About", "Home")%></li>
                 </ul>
             </div>
