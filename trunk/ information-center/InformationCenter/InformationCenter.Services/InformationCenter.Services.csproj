@@ -71,6 +71,10 @@
       <Project>{1D947340-9F10-42D1-B7A2-9A34106D0242}</Project>
       <Name>InformationCenter.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\InformationCenter.DBUtils\InformationCenter.DBUtils.csproj">
+      <Project>{66F8CEF2-B4F6-4DEE-AA53-BFF4020416CB}</Project>
+      <Name>InformationCenter.DBUtils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InformationCenter.EFEngine\InformationCenter.EFEngine.csproj">
       <Project>{3630B277-BCB0-4218-97F0-BF87B84A7C13}</Project>
       <Name>InformationCenter.EFEngine</Name>

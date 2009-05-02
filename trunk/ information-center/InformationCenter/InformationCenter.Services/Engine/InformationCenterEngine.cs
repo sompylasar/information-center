@@ -6,6 +6,7 @@ using InformationCenter.Data;
 using System.Data.Objects;
 using System.Data.SqlClient;
 using System.Collections.Generic;
+using InformationCenter.DBUtils;
 
 namespace InformationCenter.Services
 {
@@ -71,7 +72,8 @@ namespace InformationCenter.Services
         public Guid AddDocumentDescription(string Name, Guid DocumentID, Dictionary<Field, object> fieldsWithValues)
         {
             ObjectParameter g = new ObjectParameter("id", typeof(Guid));
-           // DBWorker
+           // DBWorker worker = new DBWorker(CurrentConnection.ConnectionString);
+           // worker.AddDocDescription(Name, DocumentID, 
             // TODO: создать временную таблицу с полями и передать ее имя
 
 
