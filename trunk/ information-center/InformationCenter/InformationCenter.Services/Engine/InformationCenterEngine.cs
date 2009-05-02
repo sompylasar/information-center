@@ -14,12 +14,13 @@ namespace InformationCenter.Services
     /// <summary>
     /// Движок для доступа к объектам хранилища.
     /// </summary>
-    public sealed class InformationCenterEngine : EF_Engine
+    public class InformationCenterEngine : EF_Engine
     {
 
         #region Поля
 
         private User current = null;
+        private DBWorker worker = null;
 
         #endregion
 
@@ -37,7 +38,25 @@ namespace InformationCenter.Services
 
         #region Свойства
 
-        private Entities Entities { get { return Context as Entities; } }
+        protected Entities Entities { get { return Context as Entities; } }
+
+        protected string DbConnectionString
+        {
+            get
+            {
+                int a = CurrentConnection.ConnectionString.IndexOf('\'');
+                return CurrentConnection.ConnectionString.Substring(a).Trim('\'');
+            }
+        }
+
+        protected DBWorker Worker
+        {
+            get
+            {
+                if (worker == null) worker = new DBWorker(DbConnectionString);
+                return worker;
+            }
+        }
 
         /// <summary>
         /// используемое подключение к источнику данных
@@ -78,15 +97,10 @@ namespace InformationCenter.Services
 
         public bool AddDocumentDescription(string Name, Guid DocumentID, Dictionary<Field, object> FieldsWithValues)
         {
-            DBWorker worker = new DBWorker(CurrentConnection.ConnectionString);
-            return worker.AddDocDescription(Name, DocumentID, FieldsWithValues);
+            return Worker.AddDocDescription(Name, DocumentID, FieldsWithValues);
         }
 
-        public bool AddTemplate(string Name, IEnumerable<Field> Fields)
-        {
-            DBWorker worker = new DBWorker(CurrentConnection.ConnectionString);
-            return worker.AddTemplate(Name, Fields);
-        }
+        public bool AddTemplate(string Name, IEnumerable<Field> Fields) { return Worker.AddTemplate(Name, Fields); }
 
         public Guid AddField(string Name, Guid FieldTypeID)
         {
@@ -128,11 +142,7 @@ namespace InformationCenter.Services
 
         #region Get
 
-        public IEnumerable<DocDescription> SearchDocDescription(SearchRequest Request)
-        {
-            DBWorker worker = new DBWorker(CurrentConnection.ConnectionString);
-            return worker.SearchDocDescription(Request);
-        }
+        public IEnumerable<DocDescription> SearchDocDescription(SearchRequest Request) { return Worker.SearchDocDescription(Request); }
 
         /// <summary>
         /// получает документ по его идентификатору
