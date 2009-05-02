@@ -1,4 +1,5 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+<%@ Import Namespace="InformationCenter.Data"%>
 <%@ Import Namespace="InformationCenter.WebUI.Models"%>
 <%@ Import Namespace="InformationCenter.Services"%>
 
