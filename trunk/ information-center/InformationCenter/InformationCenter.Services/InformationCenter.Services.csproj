@@ -59,11 +59,12 @@
     <Compile Include="Engine\InformationCenterEngineLoader.cs" />
     <Compile Include="Items\TemplateView.cs" />
     <Compile Include="Items\ViewItem.cs" />
+    <Compile Include="Main\IDownloadService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Main\ServiceCenter.cs" />
-    <Compile Include="ServicesImpl\DownloadService.cs" />
-    <Compile Include="ServicesImpl\SearchService.cs" />
-    <Compile Include="ServicesImpl\UploadService.cs" />
+    <Compile Include="Main\ServiceSet.cs" />
+    <Compile Include="Main\ISearchService.cs" />
+    <Compile Include="Main\IUploadService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\InformationCenter.Data\InformationCenter.Data.csproj">
