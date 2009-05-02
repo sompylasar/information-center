@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Data.Objects;
 using System.Text;
 using System.Data.SqlClient;
 using InformationCenter.Services;
@@ -242,9 +242,13 @@ namespace InformationCenter.DBUtils
 
             string tempTableName = "##FieldsTempTable_" + Guid.NewGuid().ToString("N");
             string query = GenQueryCreateTable(tempTableName, new ColumnDescription[]
-            {
-                new ColumnDescription{Name = "FieldID", Type = SqlDbType.UniqueIdentifier}
-            });
+                                                                  {
+                                                                      new ColumnDescription
+                                                                          {
+                                                                              Name = "FieldID",
+                                                                              Type = SqlDbType.UniqueIdentifier
+                                                                          }
+                                                                  });
 
             int i = 0;
             List<SqlParameter> parameters = new List<SqlParameter>();
@@ -252,52 +256,49 @@ namespace InformationCenter.DBUtils
             foreach (var field in fields)
             {
                 query += Environment.NewLine +
-                    " INSERT INTO " + tempTableName +
-                        @"(FieldID)
+                         " INSERT INTO " + tempTableName +
+                         @"(FieldID)
                     VALUES
                     (@id" + i.ToString() + ") ";
-                
-                parameters.Add(new SqlParameter("@id" + i.ToString(), field.ID) { DbType = DbType.Guid });
-                
+
+                parameters.Add(new SqlParameter("@id" + i.ToString(), field.ID) {DbType = DbType.Guid});
+
                 ++i;
             }
 
             query += Environment.NewLine +
-            @"EXECUTE [AddTemplate] 
+                     @"EXECUTE [AddTemplate] 
                    @name
                   ,@tempFieldsTableName
                   ,@tId";
 
             parameters.Add(new SqlParameter("@name", templateName));
             parameters.Add(new SqlParameter("@tempFieldsTableName", tempTableName));
-            var pId = new SqlParameter("@tID", Guid.NewGuid()) { DbType = DbType.Guid, Direction = ParameterDirection.Output };
+            var pId = new SqlParameter("@tID", Guid.NewGuid())
+                          {DbType = DbType.Guid, Direction = ParameterDirection.Output};
             parameters.Add(pId);
-            
-            var con = provider.GetConnection(csb) as SqlConnection;
-            if (con != null)
+
+            try
+            {
+                result = ExecuteNonQuery(query, parameters.ToArray()) > 0;
+            }
+            catch (Exception exc)
+            {
+                tempTableName = string.Empty;
+                Debug.WriteLine("CreateFieldsTempTable > " + exc.Message);
+            }
+            finally
             {
                 try
                 {
-                    result = ExecuteNonQuery(query, parameters.ToArray()) > 0;
+                    query = "drop table " + tempTableName;
+                    ExecuteNonQuery(new SqlCommand(query));
                 }
-                catch (Exception exc)
+                catch (Exception)
                 {
-                    tempTableName = string.Empty;
-                    Debug.WriteLine("CreateFieldsTempTable > " + exc.Message);
                 }
-                finally
-                {
-                    try
-                    {
-                        query = "drop table " + tempTableName;
-                        ExecuteNonQuery(new SqlCommand(query));
-                    }
-                    catch (Exception)
-                    {
-                    }
-                }
-
             }
+
             return result;
         }
 
@@ -307,9 +308,13 @@ namespace InformationCenter.DBUtils
 
             string tempTableName = "##FieldsTempTable_" + Guid.NewGuid().ToString("N");
             string query = GenQueryCreateTable(tempTableName, new ColumnDescription[]
-            {
-                new ColumnDescription{Name = "FieldID", Type = SqlDbType.UniqueIdentifier}
-            });
+                                                                  {
+                                                                      new ColumnDescription
+                                                                          {
+                                                                              Name = "FieldID",
+                                                                              Type = SqlDbType.UniqueIdentifier
+                                                                          }
+                                                                  });
 
             int i = 0;
             List<SqlParameter> parameters = new List<SqlParameter>();
@@ -317,18 +322,18 @@ namespace InformationCenter.DBUtils
             foreach (var field in fields)
             {
                 query += Environment.NewLine +
-                    " INSERT INTO " + tempTableName +
-                        @"(FieldID)
+                         " INSERT INTO " + tempTableName +
+                         @"(FieldID)
                     VALUES
                     (@id" + i.ToString() + ") ";
 
-                parameters.Add(new SqlParameter("@id" + i.ToString(), field.ID) { DbType = DbType.Guid });
+                parameters.Add(new SqlParameter("@id" + i.ToString(), field.ID) {DbType = DbType.Guid});
 
                 ++i;
             }
 
             query += Environment.NewLine +
-            @"EXECUTE [AddDocDescription] 
+                     @"EXECUTE [AddDocDescription] 
                    @name
                   ,@documentId
                   ,@tempFieldsTableName
@@ -336,36 +341,110 @@ namespace InformationCenter.DBUtils
 
             parameters.Add(new SqlParameter("@name", docDescriptionName));
             parameters.Add(new SqlParameter("@tempFieldsTableName", tempTableName));
-            parameters.Add(new SqlParameter("@documentId", documentId) { DbType = DbType.Guid });
-            var pId = new SqlParameter("@tID", Guid.NewGuid()) { DbType = DbType.Guid, Direction = ParameterDirection.Output };
+            parameters.Add(new SqlParameter("@documentId", documentId) {DbType = DbType.Guid});
+            var pId = new SqlParameter("@tID", Guid.NewGuid())
+                          {DbType = DbType.Guid, Direction = ParameterDirection.Output};
             parameters.Add(pId);
 
-            var con = provider.GetConnection(csb) as SqlConnection;
-            if (con != null)
+
+            try
+            {
+                result = ExecuteNonQuery(query, parameters.ToArray()) > 0;
+            }
+            catch (Exception exc)
+            {
+                tempTableName = string.Empty;
+                Debug.WriteLine("CreateFieldsTempTable > " + exc.Message);
+                throw exc;
+            }
+            finally
             {
                 try
                 {
-                    result = ExecuteNonQuery(query, parameters.ToArray()) > 0;
+                    query = "drop table " + tempTableName;
+                    ExecuteNonQuery(new SqlCommand(query));
                 }
-                catch (Exception exc)
+                catch (Exception)
                 {
-                    tempTableName = string.Empty;
-                    Debug.WriteLine("CreateFieldsTempTable > " + exc.Message);
                 }
-                finally
-                {
-                    try
-                    {
-                        query = "drop table " + tempTableName;
-                        ExecuteNonQuery(new SqlCommand(query));
-                    }
-                    catch (Exception)
-                    {
-                    }
-                }
-
             }
+
             return result;
+        }
+
+        public IEnumerable<DocDescription> SearchDocDescription(IEnumerable<SearchItem> searchItems)
+        {
+            List<DocDescription> result = new List<DocDescription>();
+
+            string tempTableName = "##SearchItemsTempTable_" + Guid.NewGuid().ToString("N");
+            string query = GenQueryCreateTable(tempTableName, new ColumnDescription[]
+                                                                  {
+                                                                      new ColumnDescription
+                                                                          {
+                                                                              Name = "FieldID",
+                                                                              Type = SqlDbType.UniqueIdentifier
+                                                                          },
+                                                                      new ColumnDescription
+                                                                          {
+                                                                              Name = "FieldValue",
+                                                                              Type = SqlDbType.UniqueIdentifier
+                                                                          }
+                                                                  });
+
+            int i = 0;
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            query += Environment.NewLine;
+            foreach (var searchItem in searchItems)
+            {
+                query += Environment.NewLine +
+                         " INSERT INTO " + tempTableName +
+                         @"(FieldID, FieldValue)
+                    VALUES
+                    (@id" + i + ", @value" +
+                         i + ") ";
+
+                parameters.Add(new SqlParameter("@id" + i, searchItem.FieldID) {DbType = DbType.Guid});
+                parameters.Add(new SqlParameter("@value" + i, searchItem.FieldValue));
+
+                ++i;
+            }
+
+            query += Environment.NewLine +
+                     @"EXECUTE SearchDescriptions @tempSearchItemTable";
+
+            parameters.Add(new SqlParameter("@tempSearchItemTable", tempTableName));
+
+            DataTable table = null;
+            try
+            {
+                table = ExecuteQuery(query, parameters.ToArray());
+            }
+            catch (Exception exc)
+            {
+                tempTableName = string.Empty;
+                Debug.WriteLine("CreateFieldsTempTable > " + exc.Message);
+                throw exc;
+            }
+            finally
+            {
+                try
+                {
+                    query = "drop table " + tempTableName;
+                    ExecuteNonQuery(new SqlCommand(query));
+                }
+                catch (Exception)
+                {
+                }
+            }
+
+            result.AddRange(ParseDataTable<DocDescription>(table,
+                new[]
+                {
+                    new ColumnDescription(){Name = "ID", PropName = "ID", Type = SqlDbType.UniqueIdentifier},
+                    new ColumnDescription(){Name = "Name", PropName = "ID", Type = SqlDbType.NVarChar},
+                    new ColumnDescription(){Name = "DocumentID", PropName = "DocumentID", Type = SqlDbType.UniqueIdentifier}
+                }));
+            return result.ToArray();
         }
 
         public void SelectFromTable(string tableName)
@@ -381,6 +460,26 @@ namespace InformationCenter.DBUtils
             catch (Exception exc)
             {
             }
+        }
+
+        private IEnumerable<T> ParseDataTable<T>(DataTable table, IEnumerable<ColumnDescription> columns) where T:new()
+        {
+            List<T> result = new List<T>();
+            for (int i = 0; i < table.Rows.Count; ++i )
+            {
+                DataRow row = table.Rows[i];
+                T element = new T();
+                foreach (var column in columns)
+                {
+                    var prop = typeof(T).GetProperty(column.PropName);
+                    if (prop == null)
+                        throw new NullReferenceException();
+                    prop.GetSetMethod().Invoke(element, new[] { row[column.Name] });
+                }
+
+                result.Add(element);
+            }
+            return result;
         }
 
         public string CreateSearchTempTable(IEnumerable<SearchItem> searchItems)
@@ -415,6 +514,7 @@ namespace InformationCenter.DBUtils
         private class ColumnDescription
         {
             public string Name { get; set; }
+            public string PropName { get; set; }
             public SqlDbType Type { get; set; }
         }
     }
