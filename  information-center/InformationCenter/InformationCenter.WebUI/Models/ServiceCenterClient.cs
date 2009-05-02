@@ -9,12 +9,14 @@ namespace InformationCenter.WebUI.Models
         public ServiceCenter ServiceCenter { get; private set; }
         public Exception ServiceCenterException { get; private set; }
 
-        public ServiceCenterClient(string userName, string password)
+        public ServiceCenterClient(string userName, string password, bool integratedSecurity)
         {
             try
             {
                 ServiceCenter =
-                    new ServiceCenter(AppSettings.BuildConnectionString(userName, password));
+                    new ServiceCenter(AppSettings.BuildConnectionString(userName, password, integratedSecurity));
+                ServiceCenter.UploadService.GetTemplates();
+                ServiceCenter.SearchService.GetFields();
             }
             catch (Exception ex)
             {

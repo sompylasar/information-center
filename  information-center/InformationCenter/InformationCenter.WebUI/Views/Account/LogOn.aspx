@@ -8,6 +8,19 @@
 Информационный центр ВУЗа
 </asp:Content>
 
+<asp:Content ID="Content2" ContentPlaceHolderID="HeadContent" runat="server">
+<style type="text/css">
+#loginType_selection input 
+{
+	float: left;
+}
+#loginType_selection label
+{
+	clear: right;
+}
+</style>
+</asp:Content>
+
 <asp:Content ID="loginContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Вход</h2>
     <p>
@@ -19,6 +32,13 @@
         <div>
             <fieldset>
                 <legend>Личные данные</legend>
+                <p id="loginType_selection">
+                    <label for="loginType">Тип входа:</label>
+                    <%= Html.RadioButton("loginType", "integrated", true, new { id = "loginType_integrated" })%><label for="loginType_windows">Интегрированный (Windows)</label>
+                    <!--<%= Html.RadioButton("loginType", "sql", false, new { id = "loginType_sql" })%><label for="loginType_sql">SQL Server</label>-->
+                    <%= Html.ValidationMessage("loginType") %>
+                </p>
+                <!--
                 <p>
                     <label for="username">Имя пользователя:</label>
                     <%= Html.TextBox("username") %>
@@ -28,7 +48,7 @@
                     <label for="password">Пароль:</label>
                     <%= Html.Password("password") %>
                     <%= Html.ValidationMessage("password") %>
-                </p>
+                </p>-->
                 <p>
                     <%= Html.CheckBox("rememberMe") %> <label class="inline" for="rememberMe">Запомнить</label>
                 </p>
