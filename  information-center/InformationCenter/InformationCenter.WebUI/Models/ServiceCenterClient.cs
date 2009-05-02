@@ -15,8 +15,6 @@ namespace InformationCenter.WebUI.Models
             {
                 ServiceCenter =
                     new ServiceCenter(AppSettings.BuildConnectionString(userName, password, integratedSecurity));
-                ServiceCenter.UploadService.GetTemplates();
-                ServiceCenter.SearchService.GetFields();
             }
             catch (Exception ex)
             {
