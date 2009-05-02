@@ -62,6 +62,7 @@
     <Compile Include="Controllers\DownloadController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="Controllers\TemplatesController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -97,6 +98,10 @@
     <Content Include="Views\Download\Index.aspx" />
     <Content Include="Views\Search\Index.aspx" />
     <Content Include="Views\Search\SearchResults.aspx" />
+    <Content Include="Views\Templates\EditTemplate.aspx" />
+    <Content Include="Views\Templates\SelectTemplate.aspx" />
+    <Content Include="Views\Templates\Index.aspx" />
+    <Content Include="Views\Templates\NewTemplate.aspx" />
     <Content Include="Views\Upload\Finished.aspx" />
     <Content Include="Views\Upload\FillDescription.aspx" />
     <Content Include="Views\Upload\SelectTemplate.aspx" />
