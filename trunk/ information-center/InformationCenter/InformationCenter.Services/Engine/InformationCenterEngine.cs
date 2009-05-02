@@ -95,6 +95,11 @@ namespace InformationCenter.Services
             return (Guid)g.Value;
         }
 
+        public void AddFieldToTemplate(Guid TemplateID, Guid FieldID)
+        {
+            Entities.AddFieldToTemplate(TemplateID, FieldID).First();
+        }
+
         public bool AddDocumentDescription(string Name, Guid DocumentID, Dictionary<Field, object> FieldsWithValues)
         {
             return Worker.AddDocDescription(Name, DocumentID, FieldsWithValues);
