@@ -20,7 +20,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("InformationCenterModel", "FK_FieldTemplate_Template", "Template", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(InformationCenter.Data.Template), "NNFieldTemplate", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(InformationCenter.Data.NNFieldTemplate))]
 
 // Original file name:
-// Generation date: 02.05.2009 19:23:23
+// Generation date: 02.05.2009 20:12:31
 namespace InformationCenter.Data
 {
     
@@ -398,40 +398,6 @@ namespace InformationCenter.Data
                 fieldIdParameter = new global::System.Data.Objects.ObjectParameter("fieldId", typeof(global::System.Guid));
             }
             return base.ExecuteFunction<StringFieldValue>("GetStringCollection", fieldIdParameter);
-        }
-        /// <summary>
-        /// There are no comments for InformationCenterModel.AddDocumentDescription in the schema.
-        /// </summary>
-        public global::System.Data.Objects.ObjectResult<IntValue> AddDocumentDescription(string name, global::System.Nullable<global::System.Guid> documentId, string tempFieldsTableName, global::System.Data.Objects.ObjectParameter id)
-        {
-            global::System.Data.Objects.ObjectParameter nameParameter;
-            if ((name != null))
-            {
-                nameParameter = new global::System.Data.Objects.ObjectParameter("name", name);
-            }
-            else
-            {
-                nameParameter = new global::System.Data.Objects.ObjectParameter("name", typeof(string));
-            }
-            global::System.Data.Objects.ObjectParameter documentIdParameter;
-            if (documentId.HasValue)
-            {
-                documentIdParameter = new global::System.Data.Objects.ObjectParameter("documentId", documentId);
-            }
-            else
-            {
-                documentIdParameter = new global::System.Data.Objects.ObjectParameter("documentId", typeof(global::System.Guid));
-            }
-            global::System.Data.Objects.ObjectParameter tempFieldsTableNameParameter;
-            if ((tempFieldsTableName != null))
-            {
-                tempFieldsTableNameParameter = new global::System.Data.Objects.ObjectParameter("tempFieldsTableName", tempFieldsTableName);
-            }
-            else
-            {
-                tempFieldsTableNameParameter = new global::System.Data.Objects.ObjectParameter("tempFieldsTableName", typeof(string));
-            }
-            return base.ExecuteFunction<IntValue>("AddDocumentDescription", nameParameter, documentIdParameter, tempFieldsTableNameParameter, id);
         }
         /// <summary>
         /// There are no comments for InformationCenterModel.AddField in the schema.

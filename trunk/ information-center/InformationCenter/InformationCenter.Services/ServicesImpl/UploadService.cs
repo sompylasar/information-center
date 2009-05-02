@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using InformationCenter.Data;
@@ -81,20 +82,14 @@ namespace InformationCenter.Services.ServicesImpl
             return Engine.AddDocument(FileName, new ByteBlockReader(Stream).ReadToEnd().ToArray());
         }
 
-        public Guid AddDescription(Guid DocumentID, string Name, Dictionary<FieldView, object> FieldsWithValues)
+        public bool AddDescription(Guid DocumentID, string Name, Dictionary<FieldView, object> FieldsWithValues)
         {
-            // TODO: validate document ID
-            // TODO: validate types of values
-
-            Dictionary<Field, object> fields = new Dictionary<Field, object>();
-            foreach (KeyValuePair<FieldView, object> valuePair in FieldsWithValues)
-            {
-                fields.Add(valuePair.Key.Field, valuePair.Value);
-            }
-
-            Guid descriptionId = Engine.AddDocumentDescription(Name, DocumentID, fields);
-
-            return descriptionId;
+            if (FieldsWithValues == null) throw new ArgumentNullException("FieldsWithValues");
+            if (Engine.CreateQuery<Document>().Where(d => d.ID == DocumentID).FirstOrDefault() == null)
+                throw new DocumentNotFoundException(DocumentID);
+             Dictionary<Field, object> param = new Dictionary<Field,object>();
+            foreach (var pair in FieldsWithValues) param.Add(pair.Key.Field, pair.Value);
+            return Engine.AddDocumentDescription(Name, DocumentID, param);
         }
 
         public void Dispose()
