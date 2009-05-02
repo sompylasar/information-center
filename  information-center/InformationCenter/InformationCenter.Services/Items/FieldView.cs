@@ -29,7 +29,7 @@ namespace InformationCenter.Services
         /// </summary>
         public Guid ID { get { return Field.ID; } }
 
-        protected Field Field { get { return entity as Field; } }
+        internal Field Field { get { return entity as Field; } }
 
         /// <summary>
         /// порядковый номер

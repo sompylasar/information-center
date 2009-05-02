@@ -79,7 +79,23 @@ namespace InformationCenter.Services.ServicesImpl
             if (ex != null) throw ex;
             return Engine.AddDocument(FileName, new ByteBlockReader(Stream).ReadToEnd().ToArray());
         }
- 
+
+        public Guid AddDescription(Guid DocumentID, string Name, Dictionary<FieldView, object> FieldsWithValues)
+        {
+            // TODO: validate document ID
+            // TODO: validate types of values
+
+            Dictionary<Field, object> fields = new Dictionary<Field, object>();
+            foreach (KeyValuePair<FieldView, object> valuePair in FieldsWithValues)
+            {
+                fields.Add(valuePair.Key.Field, valuePair.Value);
+            }
+
+            Guid descriptionId = Engine.AddDocumentDescription(Name, DocumentID, fields);
+
+            return descriptionId;
+        }
+
         public void Dispose()
         {
             if (engine != null)

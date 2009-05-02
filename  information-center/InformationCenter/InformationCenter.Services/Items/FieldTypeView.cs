@@ -19,7 +19,7 @@ namespace InformationCenter.Services
 
         #region Свойства
 
-        protected FieldType FieldType { get { return entity as FieldType; } }
+        internal FieldType FieldType { get { return entity as FieldType; } }
 
         public Guid ID { get { return FieldType.ID; } }
 
