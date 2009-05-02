@@ -2,8 +2,13 @@
 <%@ Import Namespace="InformationCenter.Services"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-	Редактирование шаблонов
+	Редактирование шаблона - Информационный центр ВУЗа
 </asp:Content>
+
+<asp:Content ID="Content5" ContentPlaceHolderID="MainHeaderContent" runat="server">
+Редактирование шаблона
+</asp:Content>
+
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -28,8 +33,3 @@
 
 </asp:Content>
 
-<asp:Content ID="Content3" ContentPlaceHolderID="HeadContent" runat="server">
-</asp:Content>
-
-<asp:Content ID="Content4" ContentPlaceHolderID="MainHeaderContent" runat="server">
-</asp:Content>
