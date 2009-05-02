@@ -19,11 +19,7 @@ namespace InformationCenter.Services.ServicesImpl
 
         #region Конструкторы
 
-        public UploadService(string ConnectionString)
-        {
-            connectionString = ConnectionString;
-            var e = Engine; // дернуть Engine, чтобы он проверил соединение по указанному connectionString
-        }
+        public UploadService(string ConnectionString) { connectionString = ConnectionString; }
 
         #endregion
 
@@ -59,6 +55,11 @@ namespace InformationCenter.Services.ServicesImpl
         public FieldView[] GetFieldsOfTemplate(TemplateView TemplateView)
         {
             return Array.ConvertAll<Field, FieldView>(Engine.GetTemplateFields(TemplateView.ID), input => new FieldView(input));
+        }
+
+        public void RemoveFieldFromTemplate(TemplateView TemplateView, FieldView FieldView)
+        {
+            Engine.RemoveFieldFromTemplate(TemplateView.ID, FieldView.ID);
         }
 
         private Exception ValidateFile(Stream Stream, string FileName, string ContentType, int ContentLength)

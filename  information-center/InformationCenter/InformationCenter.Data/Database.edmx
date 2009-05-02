@@ -282,6 +282,10 @@
           <Parameter Name="fieldTypeId" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="id" Type="uniqueidentifier" Mode="InOut" />
         </Function>
+        <Function Name="AddFieldToTemplate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="templateId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="fieldId" Type="uniqueidentifier" Mode="In" />
+        </Function>
         <Function Name="AddTemplate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="name" Type="nvarchar" Mode="In" />
           <Parameter Name="tempFieldsTableName" Type="nvarchar" Mode="In" />
@@ -301,6 +305,13 @@
         <Function Name="DeleteTemplate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id" Type="uniqueidentifier" Mode="In" />
         </Function>
+        <Function Name="GetDescriptionFields" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="uniqueidentifier" Mode="In" />
+        </Function>
+        <Function Name="GetDescriptionFieldsPvt" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="resTable" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="GetFieldConcreteValue" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="fieldValueId" Type="uniqueidentifier" Mode="In" />
         </Function>
@@ -312,6 +323,13 @@
           <Parameter Name="templateId" Type="uniqueidentifier" Mode="In" />
         </Function>
         <Function Name="GetTemplates" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="RemoveFieldFromTemplate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="templateId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="fieldId" Type="uniqueidentifier" Mode="In" />
+        </Function>
+        <Function Name="SearchDescriptions" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="tempSearchItemTable" Type="nvarchar" Mode="In" />
+        </Function>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -396,7 +414,19 @@
           <FunctionImport Name="DeleteField" EntitySet="IntValue" ReturnType="Collection(InformationCenterModel.IntValue)">
             <Parameter Name="id" Mode="In" Type="Guid" /></FunctionImport>
           <FunctionImport Name="DeleteTemplate" EntitySet="IntValue" ReturnType="Collection(InformationCenterModel.IntValue)">
-            <Parameter Name="id" Mode="In" Type="Guid" /></FunctionImport></EntityContainer>
+            <Parameter Name="id" Mode="In" Type="Guid" /></FunctionImport>
+          <FunctionImport Name="AddUser" EntitySet="IntValue" ReturnType="Collection(InformationCenterModel.IntValue)">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="login" Mode="In" Type="String" />
+            <Parameter Name="pass" Mode="In" Type="String" /></FunctionImport>
+          <FunctionImport Name="AddFieldToTemplate" EntitySet="IntValue" ReturnType="Collection(InformationCenterModel.IntValue)">
+            <Parameter Name="templateId" Mode="In" Type="Guid" />
+            <Parameter Name="fieldId" Mode="In" Type="Guid" /></FunctionImport>
+          <FunctionImport Name="RemoveFieldFromTemplate" EntitySet="IntValue" ReturnType="Collection(InformationCenterModel.IntValue)">
+            <Parameter Name="templateId" Mode="In" Type="Guid" />
+            <Parameter Name="fieldId" Mode="In" Type="Guid" /></FunctionImport>
+          <FunctionImport Name="SearchDescriptions" EntitySet="DocDescription" ReturnType="Collection(InformationCenterModel.DocDescription)">
+            <Parameter Name="tempSearchItemTable" Mode="In" Type="String" /></FunctionImport></EntityContainer>
         <EntityType Name="DateTimeFieldValue">
           <Key>
             <PropertyRef Name="ID" />
@@ -747,7 +777,11 @@
           <FunctionImportMapping FunctionImportName="AddTemplate" FunctionName="InformationCenterModel.Store.AddTemplate" />
           <FunctionImportMapping FunctionImportName="DeleteDocument" FunctionName="InformationCenterModel.Store.DeleteDocument" />
           <FunctionImportMapping FunctionImportName="DeleteField" FunctionName="InformationCenterModel.Store.DeleteField" />
-          <FunctionImportMapping FunctionImportName="DeleteTemplate" FunctionName="InformationCenterModel.Store.DeleteTemplate" /></EntityContainerMapping>
+          <FunctionImportMapping FunctionImportName="DeleteTemplate" FunctionName="InformationCenterModel.Store.DeleteTemplate" />
+          <FunctionImportMapping FunctionImportName="AddUser" FunctionName="InformationCenterModel.Store.AddUser" />
+          <FunctionImportMapping FunctionImportName="AddFieldToTemplate" FunctionName="InformationCenterModel.Store.AddFieldToTemplate" />
+          <FunctionImportMapping FunctionImportName="RemoveFieldFromTemplate" FunctionName="InformationCenterModel.Store.RemoveFieldFromTemplate" />
+          <FunctionImportMapping FunctionImportName="SearchDescriptions" FunctionName="InformationCenterModel.Store.SearchDescriptions" /></EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace InformationCenter.Data
 {
@@ -7,18 +8,46 @@ namespace InformationCenter.Data
     public class SearchRequest
     {
 
-        public Dictionary<string, object> Fields { get; protected set; }
+        #region Поля
+
+        private SearchMode mode = SearchMode.And;
+        private List<SearchItem> items = new List<SearchItem>();
+
+        #endregion
+
+        #region Конструкторы
 
         public SearchRequest()
         {
-            Fields = new Dictionary<string, object>();
         }
 
-        public void Validate()
+        #endregion
+
+        #region Свойства
+
+        [DefaultValue(typeof(SearchMode), "SearchMode.And")]
+        public SearchMode Mode
         {
-            if (!Fields.ContainsKey("Author") || !Fields.ContainsKey("Title"))
-                throw new ApplicationException("Поле названия либо поле автора должно быть заполнено");
+            get { return mode; }
+            set { mode = value; }
         }
+
+        public List<SearchItem> Items { get { return items; } }
+
+        #endregion
+
+    }
+
+    [Description("Режим поиска")]
+    public enum SearchMode
+    {
+
+        [Description("И")]
+        And,
+
+        [Description("Или")]
+        Or
+
     }
 
 }

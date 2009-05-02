@@ -20,7 +20,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("InformationCenterModel", "FK_FieldTemplate_Template", "Template", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(InformationCenter.Data.Template), "NNFieldTemplate", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(InformationCenter.Data.NNFieldTemplate))]
 
 // Original file name:
-// Generation date: 02.05.2009 0:05:07
+// Generation date: 02.05.2009 19:23:23
 namespace InformationCenter.Data
 {
     
@@ -530,6 +530,106 @@ namespace InformationCenter.Data
                 idParameter = new global::System.Data.Objects.ObjectParameter("id", typeof(global::System.Guid));
             }
             return base.ExecuteFunction<IntValue>("DeleteTemplate", idParameter);
+        }
+        /// <summary>
+        /// There are no comments for InformationCenterModel.AddUser in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectResult<IntValue> AddUser(string name, string login, string pass)
+        {
+            global::System.Data.Objects.ObjectParameter nameParameter;
+            if ((name != null))
+            {
+                nameParameter = new global::System.Data.Objects.ObjectParameter("name", name);
+            }
+            else
+            {
+                nameParameter = new global::System.Data.Objects.ObjectParameter("name", typeof(string));
+            }
+            global::System.Data.Objects.ObjectParameter loginParameter;
+            if ((login != null))
+            {
+                loginParameter = new global::System.Data.Objects.ObjectParameter("login", login);
+            }
+            else
+            {
+                loginParameter = new global::System.Data.Objects.ObjectParameter("login", typeof(string));
+            }
+            global::System.Data.Objects.ObjectParameter passParameter;
+            if ((pass != null))
+            {
+                passParameter = new global::System.Data.Objects.ObjectParameter("pass", pass);
+            }
+            else
+            {
+                passParameter = new global::System.Data.Objects.ObjectParameter("pass", typeof(string));
+            }
+            return base.ExecuteFunction<IntValue>("AddUser", nameParameter, loginParameter, passParameter);
+        }
+        /// <summary>
+        /// There are no comments for InformationCenterModel.AddFieldToTemplate in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectResult<IntValue> AddFieldToTemplate(global::System.Nullable<global::System.Guid> templateId, global::System.Nullable<global::System.Guid> fieldId)
+        {
+            global::System.Data.Objects.ObjectParameter templateIdParameter;
+            if (templateId.HasValue)
+            {
+                templateIdParameter = new global::System.Data.Objects.ObjectParameter("templateId", templateId);
+            }
+            else
+            {
+                templateIdParameter = new global::System.Data.Objects.ObjectParameter("templateId", typeof(global::System.Guid));
+            }
+            global::System.Data.Objects.ObjectParameter fieldIdParameter;
+            if (fieldId.HasValue)
+            {
+                fieldIdParameter = new global::System.Data.Objects.ObjectParameter("fieldId", fieldId);
+            }
+            else
+            {
+                fieldIdParameter = new global::System.Data.Objects.ObjectParameter("fieldId", typeof(global::System.Guid));
+            }
+            return base.ExecuteFunction<IntValue>("AddFieldToTemplate", templateIdParameter, fieldIdParameter);
+        }
+        /// <summary>
+        /// There are no comments for InformationCenterModel.RemoveFieldFromTemplate in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectResult<IntValue> RemoveFieldFromTemplate(global::System.Nullable<global::System.Guid> templateId, global::System.Nullable<global::System.Guid> fieldId)
+        {
+            global::System.Data.Objects.ObjectParameter templateIdParameter;
+            if (templateId.HasValue)
+            {
+                templateIdParameter = new global::System.Data.Objects.ObjectParameter("templateId", templateId);
+            }
+            else
+            {
+                templateIdParameter = new global::System.Data.Objects.ObjectParameter("templateId", typeof(global::System.Guid));
+            }
+            global::System.Data.Objects.ObjectParameter fieldIdParameter;
+            if (fieldId.HasValue)
+            {
+                fieldIdParameter = new global::System.Data.Objects.ObjectParameter("fieldId", fieldId);
+            }
+            else
+            {
+                fieldIdParameter = new global::System.Data.Objects.ObjectParameter("fieldId", typeof(global::System.Guid));
+            }
+            return base.ExecuteFunction<IntValue>("RemoveFieldFromTemplate", templateIdParameter, fieldIdParameter);
+        }
+        /// <summary>
+        /// There are no comments for InformationCenterModel.SearchDescriptions in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectResult<DocDescription> SearchDescriptions(string tempSearchItemTable)
+        {
+            global::System.Data.Objects.ObjectParameter tempSearchItemTableParameter;
+            if ((tempSearchItemTable != null))
+            {
+                tempSearchItemTableParameter = new global::System.Data.Objects.ObjectParameter("tempSearchItemTable", tempSearchItemTable);
+            }
+            else
+            {
+                tempSearchItemTableParameter = new global::System.Data.Objects.ObjectParameter("tempSearchItemTable", typeof(string));
+            }
+            return base.ExecuteFunction<DocDescription>("SearchDescriptions", tempSearchItemTableParameter);
         }
     }
     /// <summary>
