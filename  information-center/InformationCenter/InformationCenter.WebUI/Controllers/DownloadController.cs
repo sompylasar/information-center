@@ -1,5 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Web.Mvc;
+using System.Web.Routing;
 using InformationCenter.Services;
 using InformationCenter.WebUI.Models;
 
@@ -16,7 +20,7 @@ namespace InformationCenter.WebUI.Controllers
             _client = new ServiceCenterClient(Session["UserName"] as string, Session["Password"] as string);
         }
 
-        public ActionResult Index()
+        public ActionResult Index(Guid? id, string encodedFilename)
         {
             if (AuthHelper.NeedRedirectToAuth(this)) return RedirectToAction("LogOn", "Account");
 
@@ -27,10 +31,11 @@ namespace InformationCenter.WebUI.Controllers
                 actionResult = View("Index");
                 try
                 {
-                    if (Request["id"] == null)
+                    if (id == null && Request["id"] == null)
                         throw new Exception("Идентификатор документа не задан.");
 
-                    Guid documentId = new Guid(Request["id"]);
+                    Guid documentId = (id == null ? new Guid(Request["id"]) : id.Value);
+
                     DocumentView document = _client.ServiceCenter.DownloadService.GetDocument(documentId);
                     if (document == null)
                         throw new Exception("Документ с указанным идентификатором не найден.");
@@ -41,7 +46,14 @@ namespace InformationCenter.WebUI.Controllers
                     ViewData["Document.FileName"] = filename;
                     ViewData["Document.ContentType"] = filename;
 
-                    actionResult = View("Download");
+                    if (string.IsNullOrEmpty(encodedFilename))
+                    {
+                        actionResult = View("Download");
+                    }
+                    else
+                    {
+                        actionResult = new DownloadResult(document.BinaryData, filename, contentType);
+                    }
                 }
                 catch (Exception ex)
                 {

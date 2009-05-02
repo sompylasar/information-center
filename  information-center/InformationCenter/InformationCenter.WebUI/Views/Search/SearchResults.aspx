@@ -1,4 +1,5 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+<%@ Import Namespace="InformationCenter.WebUI.Models"%>
 <%@ Import Namespace="InformationCenter.Services"%>
 
 <asp:Content ID="searchResultsTitle" ContentPlaceHolderID="TitleContent" runat="server">
@@ -41,10 +42,19 @@
         <p class="search-results">
             <span id="total"><%=resultsCount==0 ? "" : "Найдено документов: "+resultsCount.ToString() %></span>
             <ol>
-                <%foreach (SearchResultItem result in results){%>
+                <%foreach (SearchResultItem result in results){
+                      string filename, contentType;
+                      FileHelper.SplitFilename(result.Document.FileName, out filename, out contentType);
+                      %>
                 <li>
-                    <div><%=Html.Encode(result.Header) %></div>
-                    <div><%=Html.ActionLink("Просмотр", "Index", "Download", new { id = result.ID }, null)%></div>
+                    <div><%=Html.Encode(filename) %> (<%=Html.Encode(contentType) %>)</div>
+                    <div>
+                        <label><%=Html.Encode(result.Description.Name) %></label>
+                        <% foreach (FieldValueView descriptionField in result.Description.DescriptionFields) { %>
+                        <ul><%=Html.Encode(descriptionField.Field.Name + "=\"" + descriptionField.Value + "\"") %></ul>
+                        <% } %>
+                    </div>
+                    <div><%=Html.ActionLink("Просмотр", "Index", "Download", new { id = result.Document.ID }, null)%></div>
                 </li>
                 <%}%>
             </ol>
