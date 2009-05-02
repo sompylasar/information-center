@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Objects;
-using System.Text;
+using System.Linq;
 using System.Data.SqlClient;
 using InformationCenter.Data;
 using System.Data;
@@ -34,8 +34,9 @@ namespace InformationCenter.DBUtils
 
         public string ConnectionString { get { return csb.ConnectionString; } }
         private SqlConnectionStringBuilder csb = new SqlConnectionStringBuilder();
-        private IDbConnectionProvider provider {get; set;}
-
+        private IDbConnectionProvider provider {get; set; }
+        
+        #region Execute
         /// <summary>
         /// Выполнить запрос к БД
         /// </summary>
@@ -228,7 +229,8 @@ namespace InformationCenter.DBUtils
 
             return result;
         }
-
+#endregion
+        
         /// <summary>
         /// Создаёт временную таблицу состоящую из полей описания
         /// </summary>
@@ -306,19 +308,22 @@ namespace InformationCenter.DBUtils
             bool result = false;
 
             string tempTableName = "##FieldsTempTable_" + Guid.NewGuid().ToString("N");
-            string query = GenQueryCreateTable(tempTableName, new ColumnDescription[]
-                                                                  {
-                                                                      new ColumnDescription
-                                                                          {
-                                                                              Name = "FieldID",
-                                                                              Type = SqlDbType.UniqueIdentifier
-                                                                          },
-                                                                          new ColumnDescription
-                                                                          {
-                                                                              Name = "FieldValue",
-                                                                              Type = SqlDbType.NVarChar
-                                                                          }
-                                                                  });
+            List<ColumnDescription> cds = new List<ColumnDescription>();
+            cds.Add(new ColumnDescription
+            {
+                Name = "FieldID",
+                Type = SqlDbType.UniqueIdentifier
+            });
+
+            foreach (var fieldType in fields.Keys.Select(f => { if (!f.FieldTypeReference.IsLoaded) f.FieldTypeReference.Load(); return f.FieldType; }).Distinct())
+            {
+                //cds.Add(new ColumnDescription()
+                //    {
+                //        Name = "FieldValue",
+                //        Type = Enum.Parse(typeof(SqlDbType))
+                //    });
+            }
+            string query = GenQueryCreateTable(tempTableName, cds);
 
             int i = 0;
             List<SqlParameter> parameters = new List<SqlParameter>();
