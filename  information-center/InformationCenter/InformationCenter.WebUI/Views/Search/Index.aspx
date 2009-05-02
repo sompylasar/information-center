@@ -11,6 +11,8 @@
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="HeadContent" runat="server">
+    <script type="text/javascript" src="/Scripts/jquery.autocomplete.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/Content/jquery.autocomplete/styles.css" />
     <style type="text/css">
     </style>
 </asp:Content>
@@ -39,6 +41,17 @@
                     $('#frmSearchDocument_additional_in_form').hide();
                 }
             }
+            
+            $(':text').each(function () {
+                $input = $(this);
+                $input.autocomplete({ 
+                    serviceUrl: '/Search/Autocomplete/'+$input.attr('name').replace(/^_/, ''),
+                    minChars: 2, 
+                    delimiter: /(,|;)\s*/, // regex or character
+                    maxHeight: 400,
+                    deferRequestBy: 200, //miliseconds
+                });
+            });
 
             $('#chkUseAdditional')
                 .change(function () {
