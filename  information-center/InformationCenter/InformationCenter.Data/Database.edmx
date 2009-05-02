@@ -95,6 +95,7 @@
           <Property Name="Name" Type="varchar" Nullable="false" MaxLength="128" />
           <Property Name="SqlName" Type="varchar" Nullable="false" MaxLength="128" />
           <Property Name="DotNetType" Type="varchar" Nullable="false" MaxLength="128" />
+          <Property Name="SqlType" Type="varchar" Nullable="false" MaxLength="128" />
         </EntityType>
         <EntityType Name="FieldValue">
           <Key>
@@ -464,7 +465,8 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="128" Unicode="false" FixedLength="false" />
           <Property Name="SqlName" Type="String" Nullable="false" MaxLength="128" Unicode="false" FixedLength="false" />
           <NavigationProperty Name="Field" Relationship="InformationCenterModel.FK_Field_FieldType" FromRole="FieldType" ToRole="Field" />
-          <Property Name="DotNetType" Type="String" Nullable="false" /></EntityType>
+          <Property Name="DotNetType" Type="String" Nullable="false" />
+          <Property Name="SqlType" Type="String" Nullable="false" /></EntityType>
         <EntityType Name="FieldValue">
           <Key>
             <PropertyRef Name="ID" />
@@ -634,6 +636,7 @@
           <EntitySetMapping Name="FieldType">
             <EntityTypeMapping TypeName="IsTypeOf(InformationCenterModel.FieldType)">
               <MappingFragment StoreEntitySet="FieldType">
+                <ScalarProperty Name="SqlType" ColumnName="SqlType" />
                 <ScalarProperty Name="DotNetType" ColumnName="DotNetType" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
