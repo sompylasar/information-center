@@ -1,4 +1,5 @@
 <%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+<%@ Import Namespace="InformationCenter.WebUI.Helpers"%>
 <%@ Import Namespace="InformationCenter.Services"%>
 
 <asp:Content ID="indexTitle" ContentPlaceHolderID="TitleContent" runat="server">
@@ -85,6 +86,7 @@
     </script>
     
     <h2>Поиск документов</h2>
+    
     <form action="/Search/Query" method="post" id="frmSearchDocument" class="search-form">
         <%
             var fields = (IEnumerable<FieldView>)(ViewData["Fields"] ?? new FieldView[0]);
@@ -136,8 +138,7 @@
             </fieldset>
             </div>
         </p>
-        <p><button type="submit">Найти!</button></p>
-        <p><a href="/Search/New">Новый поиск</a></p>
+        <p><button type="submit"><strong>Найти!</strong></button> <button type="button" onclick="window.location.href='/Search/New'">Очистить поля</button></p>
     </form>
     <div id="frmSearchDocument_additional" style="display:none;">
         <table class="search-fields search-fields-additional">
