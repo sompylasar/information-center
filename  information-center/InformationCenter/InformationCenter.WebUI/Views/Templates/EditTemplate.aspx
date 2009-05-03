@@ -5,9 +5,6 @@
 Информационный центр ВУЗа
 </asp:Content>
 
-<asp:Content ID="Content3" ContentPlaceHolderID="MainHeaderContent" runat="server">
-Редактирование шаблона
-</asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">
