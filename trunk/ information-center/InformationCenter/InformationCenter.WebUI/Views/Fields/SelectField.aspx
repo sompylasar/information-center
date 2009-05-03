@@ -5,10 +5,6 @@
 Информационный центр ВУЗа
 </asp:Content>
 
-<asp:Content ID="Content5" ContentPlaceHolderID="MainHeaderContent" runat="server">
-Редактирование поля
-</asp:Content>
-
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
