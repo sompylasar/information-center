@@ -57,6 +57,8 @@
     <Compile Include="Items\FieldView.cs" />
     <Compile Include="Engine\InformationCenterEngine.cs" />
     <Compile Include="Engine\InformationCenterEngineLoader.cs" />
+    <Compile Include="Items\SearchItemView.cs" />
+    <Compile Include="Items\SearchRequestView.cs" />
     <Compile Include="Items\TemplateView.cs" />
     <Compile Include="Items\ViewItem.cs" />
     <Compile Include="Main\IDownloadService.cs" />

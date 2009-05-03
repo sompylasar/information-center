@@ -11,7 +11,7 @@ namespace InformationCenter.Services
         FieldView[] GetFields();
         object GetValue(FieldValueView Value);
         object[] GetValuesOfField(FieldView FieldView);
-        DocDescriptionView[] Query(SearchRequest Request);
+        DocDescriptionView[] Query(SearchRequestView Request);
     }
 
 }

@@ -67,15 +67,15 @@ namespace InformationCenter.Services
             foreach (SearchItem item in Request.Items)
             {
                 if (item == null) return new ItemIsNullException(Request.Items, Request.Items.IndexOf(item));
-                Field value = Engine.CreateQuery<Field>().Where(f => f.ID == item.FieldID).FirstOrDefault();
-                if (value == null) return new FieldNotFoundException(item.FieldID);
-                value.FieldTypeReference.Load();
-                Type t = Type.GetType(value.FieldType.DotNetType);
-                if (t == null) return new DotNetTypeNotExistsException(value.FieldType.DotNetType);
+                //Field value = Engine.CreateQuery<Field>().Where(f => f.ID == item.FieldID).FirstOrDefault();
+                //if (value == null) return new FieldNotFoundException(item.FieldID);
+                item.Field.FieldTypeReference.Load();
+                Type t = Type.GetType(item.Field.FieldType.DotNetType);
+                if (t == null) return new DotNetTypeNotExistsException(item.Field.FieldType.DotNetType);
                 if (item.FieldValue == null)
                 {
-                    if (!value.Nullable)
-                        return new NullableValueNotAllowedException(new FieldView(value));
+                    if (!item.Field.Nullable)
+                        return new NullableValueNotAllowedException(new FieldView(item.Field));
                 }
                 else
                 {
@@ -166,12 +166,13 @@ namespace InformationCenter.Services
         /// </summary>
         /// <param name="Request">запрос с параметрами и условиями поиска</param>
         /// <returns>коллекция результатов поиска - массив описаний документов</returns>
-        public DocDescriptionView[] Query(SearchRequest Request)
+        public DocDescriptionView[] Query(SearchRequestView Request)
         {
             if (Request == null) throw new ArgumentNullException("Request");
-            Exception ex = ValidateRequest(Request);
+            SearchRequest inner = Request.ToInnerRequest();
+            Exception ex = ValidateRequest(inner);
             if (ex != null) throw ex;
-            return Engine.SearchDocDescription(Request).Select(d => new DocDescriptionView(d)).ToArray();
+            return Engine.SearchDocDescription(inner).Select(d => new DocDescriptionView(d)).ToArray();
 
             /*
             var results = new List<SearchResultItem>();
