@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using InformationCenter.Data;
 using InformationCenter.Services;
 using InformationCenter.WebUI.Models;
 using System.Web;
@@ -32,7 +31,7 @@ namespace InformationCenter.WebUI.Controllers
             if (_client.Available)
             {
                 ViewData["Fields"] = _client.ServiceCenter.SearchService.GetFields();
-                ViewData["SearchRequest"] = new SearchRequest();
+                ViewData["SearchRequest"] = new SearchRequestView();
                 ViewData["UseAdditionalFields"] = (Session["SearchUseAdditionalFields"] ?? false);
 
                 actionResult = View();
@@ -58,7 +57,7 @@ namespace InformationCenter.WebUI.Controllers
 
                 bool useAdditional = more ?? false;
 
-                var request = new SearchRequest();
+                var request = new SearchRequestView();
 
                 var fields = _client.ServiceCenter.SearchService.GetFields();
 
@@ -74,22 +73,21 @@ namespace InformationCenter.WebUI.Controllers
 
                         TempData[fieldKey] = fieldValueStr;
 
-                        bool found = false;
+                        FieldView field = null;
                         FieldTypeView fieldTypeView = null;
                         Type fieldType = typeof(string);
                         foreach (FieldView f in fields)
                         {
                             if (f.ID == fieldId)
                             {
-                                found = true;
-
+                                field = f;
                                 fieldTypeView = f.FieldTypeView;
                                 fieldType = f.FieldTypeView.TypeOfField;
 
                                 break;
                             }
                         }
-                        if (!found)
+                        if (field == null)
                         {
                             ModelState.AddModelError(fieldKey, "Поле с идентификатором " + fieldId + " не найдено");
                             continue;
@@ -101,7 +99,7 @@ namespace InformationCenter.WebUI.Controllers
 
                             try
                             {
-                                request.Items.Add(new SearchItem(fieldId, fieldValue));
+                                request.Items.Add(new SearchItemView(field, fieldValue));
                             }
                             catch (Exception ex)
                             {

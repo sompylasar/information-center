@@ -1,5 +1,5 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
-<%@ Import Namespace="InformationCenter.Data"%>
+<%@ Import Namespace="LogicUtils"%>
 <%@ Import Namespace="InformationCenter.WebUI.Models"%>
 <%@ Import Namespace="InformationCenter.Services"%>
 
@@ -17,18 +17,18 @@
     <h2>Результаты поиска</h2>
     <%
         var fields = (IEnumerable<FieldView>)(ViewData["Fields"] ?? new FieldView[0]);
-        var request = (SearchRequest)(ViewData["SearchRequest"] ?? new SearchRequest());
+        var request = (SearchRequestView)(ViewData["SearchRequest"] ?? new SearchRequestView());
 
         var results = (IEnumerable<DocDescriptionView>)(ViewData["SearchResultItems"] ?? new DocDescriptionView[0]);
         int resultsCount = results.Count();
         
         string query = "", sep = "";
-        foreach (SearchItem searchItem in request.Items)
+        foreach (SearchItemView searchItem in request.Items)
         {
             string fieldName = "", fieldValue = searchItem.FieldValue.ToString();
             foreach (FieldView field in fields)
             {
-                if (searchItem.FieldID == field.ID)
+                if (searchItem.Field.ID == field.ID)
                 {
                     fieldName = field.Name;
                     break;

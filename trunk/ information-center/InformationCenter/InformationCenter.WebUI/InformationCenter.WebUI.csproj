@@ -32,10 +32,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.Web.Mvc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -124,9 +124,9 @@
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InformationCenter.Data\InformationCenter.Data.csproj">
-      <Project>{1D947340-9F10-42D1-B7A2-9A34106D0242}</Project>
-      <Name>InformationCenter.Data</Name>
+    <ProjectReference Include="..\InformationCenter.LogicUtils\InformationCenter.LogicUtils.csproj">
+      <Project>{0DF8EE79-4875-424C-83C0-90EBD909F973}</Project>
+      <Name>InformationCenter.LogicUtils</Name>
     </ProjectReference>
     <ProjectReference Include="..\InformationCenter.Services\InformationCenter.Services.csproj">
       <Project>{ACD9A65D-E667-4468-ABDC-7E078A733B0F}</Project>
