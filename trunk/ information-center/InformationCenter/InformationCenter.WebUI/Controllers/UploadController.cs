@@ -122,7 +122,7 @@ namespace InformationCenter.WebUI.Controllers
                 var file = HttpContext.Request.Files["f"];
                 if (file == null)
                 {
-                    ModelState.AddModelError("f", "Файл не был отправлен");
+                    ModelState.AddModelError("f", "Файл не был загружен.");
                 }
                 string descriptionName = (Request["DescriptionName"] ?? "").Trim();
                 if (string.IsNullOrEmpty(descriptionName))
