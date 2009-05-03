@@ -25,7 +25,7 @@
     %>
     <%= Html.ValidationSummary("Введенные данные некорректны. Проверьте их и повторите попытку.") %>
     
-    <form action="/Upload/FillDescription" id="frmSelectTemplate" method="get" enctype="multipart/form-data">
+    <form action="/Upload/TemplateSelected" id="frmSelectTemplate" method="get" enctype="multipart/form-data">
         <p><span class="error"><%=ViewData["error"]%></span></p>
         <p><label for="selTemplate">Шаблон:</label><select id="selTemplate" name="tpl">
             <option value="">(не использовать)</option>
