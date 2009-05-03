@@ -13,6 +13,7 @@ namespace InformationCenter.Services
 
         TemplateView[] GetTemplates();
         FieldView[] GetFieldsOfTemplate(TemplateView TemplateView);
+        FieldTypeView[] GetFieldTypes();
 
         #endregion
 

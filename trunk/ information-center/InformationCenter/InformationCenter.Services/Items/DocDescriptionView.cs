@@ -10,7 +10,7 @@ namespace InformationCenter.Services
     /// <summary>
     /// Описание документа.
     /// </summary>
-    public class DocDescriptionView : ViewItem
+    public class DocDescriptionView : ViewItem, IEquatable<DocDescriptionView>
     {
 
         #region Поля
@@ -82,7 +82,17 @@ namespace InformationCenter.Services
         #endregion
 
         #region Методы
-        
+
+        /// <summary>
+        /// получить хеш-код
+        /// </summary>
+        /// <returns>хеш-код</returns>
+        public override int GetHashCode() { return ID.GetHashCode(); }
+
+        public override bool Equals(object obj) { return Equals(obj as DocDescriptionView); }
+
+        public bool Equals(DocDescriptionView other) { return object.ReferenceEquals(other, this) || (other != null && other.ID == ID); }
+
         /// <summary>
         /// преобразовать в строку
         /// </summary>

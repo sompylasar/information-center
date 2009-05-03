@@ -180,6 +180,8 @@ namespace InformationCenter.Services
         /// <returns>массив полей</returns>
         public Field[] GetFields() { return Entities.GetFields().ToArray(); }
 
+        public FieldType[] GetFieldTypes() { return Entities.FieldType.ToArray(); }
+
         public object[] GetFieldValues(Field Field) { return GetFieldValues(Field.ID); }
 
         public object[] GetFieldValues(Guid FieldID)
