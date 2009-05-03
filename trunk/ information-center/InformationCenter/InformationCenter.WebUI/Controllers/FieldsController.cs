@@ -31,7 +31,7 @@ namespace InformationCenter.WebUI.Controllers
             InitServiceCenterClient();
             if (_client.Available)
             {
-                var fields = _client.ServiceCenter.SearchService.GetFields();
+                IEnumerable<FieldView> fields = _client.ServiceCenter.SearchService.GetFields().OrderBy(fld => fld.Order);
 
 
                 if (fields.Count() <= 0)
@@ -94,6 +94,9 @@ namespace InformationCenter.WebUI.Controllers
             InitServiceCenterClient();
             
             string fieldName = HttpContext.Request["fieldName"];
+            string fieldOrderStr = HttpContext.Request["fieldOrder"];
+            if (!string.IsNullOrEmpty(fieldOrderStr))
+                fieldOrderStr = fieldOrderStr.Trim();
 
             string fieldIdStr = (HttpContext.Request["fieldId"] ?? "");
             var dataTypes = _client.ServiceCenter.DocumentDescriptionService.GetFieldTypes();
@@ -106,32 +109,59 @@ namespace InformationCenter.WebUI.Controllers
 
                 if (selectedField != null)
                 {
+                    int fieldOrder;
 
+                    bool ParceResult = int.TryParse(fieldOrderStr, out fieldOrder);
+                    if (!(ParceResult && fieldOrder >=0))
+                        fieldOrder = -1;
+                    bool FieldNameCheckResult = true;
                     if (selectedField.Name != fieldName)
+                        FieldNameCheckResult = FieldHelper.CheckFieldName(fieldName, fields);
+
+                    if (selectedField.Order != fieldOrder || selectedField.Name != fieldName)
                     {
-                        if (FieldHelper.CheckFieldName(fieldName, fields))
+
+                        if (selectedField.Order != fieldOrder && ParceResult && fieldOrder >= 0 ||
+                            selectedField.Name != fieldName && FieldNameCheckResult)
                         {
-                            _client.ServiceCenter.DocumentDescriptionService.RenameField(selectedField, fieldName);
-                            fields = _client.ServiceCenter.SearchService.GetFields();
-                            selectedField = FieldHelper.GetFieldByGUIDStr(fieldIdStr, fields);
-                            ViewData["success"] = "Поле успешно сохранено";
+                            if (selectedField.Order != fieldOrder)
+                            {
+                                //Todo: Save field order
+                                ViewData["success"] = "Поле успешно сохранено";
+                            }
+
+                            if (selectedField.Name != fieldName)
+                            {
+                                _client.ServiceCenter.DocumentDescriptionService.RenameField(selectedField, fieldName);
+                                fields = _client.ServiceCenter.SearchService.GetFields();
+                                selectedField = FieldHelper.GetFieldByGUIDStr(fieldIdStr, fields);
+                                ViewData["success"] = "Поле успешно сохранено";
+                            }
+
                         }
                         else
                         {
-                            ViewData["error"] = "Поле с таким именем уже существует, задайте другое имя.";
+                            if (selectedField.Order != fieldOrder && !(ParceResult && fieldOrder >= 0))
+                            {
+                                ViewData["error"] =
+                                    "Ошибка при вводе порядка поля. Ожидается положительное целое число или 0";
+                            }
+                            if (selectedField.Name != fieldName && !FieldNameCheckResult)
+                            {
+                                ViewData["error"] = "Поле с таким именем уже существует, задайте другое имя.";
+                            }
                         }
-
                     }
                     else
                     {
                         ViewData["success"] = "Нет изменений";
                     }
 
-
-                    ViewData["SelectedField"] = selectedField;
-                    ViewData["DataTypes"] = dataTypes;
-
                 }
+                ViewData["SelectedField"] = selectedField;
+                ViewData["DataTypes"] = dataTypes;
+
+
 
 
             }
@@ -197,6 +227,10 @@ namespace InformationCenter.WebUI.Controllers
 
             string fieldName = HttpContext.Request["fieldName"];
             string dataTypeIdStr = HttpContext.Request["DataType"];
+            string fieldOrderStr = HttpContext.Request["fieldOrder"];
+            if (!string.IsNullOrEmpty(fieldOrderStr))
+                fieldOrderStr = fieldOrderStr.Trim();
+
 
             if (fieldName != null)
                 fieldName = fieldName.Trim();
@@ -220,9 +254,21 @@ namespace InformationCenter.WebUI.Controllers
 
                         if (FieldHelper.CheckFieldName(fieldName, fields))
                         {
-                            _client.ServiceCenter.DocumentDescriptionService.AddField(fieldName, fieldType);
-                            
+                            int fieldOrder;
+
+                            if (int.TryParse(fieldOrderStr, out fieldOrder) && fieldOrder >= 0)
+                            {
+                                //Todo: Save field order
+                                _client.ServiceCenter.DocumentDescriptionService.AddField(fieldName, fieldType);
+
                                 ViewData["success"] = "Поле успешно создано";
+
+                            }
+                            else
+                            {
+                                ViewData["error"] =
+                                    "Ошибка при вводе порядка поля. Ожидается положительное целое число или 0";
+                            }
                         }
                         else
                         {
