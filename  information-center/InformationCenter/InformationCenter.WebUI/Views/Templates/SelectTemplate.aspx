@@ -19,7 +19,9 @@
     <%= Html.ValidationSummary("Введенные данные некорректны. Проверьте их и повторите попытку.") %>
     
     <form action="/Templates/EditTemplate" id="frmSelectTemplate" method="get" enctype="multipart/form-data">
+        <p><span class="success"><%=ViewData["success"]%></span></p>
         <p><span class="error"><%=ViewData["error"]%></span></p>
+        
         <p><label for="selTemplate">Шаблон:</label><select id="selTemplate" name="tpl">
             <% foreach (TemplateView template in templates) {  %>
             <option value="<%=template.ID %>"><%=template.Name %></option>
