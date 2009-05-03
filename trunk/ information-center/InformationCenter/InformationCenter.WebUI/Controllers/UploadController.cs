@@ -170,12 +170,12 @@ namespace InformationCenter.WebUI.Controllers
                             }
                             catch (Exception ex)
                             {
-                                ModelState.AddModelError(fieldKey, ex.Message);
+                                ModelState.AddModelError(fieldKey, "ќшибка в поле "+field.Name+": " + ex.Message);
                             }
                         }
                         catch (Exception ex)
                         {
-                            ModelState.AddModelError(fieldKey, ex.Message + (fieldTypeView == null ? "" : " ќжидаемый тип: " + fieldTypeView.FieldTypeName));
+                            ModelState.AddModelError(fieldKey, "ќшибка в поле " + field.Name + ": " + ex.Message + (fieldTypeView == null ? "" : " ќжидаемый тип: " + fieldTypeView.FieldTypeName));
                         }
                     }
                 }
