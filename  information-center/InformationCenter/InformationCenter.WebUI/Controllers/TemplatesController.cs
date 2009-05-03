@@ -164,28 +164,42 @@ namespace InformationCenter.WebUI.Controllers
 
                         }
                     }
+
                     
-                    //if (selectedTemplate.Name != templateName)
-                    //{
-                    //    if (TemplateHelper.CheckTemplateName(templateName, allTemplates))
-                    //        selectedTemplate.Name = templateName;
-                    //}
                     if (selectedFields.Count > 0)
                     {
-                        IEnumerable<FieldView> oldFields =
-                            _client.ServiceCenter.DocumentDescriptionService.GetFieldsOfTemplate(selectedTemplate);
-                        foreach (FieldView field in oldFields)
+                        bool Err = false;
+                        if (selectedTemplate.Name != templateName)
                         {
-                            _client.ServiceCenter.DocumentDescriptionService.RemoveFieldFromTemplate(selectedTemplate,
-                                                                                                     field);
+                            if (TemplateHelper.CheckTemplateName(templateName, allTemplates))
+                            {
+                                _client.ServiceCenter.DocumentDescriptionService.RenameTemplate(selectedTemplate, templateName);
+                            }
+                            else
+                            {
+                                Err = true;
+                                ViewData["error"] = "Шаблон с таким именем уже существует, задайте другое имя";
+                            }
                         }
-                        foreach (FieldView field in selectedFields)
+                        if (!Err)
                         {
-                            _client.ServiceCenter.DocumentDescriptionService.AddFieldToTemplate(selectedTemplate.ID,
-                                                                                                field.ID);
+                            IEnumerable<FieldView> oldFields =
+                                _client.ServiceCenter.DocumentDescriptionService.GetFieldsOfTemplate(selectedTemplate);
+                            foreach (FieldView field in oldFields)
+                            {
+                                _client.ServiceCenter.DocumentDescriptionService.RemoveFieldFromTemplate(
+                                    selectedTemplate,
+                                    field);
+                            }
+                            foreach (FieldView field in selectedFields)
+                            {
+                                _client.ServiceCenter.DocumentDescriptionService.AddFieldToTemplate(selectedTemplate.ID,
+                                                                                                    field.ID);
+                            }
+
+                            ViewData["success"] = "Шаблон успешно сохранен";
                         }
-                        ViewData["success"] = "Шаблон успешно сохранен";
-                        
+
                     }
                     else
                     {
@@ -248,7 +262,7 @@ namespace InformationCenter.WebUI.Controllers
                         }
                         else
                         {
-                            ViewData["error"] = "Шаблом с таким именем уже существует, задайте другое имя";
+                            ViewData["error"] = "Шаблон с таким именем уже существует, задайте другое имя";
                         }
                     }
                     else
