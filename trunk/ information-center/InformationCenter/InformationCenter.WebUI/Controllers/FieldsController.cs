@@ -167,7 +167,7 @@ namespace InformationCenter.WebUI.Controllers
                 }
                 else
                 {
-                    ViewData["error"] = "Указанное поле не найден.";
+                    ViewData["error"] = "Указанное поле не найдено.";
                 }
 
                 fields = _client.ServiceCenter.SearchService.GetFields();
@@ -182,6 +182,94 @@ namespace InformationCenter.WebUI.Controllers
             else
             {
                 ViewData["error"] = "Сервис редактирования шаблонов в данный момент недоступен.";
+            }
+
+            return actionResult;
+
+        }
+
+        public ActionResult AddField()
+        {
+            if (AuthHelper.NeedRedirectToAuth(this, "AddField")) return RedirectToAction("LogOn", "Account");
+
+            ActionResult actionResult = View("NewField");
+            InitServiceCenterClient();
+
+            string fieldName = HttpContext.Request["fieldName"];
+            string dataTypeIdStr = HttpContext.Request["DataType"];
+
+            if (fieldName != null)
+                fieldName = fieldName.Trim();
+
+            
+
+            if (_client.Available)
+            {
+                var fields = _client.ServiceCenter.SearchService.GetFields();
+                var dataTypes = _client.ServiceCenter.DocumentDescriptionService.GetFieldTypes();
+                if (!string.IsNullOrEmpty(fieldName))
+                {
+                    
+                    
+                    FieldTypeView fieldType = null;
+                    if (!string.IsNullOrEmpty(dataTypeIdStr))
+                        fieldType = FieldTypeHelper.GetFieldTypeByGUIDStr(dataTypeIdStr, dataTypes);
+
+                    if (fieldType != null)
+                    {
+
+                        if (FieldHelper.CheckFieldName(fieldName, fields))
+                        {
+                            _client.ServiceCenter.DocumentDescriptionService.AddField(fieldName, fieldType);
+                            
+                                ViewData["success"] = "Поле успешно создано";
+                        }
+                        else
+                        {
+                            ViewData["error"] = "Поле с таким именем уже существует, задайте другое имя";
+                        }
+                    }
+                    else
+                    {
+                        ViewData["error"] = "Не выбран тип данных";
+                    }
+                }
+                else
+                {
+                    ViewData["error"] = "Не задано имя поля";
+                }
+
+
+                ViewData["DataTypes"] = dataTypes;
+
+            }
+            else
+            {
+                ViewData["error"] = "Сервис создания полей в данный момент недоступен.";
+            }
+
+            return actionResult;
+
+        }
+
+        public ActionResult NewField()
+        {
+            if (AuthHelper.NeedRedirectToAuth(this, "NewField")) return RedirectToAction("LogOn", "Account");
+
+            ActionResult actionResult = View("NewField");
+            InitServiceCenterClient();
+
+            if (_client.Available)
+            {
+                var dataTypes = _client.ServiceCenter.DocumentDescriptionService.GetFieldTypes();
+
+                ViewData["DataTypes"] = dataTypes;
+
+
+            }
+            else
+            {
+                ViewData["error"] = "Сервис создания полей в данный момент недоступен.";
             }
 
             return actionResult;

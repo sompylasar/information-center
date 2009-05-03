@@ -263,7 +263,7 @@
         
         <p><span class="error"><%=ViewData["error"]%></span></p>
         <p><span class="success"><%=ViewData["success"]%></span></p>
-        <p><label for="fileToUpload">Имя шаблона:</label><input type="text" name="templateName" value="<%=Html.Encode(TemplateName) %>_Докрутите переименование, а то пересоздавать шаблон лениво" />
+        <p><label for="fileToUpload">Имя шаблона:</label><input type="text" name="templateName" value="<%=Html.Encode(TemplateName) %>" />
         <input type=hidden name="templateId" value="<%=Html.Encode(TemplateId) %>" />
         <div>
             <table id="fields"><tr id="fields_row"><td class="listbox-section">

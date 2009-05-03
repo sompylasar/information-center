@@ -71,6 +71,7 @@
     <Compile Include="Models\AuthHelper.cs" />
     <Compile Include="Models\DownloadResult.cs" />
     <Compile Include="Models\FieldHelper.cs" />
+    <Compile Include="Models\FieldTypeHelper.cs" />
     <Compile Include="Models\FileHelper.cs" />
     <Compile Include="Models\ServiceCenterClient.cs" />
     <Compile Include="Models\TemplateHelper.cs" />
@@ -98,6 +99,7 @@
     <Content Include="Views\Download\Index.aspx" />
     <Content Include="Views\Fields\EditField.aspx" />
     <Content Include="Views\Fields\Index.aspx" />
+    <Content Include="Views\Fields\NewField.aspx" />
     <Content Include="Views\Fields\SelectField.aspx" />
     <Content Include="Views\Management\Index.aspx" />
     <Content Include="Views\Search\Index.aspx" />
