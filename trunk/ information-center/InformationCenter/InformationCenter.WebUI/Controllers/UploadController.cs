@@ -130,7 +130,7 @@ namespace InformationCenter.WebUI.Controllers
                 var selectedFields = new List<FieldView>();
                 foreach (string fieldKey in HttpContext.Request.Params)
                 {
-                    var fieldValueStr = HttpContext.Request[fieldKey];
+                    var fieldValueStr = (HttpContext.Request[fieldKey] ?? "").Trim();
 
                     if (fieldKey.StartsWith("_"))
                     {
