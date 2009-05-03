@@ -112,6 +112,15 @@ namespace InformationCenter.Services
             return doc == null ? null : new DocumentView(doc);
         }
 
+        /// <summary>
+        /// получить все типы полей
+        /// </summary>
+        /// <returns>массив представлений типов полей</returns>
+        public FieldTypeView[] GetFieldTypes()
+        {
+            return Array.ConvertAll<FieldType, FieldTypeView>(Engine.GetFieldTypes(), input => new FieldTypeView(input));
+        }
+
         public string[] GetFileNames(bool WithExtensions) { return Engine.GetFileNames(WithExtensions); }
 
         public FieldView[] GetFields()
