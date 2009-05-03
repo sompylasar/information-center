@@ -1,5 +1,6 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 <%@ Import Namespace="InformationCenter.Services"%>
+<%@ Import Namespace="InformationCenter.WebUI.Helpers"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
 	Редактирование шаблона - Информационный центр ВУЗа
@@ -13,6 +14,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
     <h2>Редактирование шаблонов</h2>
+    <%=Html.Breadcrumbs().AddActionLink("Управление шаблонами", "Index").Last("Выбор шаблона")%>
         <%
         var templates = (IEnumerable<TemplateView>)(ViewData["Templates"] ?? new TemplateView[0]);
     %>
@@ -36,8 +38,7 @@
         </div>
         <p><button type="submit">Выбрать</button></p>
     </form>
-    
-    <%=Html.ActionLink("Управление шаблонами", "Index", "Templates")%>
+
 
 </asp:Content>
 

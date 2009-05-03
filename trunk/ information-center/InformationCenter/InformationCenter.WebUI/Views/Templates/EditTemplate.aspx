@@ -1,5 +1,6 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 <%@ Import Namespace="InformationCenter.Services"%>
+<%@ Import Namespace="InformationCenter.WebUI.Helpers"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainHeaderContent" runat="server">
 Информационный центр ВУЗа
@@ -248,7 +249,7 @@
 %>
     
     <h2>Редактирование шаблона "<%=Html.Encode(TemplateName)  %>"</h2>
-    
+    <%=Html.Breadcrumbs().AddActionLink("Управление шаблонами", "Index").AddActionLink("Выбор шаблона", "SelectField").Last("Редактирование шаблона")%>
     <%= Html.ValidationSummary("Введенные данные некорректны. Проверьте их и повторите попытку.") %>
     
    
@@ -307,12 +308,5 @@
         <input type=hidden name="templateId" value="<%=Html.Encode(TemplateId) %>" />
         <p><button type="submit">Удалить шаблон</button></p>
     </form>
-            <p>
-        <% if (ViewData["Templates"] != null && ((IEnumerable<TemplateView>)ViewData["Templates"]).Count() > 0)
-           { %>
-            <a href="javascript:window.history.go(-1)">Назад к выбору шаблона</a>
-        <% } else { %>
-            <%=Html.ActionLink("Выбор шаблона", "SelectTemplate", "Templates")%>
-        <% } %>
-        </p>
+
 </asp:Content>

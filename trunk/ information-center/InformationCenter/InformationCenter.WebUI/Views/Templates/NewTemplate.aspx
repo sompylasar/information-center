@@ -1,5 +1,6 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 <%@ Import Namespace="InformationCenter.Services"%>
+<%@ Import Namespace="InformationCenter.WebUI.Helpers"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainHeaderContent" runat="server">
 Информационный центр ВУЗа
@@ -247,7 +248,7 @@
 %>
     
     <h2>Создание шаблона</h2>
-    
+    <%=Html.Breadcrumbs().AddActionLink("Управление шаблонами", "Index").Last("Создание шаблона")%>
     <%= Html.ValidationSummary("Введенные данные некорректны. Проверьте их и повторите попытку.") %>
     
     <form action="/Templates/AddTemplate" id="frmTemplate" method="post" enctype="multipart/form-data">
@@ -298,7 +299,7 @@
             </td></tr></table>
         </div>
         <p><button type="submit">Сохранить</button></p>
-        <%=Html.ActionLink("Управление шаблонами", "Index", "Templates")%>
+
 
     </form>
 </asp:Content>

@@ -1,5 +1,6 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 <%@ Import Namespace="InformationCenter.Services"%>
+<%@ Import Namespace="InformationCenter.WebUI.Helpers"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainHeaderContent" runat="server">
 Информационный центр ВУЗа
@@ -13,6 +14,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
     <h2>Редактирование поля</h2>
+    <%=Html.Breadcrumbs().AddActionLink("Управление полями", "Index").Last("Выбор поля")%>
         <%
             var fields = (IEnumerable<FieldView>)(ViewData["Fields"] ?? new FieldView[0]);
 
@@ -38,7 +40,7 @@
         </div>
         <p><button type="submit">Выбрать</button></p>
     </form>
-     <%=Html.ActionLink("Управление полями", "Index", "Fields")%>
+
 
 </asp:Content>
 
