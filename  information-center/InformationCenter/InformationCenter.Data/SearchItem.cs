@@ -8,16 +8,16 @@ namespace InformationCenter.Data
 
         #region Поля
 
-        private Guid id;
+        private Field field;
         private object val;
 
         #endregion
 
         #region Конструкторы
 
-        public SearchItem(Guid FieldID, object Value)
+        public SearchItem(Field Field, object Value)
         {
-            id = FieldID;
+            field = Field;
             val = Value;
         }
 
@@ -25,7 +25,7 @@ namespace InformationCenter.Data
 
         #region Свойства
 
-        public Guid FieldID { get { return id; } }
+        public Field Field { get { return field; } }
 
         public object FieldValue
         {
