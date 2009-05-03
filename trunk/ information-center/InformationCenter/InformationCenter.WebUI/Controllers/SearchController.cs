@@ -55,7 +55,7 @@ namespace InformationCenter.WebUI.Controllers
             else
             {
                 ViewData["error"] = "—ервис поиска в данный момент недоступен." 
-                    + " "+_client.ServiceCenterException;
+                    + " "+_client.ServiceCenterException.Message;
             }
 
             return actionResult;

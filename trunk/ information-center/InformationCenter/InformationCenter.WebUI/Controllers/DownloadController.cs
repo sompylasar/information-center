@@ -62,7 +62,8 @@ namespace InformationCenter.WebUI.Controllers
             }
             else
             {
-                ViewData["error"] = "Сервис выдачи документов в данный момент недоступен.";
+                ViewData["error"] = "Сервис выдачи документов в данный момент недоступен."
+                    + " " + _client.ServiceCenterException.Message;
             }
 
             return actionResult;

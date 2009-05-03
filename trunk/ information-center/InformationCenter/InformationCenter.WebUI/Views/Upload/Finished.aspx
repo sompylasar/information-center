@@ -13,9 +13,9 @@
     <% bool success = string.IsNullOrEmpty((string)ViewData["error"]); %>
     <div>
         <%if (success) { %>
-        <p>Загрузка документа завершена успешно.</p>
+        <p class="success">Загрузка документа завершена успешно.</p>
         <%}else{ %>
-        <p>Загрузка документа завершена с ошибкой.</p>
+        <p class="error">Загрузка документа завершена с ошибкой.</p>
         <p class="error"><%=Html.Encode(ViewData["error"]) %></p>
         <!--<p>Чтобы вернуться к редактированию, используйте кнопку &laquo;Назад&raquo; Вашего браузера.</p>-->
         <%} %>

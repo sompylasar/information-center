@@ -83,6 +83,7 @@ namespace InformationCenter.WebUI.Controllers
                 ViewData["Fields"] = _client.ServiceCenter.SearchService.GetFields();
                 ViewData["Templates"] = _client.ServiceCenter.DocumentDescriptionService.GetTemplates();
                 ViewData["SelectedTemplate"] = selectedTemplate;
+                ViewData["SelectedTemplateName"] = (TempData["SelectedTemplate"] != null ? ((TemplateView)TempData["SelectedTemplate"]).Name : "");
                 TempData["SelectedTemplate"] = selectedTemplate;
 
                 try
@@ -122,6 +123,11 @@ namespace InformationCenter.WebUI.Controllers
                 if (file == null)
                 {
                     ModelState.AddModelError("f", "Файл не был отправлен");
+                }
+                string descriptionName = (Request["DescriptionName"] ?? "").Trim();
+                if (string.IsNullOrEmpty(descriptionName))
+                {
+                    ModelState.AddModelError("DescriptionName", "Название описания не должно быть пустым.");
                 }
 
                 var descriptionFieldsWithValues = new Dictionary<FieldView,object>();
@@ -194,7 +200,6 @@ namespace InformationCenter.WebUI.Controllers
                                                                                                   file.ContentType),
                                                                        file.ContentType, file.ContentLength);
 
-                            string descriptionName = (Request["DescriptionName"] ?? (TempData["SelectedTemplate"] != null ? ((TemplateView)TempData["SelectedTemplate"]).Name : ""));
                             _client.ServiceCenter.UploadService.AddDescription(documentId, descriptionName, descriptionFieldsWithValues);
                         }
 
@@ -208,7 +213,8 @@ namespace InformationCenter.WebUI.Controllers
             }
             else
             {
-                ViewData["error"] = "Сервис загрузки документов в данный момент недоступен.";
+                ViewData["error"] = "Сервис загрузки документов в данный момент недоступен."
+                    + " " + _client.ServiceCenterException.Message;
             }
 
             return actionResult;
