@@ -26,6 +26,10 @@
             <% foreach (TemplateView template in templates) {  %>
             <option value="<%=template.ID %>"><%=template.Name %></option>
             <% } %>
+            <% if (templates.Count() == 0)
+               { %>
+            <option value="0">(шаблоны отсутствуют)</option>
+            <%} %>
         </select><%= Html.ValidationMessage("TemplateId") %></p>
         <div>
             
