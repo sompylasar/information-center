@@ -386,20 +386,8 @@ namespace InformationCenter.DBUtils
             }
             catch (Exception exc)
             {
-                tempTableName = string.Empty;
                 Debug.WriteLine("CreateFieldsTempTable > " + exc.Message);
                 throw exc;
-            }
-            finally
-            {
-                try
-                {
-                    query = "drop table " + tempTableName;
-                    ExecuteNonQuery(new SqlCommand(query));
-                }
-                catch (Exception)
-                {
-                }
             }
 
             return result;
@@ -410,34 +398,46 @@ namespace InformationCenter.DBUtils
             List<DocDescription> result = new List<DocDescription>();
 
             string tempTableName = "##SearchItemsTempTable_" + Guid.NewGuid().ToString("N");
-            string query = GenQueryCreateTable(tempTableName, new ColumnDescription[]
-                                                                  {
-                                                                      new ColumnDescription
-                                                                          {
-                                                                              Name = "FieldID",
-                                                                              Type = "UniqueIdentifier"
-                                                                          },
-                                                                      new ColumnDescription
-                                                                          {
-                                                                              Name = "FieldValue",
-                                                                              Type = "UniqueIdentifier"
-                                                                          }
-                                                                  });
+            List<ColumnDescription> cds = new List<ColumnDescription>();
+            cds.Add(new ColumnDescription
+            {
+                Name = "FieldID",
+                Type = "UniqueIdentifier"
+            });
+
+            var ent = new Entities(ConnectionString);
+
+            foreach (var fieldType in ent.FieldType.ToArray())
+            {
+                cds.Add(new ColumnDescription()
+                {
+                    Name = "FieldValue" + fieldType.SqlName,
+                    Type = fieldType.SqlType
+                });
+            }
+            string query = GenQueryCreateTable(tempTableName, cds);
 
             int i = 0;
             List<SqlParameter> parameters = new List<SqlParameter>();
             query += Environment.NewLine;
             foreach (var searchItem in Request.Items)
             {
+                Field field = ent.Field.Where(f => f.ID == searchItem.FieldID).FirstOrDefault();
+                if(field == null)
+                    throw new ArgumentException();
+
                 query += Environment.NewLine +
                          " INSERT INTO " + tempTableName +
-                         @"(FieldID, FieldValue)
+                         @"(FieldID, FieldValue"+field.FieldType.SqlName+@")
                     VALUES
                     (@id" + i + ", @value" +
                          i + ") ";
 
-                parameters.Add(new SqlParameter("@id" + i, searchItem.FieldID) {DbType = DbType.Guid});
-                parameters.Add(new SqlParameter("@value" + i, searchItem.FieldValue));
+                parameters.Add(new SqlParameter("@id" + i.ToString(), field.ID) { SqlDbType = SqlDbType.UniqueIdentifier });
+                if (searchItem.FieldValue is Guid)
+                    parameters.Add(new SqlParameter("@value" + i, (Guid)searchItem.FieldValue) { SqlDbType = SqlDbType.UniqueIdentifier });
+                else
+                    parameters.Add(new SqlParameter("@value" + i, searchItem.FieldValue));
 
                 ++i;
             }
@@ -454,29 +454,18 @@ namespace InformationCenter.DBUtils
             }
             catch (Exception exc)
             {
-                tempTableName = string.Empty;
                 Debug.WriteLine("SearchDocDescription > " + exc.Message);
                 throw exc;
             }
-            finally
-            {
-                try
-                {
-                    query = "drop table " + tempTableName;
-                    ExecuteNonQuery(new SqlCommand(query));
-                }
-                catch (Exception)
-                {
-                }
-            }
 
-            result.AddRange(ParseDataTable<DocDescription>(table,
-                new[]
-                {
-                    new ColumnDescription(){Name = "ID", PropName = "ID", Type = "UniqueIdentifier"},
-                    new ColumnDescription(){Name = "Name", PropName = "Name", Type = "NVarChar(256)"},
-                    new ColumnDescription(){Name = "DocumentID", PropName = "DocumentID", Type = "UniqueIdentifier"}
-                }));
+            //result.AddRange(ParseDataTable<DocDescription>(table,
+            //    new[]
+            //    {
+            //        new ColumnDescription(){Name = "ID", PropName = "ID", Type = "UniqueIdentifier"},
+            //        new ColumnDescription(){Name = "Name", PropName = "Name", Type = "NVarChar(256)"},
+            //        new ColumnDescription(){Name = "DocumentID", PropName = "DocumentID", Type = "UniqueIdentifier"}
+            //    }));
+            result.AddRange(ParseDataTableToDocDescriptions(table, ent));
             return result.ToArray();
         }
 
@@ -495,6 +484,23 @@ namespace InformationCenter.DBUtils
             }
         }
 
+        private IEnumerable<DocDescription> ParseDataTableToDocDescriptions(DataTable table, Entities entities)
+        {
+            List<DocDescription> result = new List<DocDescription>();
+            for (int i = 0; i < table.Rows.Count; ++i)
+            {
+                DataRow row = table.Rows[i];
+                Guid id = row.Field<Guid>("ID");
+
+                DocDescription element = entities.DocDescription.Where(dd => dd.ID == id).FirstOrDefault();
+                if (element != null)
+                    result.Add(element);
+                else
+                    throw new NullReferenceException();
+            }
+            return result;
+        }
+
         private IEnumerable<T> ParseDataTable<T>(DataTable table, IEnumerable<ColumnDescription> columns) where T:new()
         {
             List<T> result = new List<T>();
@@ -502,6 +508,7 @@ namespace InformationCenter.DBUtils
             {
                 DataRow row = table.Rows[i];
                 T element = new T();
+                var props = typeof(T).GetProperties();
                 foreach (var column in columns)
                 {
                     var prop = typeof(T).GetProperty(column.PropName);
