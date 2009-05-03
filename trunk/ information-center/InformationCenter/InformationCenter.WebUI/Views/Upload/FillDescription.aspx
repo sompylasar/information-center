@@ -235,13 +235,24 @@
                 var $itemFrom = $(li);
                 $itemFrom.remove();
                 
-                var $itemTo = $('<tr></tr>').attr({ 'order': $itemFrom.attr('order') });    
+                var $itemTo = $('<tr></tr>').attr({ 'order': $itemFrom.attr('order') });
                 var $fieldName = $('<td></td>').addClass('fieldName').appendTo($itemTo);
                 var $fieldValue = $('<td></td>').addClass('fieldValue').appendTo($itemTo);
                 var fieldName = $itemFrom.attr('rel');
                 
                 $fieldName.html($itemFrom.html());
                 $input = $('<input />').attr({ type: 'text', name: fieldName }).appendTo($fieldValue);
+                
+                if ($itemFrom.is('[nullable]')) {
+                    $itemTo.attr('nullable', 'nullable');
+                    $input.change(function () {
+                        var value = ($(this).val() || '');
+                        var $input_message = $input.next('.field-validation-error');
+                        if ($input_message.length <= 0) { $input_message = $('<span class="field-validation-error"></span>'); $input.after($input_message); }
+                        if (value == '') $input_message.html('Заполните поле.').show();
+                        else $input_message.hide();
+                    });
+                }
                 
                 $itemTo.appendTo('#fields .listbox-to');
                 
@@ -261,6 +272,8 @@
                 var $itemTo = $('<li></li>')
                     .attr({ rel: fieldName, 'order': $itemFrom.attr('order') })
                     .html($fieldName.html());
+                if ($itemFrom.is('[nullable]'))
+                    $itemTo.attr('nullable', 'nullable');
                 
                 $itemTo.appendTo('#fields .listbox-from');
                 
@@ -299,16 +312,44 @@
             
             function validate_upload(uploadForm) {
                 var valid = true;
-                var file = $.trim($('#fileToUpload', uploadForm).val());
+                var $fileToUpload = $('#fileToUpload', uploadForm);
+                var file = $.trim($fileToUpload.val());
+                var $fileToUpload_message = $fileToUpload.next('.field-validation-error');
+                if ($fileToUpload_message.length <= 0) { $fileToUpload_message = $('<span class="field-validation-error"></span>'); $fileToUpload.after($fileToUpload_message); }
                 if (file == '') {
-                    $('#fileToUpload', uploadForm).next('.field-validation-error').html('Файл не выбран.');
+                    $fileToUpload_message.html('Выберите файл.').show();
                     valid = false;
                 }
-                var descriptionName = $.trim($('#txtDescriptionName', uploadForm).val() || '');
+                else {
+                    $fileToUpload_message.hide();
+                }
+                var $txtDescriptionName = $('#txtDescriptionName', uploadForm);
+                var descriptionName = $.trim($txtDescriptionName.val() || '');
+                var $txtDescriptionName_message = $txtDescriptionName.next('.field-validation-error');
+                if ($txtDescriptionName_message.length <= 0) { $txtDescriptionName_message = $('<span class="field-validation-error"></span>'); $txtDescriptionName.after($txtDescriptionName_message); }
                 if (descriptionName == '') {
-                    $('#txtDescriptionName', uploadForm).next('.field-validation-error').html('Название описания не должно быть пустым.');
+                    $txtDescriptionName_message.html('Заполните название описания.').show();
                     valid = false;
                 }
+                else {
+                    $txtDescriptionName_message.hide();
+                }
+                $('.listbox-to tr', uploadForm).each(function () {
+                    var $item = $(this);
+                    var $input = $item.find(':text');
+                    
+                    var $input_message = $input.next('.field-validation-error');
+                    if ($input_message.length <= 0) { $input_message = $('<span class="field-validation-error"></span>'); $input.after($input_message); }
+                    
+                    $input.val( $.trim($input.val()) );
+                    if (!$item.is('[nullable]') && $input.val() == '') {
+                        $input_message.html('Заполните поле.').show();
+                        valid = false;
+                    }
+                    else {
+                        $input_message.hide();
+                    }
+                });
                 return valid;
             }
             
@@ -335,18 +376,8 @@
         <p><span class="error"><%=ViewData["error"]%></span></p>
         <div>
             <table class="layout">
-            <tr><td width="15%"><label for="fileToUpload">Документ:</label></td><td width="75%"><input type="file" id="fileToUpload" name="f" /><%
-            {
-                string message = Html.ValidationMessage("f");
-                if (string.IsNullOrEmpty(message)) message = " <span class=\"field-validation-error\"></span>";
-                Response.Write(message);
-            }%></td></tr>
-            <tr><td><label for="txtDescriptionName">Название описания:</label></td><td><input type="text" id="txtDescriptionName" name="DescriptionName" maxlength="256" value="<%=ViewData["SelectedTemplateName"] %>" /><%
-            {
-                string message = Html.ValidationMessage("DescriptionName");
-                if (string.IsNullOrEmpty(message)) message = " <span class=\"field-validation-error\"></span>";
-                Response.Write(message);
-            }%></td></tr>
+            <tr><td width="15%"><label for="fileToUpload">Документ:</label></td><td width="75%"><input type="file" id="fileToUpload" name="f" value="<%=TempData["UploadFileName"] ?? "" %>" /><%=Html.ValidationMessage("f")%></td></tr>
+            <tr><td><label for="txtDescriptionName">Название описания:</label></td><td><input type="text" id="txtDescriptionName" name="DescriptionName" maxlength="256" value="<%=TempData["DescriptionName"] ?? ViewData["SelectedTemplateName"] %>" /><%= Html.ValidationMessage("DescriptionName")%></td></tr>
             </table>
         </div>
         <div>
@@ -356,7 +387,7 @@
                     <span class="listbox-from-empty"><%=(fields.Count() + selectedFields.Count() > 0 ? "(все доступные поля выбраны)" : "(список пуст)") %></span>
                     <ul class="listbox-from">
                         <% foreach (FieldView field in fields) { %>
-                        <li rel="_<%=field.ID %>" order="<%=field.Order %>"><span class="unselectable"><%=Html.Encode(field.Name) %> (<%=Html.Encode(field.FieldTypeView.FieldTypeName) %>)</span></li>
+                        <li rel="_<%=field.ID %>" order="<%=field.Order %>"<%=field.Nullable ? " nullable=\"nullable\"" : "" %>><span class="unselectable"><%=Html.Encode(field.Name) %> (<%=Html.Encode(field.FieldTypeView.FieldTypeName) %>)</span></li>
                         <% } %>
                     </ul>
                 </fieldset>
@@ -377,7 +408,7 @@
                     <div class="listbox-to-wrapper">
                         <table class="listbox-to">
                             <% foreach (FieldView field in selectedFields) { %>
-                            <tr order="<%=field.Order %>"><td class="fieldName"><span class="unselectable"><%=Html.Encode(field.Name) %> (<%=Html.Encode(field.FieldTypeView.FieldTypeName) %>)</span></td><td class="fieldValue"><input type="text" name="_<%=field.ID %>" value="<%=Html.Encode(((string)TempData["_"+field.ID]) ?? "") %>" /></td></tr>
+                            <tr order="<%=field.Order %>"<%=field.Nullable ? " nullable=\"nullable\"" : "" %>><td class="fieldName"><span class="unselectable"><%=Html.Encode(field.Name) %> (<%=Html.Encode(field.FieldTypeView.FieldTypeName) %>)</span></td><td class="fieldValue"><input type="text" name="_<%=field.ID %>" value="<%=Html.Encode(((string)TempData["_"+field.ID]) ?? "") %>" /></td></tr>
                             <% } %>
                         </table>
                     </div>

@@ -27,6 +27,9 @@ namespace InformationCenter.WebUI.Controllers
 
         public ActionResult SelectTemplate()
         {
+            Session["SelectedTemplate"] = null;
+            Session["UploadSelectedFields"] = null;
+
             if (AuthHelper.NeedRedirectToAuth(this, "SelectTemplate")) return RedirectToAction("LogOn", "Account");
 
             ActionResult actionResult = View("Error");
@@ -40,11 +43,70 @@ namespace InformationCenter.WebUI.Controllers
 
                 ViewData["Templates"] = templates;
 
-                actionResult = View();
+                ViewData["error"] = TempData["Error"];
+
+                actionResult = View("SelectTemplate");
             }
             else
             {
-                ViewData["error"] = "—ервис загрузки документов в данный момент недоступен.";
+                ViewData["error"] = "—ервис загрузки документов в данный момент недоступен."
+                    + " " + _client.ServiceCenterException.Message;
+            }
+
+            return actionResult;
+        }
+
+        public ActionResult TemplateSelected()
+        {
+            if (AuthHelper.NeedRedirectToAuth(this, "SelectTemplate")) return RedirectToAction("LogOn", "Account");
+
+            ActionResult actionResult = View("Error");
+            InitServiceCenterClient();
+            if (_client.Available)
+            {
+                actionResult = RedirectToAction("SelectTemplate");
+
+                string selectedTemplateIdStr = (Request["tpl"] ?? "");
+                bool isTemplateSelected = (!string.IsNullOrEmpty(Request["tpl"]));
+                TemplateView selectedTemplate = null;
+
+                if (isTemplateSelected)
+                {
+                    try
+                    {
+                        Guid templateId = new Guid(selectedTemplateIdStr);
+                        var templates = _client.ServiceCenter.DocumentDescriptionService.GetTemplates();
+
+                        foreach (TemplateView template in templates)
+                        {
+                            if (template.ID == templateId)
+                            {
+                                selectedTemplate = template;
+                                break;
+                            }
+                        }
+                    }
+                    catch(FormatException)
+                    {}
+                }
+
+                try
+                {
+                    if (isTemplateSelected && selectedTemplate == null)
+                        throw new Exception("Ўаблон с идентификатором "+selectedTemplateIdStr+" не найден.");
+
+                    actionResult = RedirectToAction("FillDescription");
+                    Session["SelectedTemplate"] = selectedTemplate;
+                }
+                catch (Exception ex)
+                {
+                    TempData["error"] = ex.Message;
+                }
+            }
+            else
+            {
+                ViewData["error"] = "—ервис загрузки документов в данный момент недоступен."
+                    + " " + _client.ServiceCenterException.Message;
             }
 
             return actionResult;
@@ -58,43 +120,29 @@ namespace InformationCenter.WebUI.Controllers
             InitServiceCenterClient();
             if (_client.Available)
             {
-                actionResult = View();
+                actionResult = View("FillDescription");
 
-                string templateIdStr = (Request["tpl"] ?? "");
-                bool useEmptyTemplate = string.IsNullOrEmpty(templateIdStr);
-
-                TemplateView selectedTemplate = null;
-
-                if (!useEmptyTemplate)
-                {
-                    Guid templateId = new Guid(templateIdStr);
-                    var templates = _client.ServiceCenter.DocumentDescriptionService.GetTemplates();
-
-                    foreach (TemplateView template in templates)
-                    {
-                        if (template.ID == templateId)
-                        {
-                            selectedTemplate = template;
-                            break;
-                        }
-                    }
-                }
+                TemplateView selectedTemplate = (TemplateView)Session["SelectedTemplate"];
 
                 ViewData["Fields"] = _client.ServiceCenter.SearchService.GetFields();
                 ViewData["Templates"] = _client.ServiceCenter.DocumentDescriptionService.GetTemplates();
                 ViewData["SelectedTemplate"] = selectedTemplate;
-                ViewData["SelectedTemplateName"] = (TempData["SelectedTemplate"] != null ? ((TemplateView)TempData["SelectedTemplate"]).Name : "");
-                TempData["SelectedTemplate"] = selectedTemplate;
+                ViewData["SelectedTemplateName"] = (selectedTemplate != null ? selectedTemplate.Name : "");
+
+                if (TempData["ModelState"] != null)
+                {
+                    foreach (var state in (ModelStateDictionary)TempData["ModelState"])
+                    {
+                        ModelState.Add(state);
+                    }
+                    TempData["ModelState"] = null;
+                }
 
                 try
                 {
-                    if (!useEmptyTemplate && selectedTemplate == null)
-                        throw new Exception("”казанный шаблон не найден.");
-
-                    ViewData["SelectedFields"] = (TempData["SelectedFields"] 
-                        ?? (selectedTemplate == null 
+                    ViewData["SelectedFields"] = Session["UploadSelectedFields"] ?? (selectedTemplate == null 
                              ? new FieldView[0]
-                             : _client.ServiceCenter.DocumentDescriptionService.GetFieldsOfTemplate(selectedTemplate)) );
+                             : _client.ServiceCenter.DocumentDescriptionService.GetFieldsOfTemplate(selectedTemplate));
                 }
                 catch (Exception ex)
                 {
@@ -103,7 +151,8 @@ namespace InformationCenter.WebUI.Controllers
             }
             else
             {
-                ViewData["error"] = "—ервис загрузки документов в данный момент недоступен.";
+                ViewData["error"] = "—ервис загрузки документов в данный момент недоступен."
+                    + " " + _client.ServiceCenterException.Message;
             }
 
             return actionResult;
@@ -111,13 +160,13 @@ namespace InformationCenter.WebUI.Controllers
 
         public ActionResult Start()
         {
-            if (AuthHelper.NeedRedirectToAuth(this, "SelectTemplate")) return RedirectToAction("LogOn", "Account");
+            if (AuthHelper.NeedRedirectToAuth(this, "UploadForm")) return RedirectToAction("LogOn", "Account");
 
             ActionResult actionResult = View("Error");
             InitServiceCenterClient();
             if (_client.Available)
             {
-                actionResult = View("FillDescription");
+                actionResult = RedirectToAction("FillDescription");
 
                 var file = HttpContext.Request.Files["f"];
                 if (file == null)
@@ -129,6 +178,7 @@ namespace InformationCenter.WebUI.Controllers
                 {
                     ModelState.AddModelError("DescriptionName", "Ќазвание описани€ не должно быть пустым.");
                 }
+                TempData["DescriptionName"] = descriptionName;
 
                 var descriptionFieldsWithValues = new Dictionary<FieldView,object>();
 
@@ -188,6 +238,7 @@ namespace InformationCenter.WebUI.Controllers
 
                 ViewData["Fields"] = fields;
                 ViewData["SelectedFields"] = selectedFields;
+                Session["UploadSelectedFields"] = selectedFields;
 
                 if (ModelState.IsValid)
                 {
@@ -204,11 +255,17 @@ namespace InformationCenter.WebUI.Controllers
                         }
 
                         actionResult = View("Finished");
+                        Session["SelectedTemplate"] = null;
+                        Session["UploadSelectedFields"] = null;
                     }
                     catch (Exception ex)
                     {
-                        ViewData["error"] = ex.Message;
+                        TempData["error"] = ex.Message;
                     }
+                }
+                else
+                {
+                    TempData["ModelState"] = ModelState;
                 }
             }
             else
