@@ -12,7 +12,7 @@ namespace InformationCenter.Services
     /// <summary>
     /// Представление значения поля.
     /// </summary>
-    public class FieldValueView : ViewItem
+    public class FieldValueView : ViewItem, IEquatable<FieldValueView>
     {
 
         #region Поля
@@ -98,6 +98,16 @@ namespace InformationCenter.Services
         #endregion
 
         #region Методы
+
+        /// <summary>
+        /// получить хеш-код
+        /// </summary>
+        /// <returns>хеш-код</returns>
+        public override int GetHashCode() { return ID.GetHashCode(); }
+
+        public override bool Equals(object obj) { return Equals(obj as FieldValueView); }
+
+        public bool Equals(FieldValueView other) { return object.ReferenceEquals(other, this) || (other != null && other.ID == ID); }
 
         /// <summary>
         /// преобразовать в строку

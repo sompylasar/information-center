@@ -7,7 +7,7 @@ namespace InformationCenter.Services
     /// <summary>
     /// Представление типа поля.
     /// </summary>
-    public class FieldTypeView : ViewItem
+    public class FieldTypeView : ViewItem, IEquatable<FieldTypeView>
     {
 
         #region Поля
@@ -60,6 +60,16 @@ namespace InformationCenter.Services
         #endregion
 
         #region Методы
+
+        /// <summary>
+        /// получить хеш-код
+        /// </summary>
+        /// <returns>хеш-код</returns>
+        public override int GetHashCode() { return ID.GetHashCode(); }
+
+        public override bool Equals(object obj) { return Equals(obj as FieldTypeView); }
+
+        public bool Equals(FieldTypeView other) { return object.ReferenceEquals(other, this) || (other != null && other.ID == ID); }
 
         /// <summary>
         /// преобразовать в строку

@@ -9,7 +9,7 @@ namespace InformationCenter.Services
     /// <summary>
     /// Представление шаблона документа.
     /// </summary>
-    public class TemplateView : ViewItem
+    public class TemplateView : ViewItem, IEquatable<TemplateView>
     {
 
         #region Конструкторы
@@ -43,6 +43,16 @@ namespace InformationCenter.Services
         #endregion
 
         #region Методы
+
+        /// <summary>
+        /// получить хеш-код
+        /// </summary>
+        /// <returns>хеш-код</returns>
+        public override int GetHashCode() { return ID.GetHashCode(); }
+
+        public override bool Equals(object obj) { return Equals(obj as TemplateView); }
+
+        public bool Equals(TemplateView other) { return object.ReferenceEquals(other, this) || (other != null && other.ID == ID); }
 
         /// <summary>
         /// преобразовать в строку
