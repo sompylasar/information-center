@@ -422,7 +422,7 @@ namespace InformationCenter.DBUtils
             query += Environment.NewLine;
             foreach (var searchItem in Request.Items)
             {
-                Field field = ent.Field.Where(f => f.ID == searchItem.FieldID).FirstOrDefault();
+                Field field = ent.Field.Where(f => f.ID == searchItem.Field.ID).FirstOrDefault();
                 if(field == null)
                     throw new ArgumentException();
 
