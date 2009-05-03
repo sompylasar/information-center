@@ -70,6 +70,7 @@
     <Compile Include="Models\AppSettings.cs" />
     <Compile Include="Models\AuthHelper.cs" />
     <Compile Include="Models\DownloadResult.cs" />
+    <Compile Include="Models\FieldHelper.cs" />
     <Compile Include="Models\FileHelper.cs" />
     <Compile Include="Models\ServiceCenterClient.cs" />
     <Compile Include="Models\TemplateHelper.cs" />
@@ -95,7 +96,9 @@
     <Content Include="Scripts\jquery.listbox_pair.js" />
     <Content Include="Views\Download\Download.aspx" />
     <Content Include="Views\Download\Index.aspx" />
+    <Content Include="Views\Fields\EditField.aspx" />
     <Content Include="Views\Fields\Index.aspx" />
+    <Content Include="Views\Fields\SelectField.aspx" />
     <Content Include="Views\Management\Index.aspx" />
     <Content Include="Views\Search\Index.aspx" />
     <Content Include="Views\Search\SearchResults.aspx" />

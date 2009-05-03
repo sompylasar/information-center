@@ -1,7 +1,7 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-	Управление шаблонами
+<asp:Content ID="Content1" ContentPlaceHolderID="MainHeaderContent" runat="server">
+Информационный центр ВУЗа
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -13,6 +13,8 @@
             <li><%= Html.ActionLink("Редактирование шаблона", "SelectTemplate", "Templates")%></li>
         </ul>
     </div>
+    
+     <%=Html.ActionLink("Назад", "Index", "Management")%>
 
 </asp:Content>
 
