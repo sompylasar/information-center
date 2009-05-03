@@ -43,6 +43,19 @@ label
 	margin-right: 5px;
 }
 
+.breadcrumbs 
+{
+}
+.breadcrumbs a
+{
+}
+.breadcrumbs a.text, a.text:link, .breadcrumbs a.text:hover, .breadcrumbs a.text:active
+{
+	color: #50bc5a; /*#03f34a*/
+    text-decoration: none;
+    cursor: default;
+}
+
 /* HEADINGS   
 ----------------------------------------------------------*/
 h1, h2, h3, h4, h5, h6

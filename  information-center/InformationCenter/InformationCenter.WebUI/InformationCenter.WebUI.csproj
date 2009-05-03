@@ -69,6 +69,7 @@
     </Compile>
     <Compile Include="Models\AppSettings.cs" />
     <Compile Include="Models\AuthHelper.cs" />
+    <Compile Include="Helpers\BreadcrumbsHtmlHelperExtensions.cs" />
     <Compile Include="Models\DownloadResult.cs" />
     <Compile Include="Models\FieldHelper.cs" />
     <Compile Include="Models\FieldTypeHelper.cs" />
