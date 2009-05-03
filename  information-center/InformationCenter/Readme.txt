@@ -56,4 +56,4 @@ http://www.microsoft.com/downloads/details.aspx?FamilyId=FBEE1648-7106-44A7-9649
 http://www.microsoft.com/downloads/details.aspx?FamilyID=53289097-73ce-43bf-b6a6-35e00103cb4b&displaylang=en
 5. Поставить SQL Server 2005.
 6. Присоединить к нему БД "InformationCenter".
-7. Только после всего этого можно компилировать проект.
+7. Только после всего этого можно компилировать проект и молиться .)
