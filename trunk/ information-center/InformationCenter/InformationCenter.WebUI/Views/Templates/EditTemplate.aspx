@@ -21,6 +21,7 @@
            -moz-user-select: none;
            -khtml-user-select: none;
            user-select: none;
+
         }
         ul.listbox-from, ul.listbox-from li, ul.listbox-to, ul.listbox-to li
         {
@@ -173,16 +174,13 @@
                 var $itemTo = $('<li></li>')
                     .html($itemFrom.html());
 
-
-
-                var id = $itemFrom.attr("field:id");
+                var rel_attr = $itemFrom.attr("rel");
+                var order_attr = $itemFrom.attr("order");
 
                 $itemFrom.remove();
+                $itemTo.attr({ rel: rel_attr, order: order_attr });
+                $itemTo.find("input").attr("name", rel_attr);
 
-                //$itemTo.removeAttr("field:id");
-
-
-                $('<input />').attr({ name: id, type: "text", style: "display: none;" }).appendTo($itemTo);
 
                 $itemTo.appendTo('#fields .listbox-to');
 
@@ -195,11 +193,12 @@
                 var $itemTo = $('<li></li>')
                     .html($itemFrom.html());
 
-                $itemFrom.remove();
-                var id = $itemTo.find("input").attr("name");
+                var rel_attr = $itemFrom.attr("rel");
+                var order_attr = $itemFrom.attr("order");
 
-                $itemTo.attr("field:id", id);
-                $itemTo.find("input").remove();
+                $itemFrom.remove();
+                $itemTo.attr({ rel: rel_attr, order: order_attr });
+                $itemTo.find("input").removeAttr("name");
 
                 $itemTo.appendTo('#fields .listbox-from');
 
@@ -238,10 +237,14 @@
     </script>
     <%TemplateView Current = (TemplateView)ViewData["SelectedTemplate"];
         string TemplateName = "";
+        string TemplateId = "";
         if (Current != null)
+        {
             TemplateName = Current.Name;
-          
-      %>
+            TemplateId = Current.ID.ToString();
+        }
+
+%>
     
     <h2>Редактирование шаблона "<%=Html.Encode(TemplateName)  %>"</h2>
     
@@ -255,7 +258,11 @@
             var fields = (IEnumerable<FieldView>)(ViewData["Fields"] ?? new FieldView[0]);
             fields = fields.OrderBy(field => field.Order).Except(selectedFields);
         %>
+        
         <p><span class="error"><%=ViewData["error"]%></span></p>
+        <p><span class="success"><%=ViewData["success"]%></span></p>
+        <p><label for="fileToUpload">Имя шаблона:</label><input type="text" name="templateName" value="<%=Html.Encode(TemplateName) %>_Докрутите переименование, а то пересоздавать шаблон лениво" />
+        <input type=hidden name="templateId" value="<%=Html.Encode(TemplateId) %>" />
         <div>
             <table id="fields"><tr id="fields_row"><td class="listbox-section">
                 <fieldset id="fields-from-container">
@@ -263,7 +270,7 @@
                     <span class="listbox-from-empty"><%=(fields.Count() + selectedFields.Count() > 0 ? "(все доступные поля выбраны)" : "(список пуст)") %></span>
                     <ul class="listbox-from">
                         <% foreach (FieldView field in fields) { %>
-                        <li rel="_<%=field.ID %>" order="<%=field.Order %>"><span class="unselectable"><%=Html.Encode(field.Name) %> (<%=Html.Encode(field.FieldTypeView.FieldTypeName) %>)</span></li>
+                        <li rel="_<%=field.ID %>" order="<%=field.Order %>"><span class="unselectable"><%=Html.Encode(field.Name) %> (<%=Html.Encode(field.FieldTypeView.FieldTypeName) %>)</span><input style="Display:none;" type="text" /></li>
                         <% } %>
                     </ul>
                 </fieldset>

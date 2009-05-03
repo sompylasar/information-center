@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -64,32 +65,8 @@ namespace InformationCenter.WebUI.Controllers
             if (_client.Available)
             {
                 string templateIdStr = (Request["tpl"] ?? "");
-                bool TemplateSelected = string.IsNullOrEmpty(templateIdStr);
 
-                TemplateView selectedTemplate = null;
-
-                if (!TemplateSelected)
-                {
-                    Guid templateId;
-                    try
-                    {
-                        templateId = new Guid(templateIdStr);
-                    }
-                    catch (FormatException ex)
-                    {
-                        templateId = Guid.Empty;
-                    }
-                    var templates = _client.ServiceCenter.DocumentDescriptionService.GetTemplates();
-
-                    foreach (TemplateView template in templates)
-                    {
-                        if (template.ID == templateId)
-                        {
-                            selectedTemplate = template;
-                            break;
-                        }
-                    }
-                }
+                TemplateView selectedTemplate = TemplateHelper.GetTemplateByGUIDStr(templateIdStr, _client.ServiceCenter.DocumentDescriptionService.GetTemplates());
 
                 try
                 {
@@ -97,10 +74,19 @@ namespace InformationCenter.WebUI.Controllers
                         throw new Exception("Указанный шаблон не найден.");
                     ViewData["SelectedTemplate"] = selectedTemplate;
 
-                    ViewData["SelectedFields"] = (TempData["SelectedFields"]
-                        ?? (selectedTemplate == null
-                             ? new FieldView[0]
-                             : _client.ServiceCenter.DocumentDescriptionService.GetFieldsOfTemplate(selectedTemplate)));
+                    
+                    
+                    IEnumerable<FieldView> selectedFields = ((IEnumerable<FieldView>)TempData["SelectedFields"]
+                        ??  _client.ServiceCenter.DocumentDescriptionService.GetFieldsOfTemplate(selectedTemplate));
+                     
+                    var fields = _client.ServiceCenter.SearchService.GetFields().ToList();
+
+                    foreach (var field in selectedFields)
+                    {
+                        fields.Remove(field);
+                    }
+                    ViewData["SelectedFields"] = selectedFields;
+                    ViewData["Fields"] = fields;
                 }
                 catch (Exception ex)
                 {
@@ -119,46 +105,87 @@ namespace InformationCenter.WebUI.Controllers
         {
             if (AuthHelper.NeedRedirectToAuth(this, "CommitChanges")) return RedirectToAction("LogOn", "Account");
 
-            ActionResult actionResult = View();
+            ActionResult actionResult = View("EditTemplate");
             InitServiceCenterClient();
+            string templateName = (string)HttpContext.Request["templateName"];
+
+            string templateIdStr = (HttpContext.Request["templateId"] ?? "");
+
             if (_client.Available)
             {
-                var fields = (IEnumerable<FieldView>)_client.ServiceCenter.SearchService.GetFields();
-                var selectedFields = new List<FieldView>();
-                foreach (string fieldKey in HttpContext.Request.Params)
+                IEnumerable<TemplateView> allTemplates = _client.ServiceCenter.DocumentDescriptionService.GetTemplates();
+                TemplateView selectedTemplate = TemplateHelper.GetTemplateByGUIDStr(templateIdStr, allTemplates);
+
+                if (selectedTemplate != null)
                 {
-                    var fieldValueStr = HttpContext.Request[fieldKey];
-
-                    if (fieldKey.StartsWith("_"))
+                    var fields = (IEnumerable<FieldView>) _client.ServiceCenter.SearchService.GetFields();
+                    var selectedFields = new List<FieldView>();
+                    foreach (string fieldKey in HttpContext.Request.Params)
                     {
-                        Guid fieldId = new Guid(fieldKey.Substring(1));
+                        var fieldValueStr = HttpContext.Request[fieldKey];
 
-                        TempData[fieldKey] = fieldValueStr;
-
-                        FieldView field = null;
-                        
-                        Type fieldType = typeof(string);
-                        foreach (FieldView f in fields)
+                        if (fieldKey.StartsWith("_"))
                         {
-                            if (f.ID == fieldId)
+                            Guid fieldId = new Guid(fieldKey.Substring(1));
+
+                            TempData[fieldKey] = fieldValueStr;
+
+                            FieldView field = null;
+
+                            Type fieldType = typeof (string);
+                            foreach (FieldView f in fields)
                             {
-                                field = f;
-                                selectedFields.Add(f);
-                                break;
+                                if (f.ID == fieldId)
+                                {
+                                    field = f;
+                                    selectedFields.Add(f);
+                                    break;
+                                }
                             }
-                        }
-                        if (field == null)
-                        {
-                            ModelState.AddModelError(fieldKey, "Поле с идентификатором " + fieldId + " не найдено");
-                            continue;
-                        }
+                            if (field == null)
+                            {
+                                ModelState.AddModelError(fieldKey, "Поле с идентификатором " + fieldId + " не найдено");
+                                continue;
+                            }
 
+                        }
+                    }
+                    
+                    //if (selectedTemplate.Name != templateName)
+                    //{
+                    //    if (TemplateHelper.CheckTemplateName(templateName, allTemplates))
+                    //        selectedTemplate.Name = templateName;
+                    //}
+                    if (selectedFields.Count > 0)
+                    {
+                        IEnumerable<FieldView> oldFields =
+                            _client.ServiceCenter.DocumentDescriptionService.GetFieldsOfTemplate(selectedTemplate);
+                        foreach (FieldView field in oldFields)
+                        {
+                            _client.ServiceCenter.DocumentDescriptionService.RemoveFieldFromTemplate(selectedTemplate,
+                                                                                                     field);
+                        }
+                        foreach (FieldView field in selectedFields)
+                        {
+                            _client.ServiceCenter.DocumentDescriptionService.AddFieldToTemplate(selectedTemplate.ID,
+                                                                                                field.ID);
+                        }
+                        ViewData["success"] = "Шаблон успешно сохранен";
                         
                     }
-                }
+                    else
+                    {
+                        ViewData["error"] = "Не выбрано ни одного поля";
+                    }
 
-                ViewData["Fields"] = fields;
-                ViewData["SelectedFields"] = selectedFields;
+                    ViewData["SelectedTemplate"] = selectedTemplate;
+                    ViewData["SelectedFields"] = selectedFields;
+                    ViewData["Fields"] = fields;
+
+                }
+                
+
+
 
 
             }
