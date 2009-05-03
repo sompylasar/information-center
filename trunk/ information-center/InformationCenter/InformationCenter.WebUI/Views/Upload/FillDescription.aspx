@@ -10,6 +10,8 @@
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="HeadContent" runat="server">
+    <script type="text/javascript" src="/Scripts/jquery.autocomplete.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/Content/jquery.autocomplete/styles.css" />
     <style type="text/css">
         .selected 
         {
@@ -205,6 +207,23 @@
                     check_selected();
                 });
             };
+            var extend_autofill = function (textinput) {
+                $(textinput).each(function () {
+                    var $input = $(this);
+                    $input.autocomplete({ 
+                        serviceUrl: '/Search/Autocomplete/'+$input.attr('name').replace(/^_/, ''),
+                        minChars: 0, 
+                        delimiter: /(,|;)\s*/, // regex or character
+                        width: 202,
+                        maxHeight: 400,
+                        deferRequestBy: 50, //miliseconds
+                        onSelect: function (value, data) { 
+                            if (!data) 
+                                $input.val(''); 
+                        }
+                    });
+                });
+            };
             
             var add_one = function (li) {
                 var $itemFrom = $(li);
@@ -216,11 +235,12 @@
                 var fieldName = $itemFrom.attr('rel');
                 
                 $fieldName.html($itemFrom.html());
-                $('<input />').attr({ type: 'text', name: fieldName }).appendTo($fieldValue);
+                $input = $('<input />').attr({ type: 'text', name: fieldName }).appendTo($fieldValue);
                 
                 $itemTo.appendTo('#fields .listbox-to');
                 
                 extend_tr($itemTo);
+                extend_autofill($input);
                 
                 check_empty();
             };
@@ -243,7 +263,7 @@
                 check_empty();
             };
             
-            $("#fields .listbox-to tr").each(function () {  extend_tr(this); });
+            $("#fields .listbox-to tr").each(function () {  extend_tr(this); extend_autofill($(this).find(':text')); });
             $("#fields .listbox-from li").each(function () {  extend_li(this); });
             
             check_empty();
