@@ -40,6 +40,16 @@
                     $('#frmSearchDocument_additional_in_form').hide();
                 }
             }
+            function check_filled(inputs) {
+                $(inputs).each(function () {
+                    $input = $(this);
+                    var fieldKey = $input.attr('name');
+                    $use_cb = $(':checkbox[name=use'+fieldKey+']');
+                    $input.next('span.field-validation-error').hide();
+                    if ($input.val() == '') $use_cb.removeAttr('checked');
+                    else $use_cb.attr('checked', 'checked');
+                });
+            }
             
             $(':text').each(function () {
                 var $input = $(this);
@@ -65,12 +75,11 @@
             check_additional();
             
             $(':text[name^=_]').change(function () {
-                $input = $(this);
-                var fieldKey = $input.attr('name');
-                $use_cb = $(':checkbox[name=use'+fieldKey+']');
-                $input.next('span.field-validation-error').hide();
-                if ($input.val() == '') $use_cb.removeAttr('checked');
-                else $use_cb.attr('checked', 'checked');
+                check_filled(this);
+            });
+            
+            $('#frmSearchDocument').submit(function () {
+                check_filled( $(':text[name^=_]', this) );
             });
         });
     </script>
@@ -83,9 +92,9 @@
 
             var additionalFields = fields.Skip(2);
             fields = fields.Except(additionalFields);
-            
+
             var request = (SearchRequestView)(ViewData["SearchRequest"] ?? new SearchRequestView());
-            var useAdditional = Convert.ToBoolean(ViewData["UseAdditionalFields"]);
+            var useAdditional = (ViewData["UseAdditionalFields"] == null ? false : (bool)ViewData["UseAdditionalFields"]);
         %>
         <p><span class="error"><%=ViewData["error"]%></span></p>
         <p>
@@ -118,7 +127,7 @@
             </div>
         </p>
         <p>
-            <span id="chkUseAdditional_span" style="display:none;"><label for="chkUseAdditional" id="chkUseAdditional_label">Показывать дополнительные поля</label><input type="checkbox" id="chkUseAdditional" name="more" value="true"<%= useAdditional ? " checked=\"checked\"" : "" %> /></span>
+            <span id="chkUseAdditional_span" style="display:none;"><label for="chkUseAdditional" id="chkUseAdditional_label">Использовать дополнительные поля</label><input type="checkbox" id="chkUseAdditional" name="more" value="true"<%= useAdditional ? " checked=\"checked\"" : "" %> /></span>
             <div id="frmSearchDocument_additional_in_form" style="display:none;">
             <fieldset>
                 <legend>Дополнительные поля</legend>
@@ -132,7 +141,7 @@
     <div id="frmSearchDocument_additional" style="display:none;">
         <table class="search-fields search-fields-additional">
             <% foreach (FieldView field in additionalFields)
-               { 
+               {
                    object value = "";
                    bool found = false;
                    foreach (SearchItemView item in request.Items)
@@ -148,7 +157,7 @@
             <tr class="additional">
                 <td><input type="checkbox" name="use_<%=field.ID %>" id="cbx_<%=field.ID %>" value="true"<%= found ? " checked=\"checked\"" : "" %> /></td>
                 <td><label for="cbx_<%=field.ID %>"><%=Html.Encode(field.Name) %> (<%=Html.Encode(field.FieldTypeView.FieldTypeName) %>)</label></td>
-                <td><input type="text" id="Text1" name="_<%=field.ID %>" value="<%=Html.Encode(value) %>" /><%=Html.ValidationMessage("_"+field.ID) %></td>
+                <td><input type="text" id="txt_<%=field.ID %>" name="_<%=field.ID %>" value="<%=Html.Encode(value) %>" /><%=Html.ValidationMessage("_"+field.ID) %></td>
             </tr>
             <% } %>
         </table>

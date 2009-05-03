@@ -21,6 +21,19 @@ namespace InformationCenter.WebUI.Controllers
                 (string)(Session["Password"]),
                 (Session["IntegratedSecurity"] == null ? true : (bool)Session["IntegratedSecurity"]));
         }
+        private bool IsPrevSearchSaved()
+        {
+            return (Session["PrevSearchRequest"] is SearchRequestView);
+        }
+        private void SavePrevSearch(SearchRequestView request, bool useAdditionalFields)
+        {
+            Session["PrevSearchRequest"] = request;
+            Session["PrevSearchUseAdditionalFields"] = useAdditionalFields;
+        }
+        private void ClearPrevSearch()
+        {
+            SavePrevSearch(new SearchRequestView(), false);
+        }
 
         public ActionResult Index()
         {
@@ -30,9 +43,12 @@ namespace InformationCenter.WebUI.Controllers
             InitServiceCenterClient();
             if (_client.Available)
             {
+                if (!IsPrevSearchSaved())
+                    ClearPrevSearch();
+
                 ViewData["Fields"] = _client.ServiceCenter.SearchService.GetFields();
-                ViewData["SearchRequest"] = new SearchRequestView();
-                ViewData["UseAdditionalFields"] = (Session["SearchUseAdditionalFields"] ?? false);
+                ViewData["SearchRequest"] = Session["PrevSearchRequest"];
+                ViewData["UseAdditionalFields"] = Session["PrevSearchUseAdditionalFields"];
 
                 actionResult = View();
             }
@@ -45,6 +61,12 @@ namespace InformationCenter.WebUI.Controllers
             return actionResult;
         }
 
+        public ActionResult New()
+        {
+            ClearPrevSearch();
+            return RedirectToAction("Index");
+        }
+
         public ActionResult Query(bool? more)
         {
             if (AuthHelper.NeedRedirectToAuth(this,"Index")) return RedirectToAction("LogOn", "Account");
@@ -55,10 +77,8 @@ namespace InformationCenter.WebUI.Controllers
             {
                 actionResult = View("Index");
 
-                bool useAdditional = more ?? false;
-
                 var request = new SearchRequestView();
-
+                bool useAdditionalFields = (more ?? false);
                 var fields = _client.ServiceCenter.SearchService.GetFields();
 
                 foreach (string fieldKey in HttpContext.Request.Params)
@@ -70,8 +90,6 @@ namespace InformationCenter.WebUI.Controllers
                     if (fieldKey.StartsWith("_"))
                     {
                         Guid fieldId = new Guid(fieldKey.Substring(1));
-
-                        TempData[fieldKey] = fieldValueStr;
 
                         FieldView field = null;
                         FieldTypeView fieldTypeView = null;
@@ -112,15 +130,15 @@ namespace InformationCenter.WebUI.Controllers
                         }
                     }
                 }
+
                 ViewData["Fields"] = fields;
                 ViewData["SearchRequest"] = request;
-                ViewData["UseAdditionalFields"] = useAdditional;
+                ViewData["UseAdditionalFields"] = useAdditionalFields;
+
+                SavePrevSearch(request, useAdditionalFields);
 
                 if (ModelState.IsValid)
                 {
-                    Session["SearchPrevRequest"] = request;
-                    Session["SearchUseAdditionalFields"] = useAdditional;
-
                     try
                     {
                         var results = _client.ServiceCenter.SearchService.Query(request);

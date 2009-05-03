@@ -63,7 +63,7 @@
                 <%}%>
             </ol>
         </p>
-        <p><a href="javascript:window.history.go(-1)">Назад к поиску</a><br />
-        <a href="/Search/Index">Новый поиск</a></p>
+        <p><a href="/Search/Index">Изменить условия поиска</a><br />
+        <a href="/Search/New">Новый поиск</a></p>
     </div>
 </asp:Content>
