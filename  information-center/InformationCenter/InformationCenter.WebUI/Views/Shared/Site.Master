@@ -21,12 +21,13 @@
                 <% Html.RenderPartial("LogOnUserControl"); %>
             </div> 
             
+            <% string route = "/"+(this.ViewContext.RouteData.Values["controller"]??"Home") + "/" + (this.ViewContext.RouteData.Values["action"]??"Index") + "/"; %>
             <div id="menucontainer">
                 <ul id="menu">              
-                    <li><%= Html.ActionLink("Поиск", "Index", "Search")%></li>
-                    <li><%= Html.ActionLink("Загрузка", "Index", "Upload")%></li>
-                    <li><%= Html.ActionLink("Управление шаблонами", "Index", "Templates")%></li>
-                    <li><%= Html.ActionLink("Об авторах", "About", "Home")%></li>
+                    <li <%=route.StartsWith("/Search/") ? " class=\"selected\"" : "" %>><%= Html.ActionLink("Поиск", "Index", "Search")%></li>
+                    <li <%=route.StartsWith("/Upload/") ? " class=\"selected\"" : "" %>><%= Html.ActionLink("Загрузка", "Index", "Upload")%></li>
+                    <li <%=route.StartsWith("/Templates/") ? " class=\"selected\"" : "" %>><%= Html.ActionLink("Управление шаблонами", "Index", "Templates")%></li>
+                    <li <%=route.StartsWith("/Home/About/") ? " class=\"selected\"" : "" %>><%= Html.ActionLink("Об авторах", "About", "Home")%></li>
                 </ul>
             </div>
         </div>
