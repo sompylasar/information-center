@@ -43,7 +43,7 @@ namespace InformationCenter.WebUI.Models
             bool result = true;
             foreach (FieldView fields in Fields)
             {
-                if (fields.Name == Name)
+                if (fields.Name.ToLower() == Name.ToLower())
                 {
                     result = false;
                     break;

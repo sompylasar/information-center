@@ -6,6 +6,10 @@
 </asp:Content>
 
 
+<asp:Content ID="Content3" ContentPlaceHolderID="TitleContent" runat="server">
+	Выбор поля
+</asp:Content>
+
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
     <h2>Редактирование поля</h2>

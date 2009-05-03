@@ -43,7 +43,7 @@ namespace InformationCenter.WebUI.Models
             bool result = true;
             foreach (TemplateView template in Templates)
             {
-                if (template.Name == Name)
+                if (template.Name.ToLower() == Name.ToLower())
                 {
                     result = false;
                     break;

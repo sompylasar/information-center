@@ -86,5 +86,106 @@ namespace InformationCenter.WebUI.Controllers
             return actionResult;
         }
 
+        public ActionResult CommitChanges()
+        {
+            if (AuthHelper.NeedRedirectToAuth(this, "CommitChanges")) return RedirectToAction("LogOn", "Account");
+
+            ActionResult actionResult = View("EditField");
+            InitServiceCenterClient();
+            
+            string fieldName = HttpContext.Request["fieldName"];
+
+            string fieldIdStr = (HttpContext.Request["fieldId"] ?? "");
+            var dataTypes = _client.ServiceCenter.DocumentDescriptionService.GetFieldTypes();
+
+            if (_client.Available)
+            {
+                var fields = _client.ServiceCenter.SearchService.GetFields();
+                FieldView selectedField = FieldHelper.GetFieldByGUIDStr(fieldIdStr, fields);
+
+
+                if (selectedField != null)
+                {
+
+                    if (selectedField.Name != fieldName)
+                    {
+                        if (FieldHelper.CheckFieldName(fieldName, fields))
+                        {
+                            _client.ServiceCenter.DocumentDescriptionService.RenameField(selectedField, fieldName);
+                            fields = _client.ServiceCenter.SearchService.GetFields();
+                            selectedField = FieldHelper.GetFieldByGUIDStr(fieldIdStr, fields);
+                            ViewData["success"] = "Поле успешно сохранено";
+                        }
+                        else
+                        {
+                            ViewData["error"] = "Поле с таким именем уже существует, задайте другое имя.";
+                        }
+
+                    }
+                    else
+                    {
+                        ViewData["success"] = "Нет изменений";
+                    }
+
+
+                    ViewData["SelectedField"] = selectedField;
+                    ViewData["DataTypes"] = dataTypes;
+
+                }
+
+
+            }
+            else
+            {
+                ViewData["error"] = "Сервис редактирования полей в данный момент недоступен.";
+            }
+
+            return actionResult;
+
+        }
+        public ActionResult DeleteField()
+        {
+            if (AuthHelper.NeedRedirectToAuth(this, "DeleteField")) return RedirectToAction("LogOn", "Account");
+
+            ActionResult actionResult = View("SelectField");
+            InitServiceCenterClient();
+
+            string fieldIdStr = (HttpContext.Request["fieldId"] ?? "");
+
+            if (_client.Available)
+            {
+                var fields = _client.ServiceCenter.SearchService.GetFields();
+                FieldView selectedField = FieldHelper.GetFieldByGUIDStr(fieldIdStr, fields);
+
+
+                if (selectedField != null)
+                {
+                    string tempFieldName = selectedField.Name;
+                    _client.ServiceCenter.DocumentDescriptionService.DeleteField(selectedField);
+                    ViewData["success"] = "Поле \"" + tempFieldName + "\" успешно удалено.";
+
+                }
+                else
+                {
+                    ViewData["error"] = "Указанное поле не найден.";
+                }
+
+                fields = _client.ServiceCenter.SearchService.GetFields();
+
+
+                if (fields.Count() <= 0)
+                    ViewData["error"] = "Ни одного поля не создано";
+                else
+                    ViewData["Fields"] = fields;
+
+            }
+            else
+            {
+                ViewData["error"] = "Сервис редактирования шаблонов в данный момент недоступен.";
+            }
+
+            return actionResult;
+
+        }
     }
 }

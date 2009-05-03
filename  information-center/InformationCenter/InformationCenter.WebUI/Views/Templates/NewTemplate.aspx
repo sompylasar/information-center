@@ -6,6 +6,9 @@
 </asp:Content>
 
 
+<asp:Content ID="Content3" ContentPlaceHolderID="TitleContent" runat="server">
+	Создание шаблона
+</asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">
