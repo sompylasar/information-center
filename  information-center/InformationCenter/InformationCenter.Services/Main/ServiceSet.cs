@@ -3,6 +3,7 @@ using System.Linq;
 using InformationCenter.Data;
 using System.Collections.Generic;
 using System.IO;
+using System.Data.Objects;
 
 namespace InformationCenter.Services
 {
@@ -234,9 +235,17 @@ namespace InformationCenter.Services
             Engine.RemoveFieldFromTemplate(TemplateView.ID, FieldView.ID);
         } 
 
-        public void DeleteTemplate(TemplateView Template) { Engine.DeleteTemplate(Template.ID); }
+        public void DeleteTemplate(TemplateView Template)
+        {
+            Engine.DeleteTemplate(Template.ID);
+            Engine.Refresh(RefreshMode.StoreWins, Template.Template);
+        }
 
-        public void DeleteField(FieldView Field) { Engine.DeleteField(Field.ID); }
+        public void DeleteField(FieldView Field)
+        {
+            Engine.DeleteField(Field.ID);
+            Engine.Refresh(RefreshMode.StoreWins, Field.Field);
+        }
 
         #endregion
 
@@ -245,11 +254,13 @@ namespace InformationCenter.Services
         public void RenameField(FieldView Field, string NewName)
         {
             Engine.RenameField(Field.ID, NewName);
+            Engine.Refresh(RefreshMode.StoreWins, Field.Field);
         }
 
         public void RenameTemplate(TemplateView Template, string NewName)
         {
             Engine.RenameTemplate(Template.ID, NewName);
+            Engine.Refresh(RefreshMode.StoreWins, Template.Template);
         }
 
         #endregion

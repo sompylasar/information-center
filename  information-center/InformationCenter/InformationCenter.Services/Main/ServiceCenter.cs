@@ -48,7 +48,7 @@ namespace InformationCenter.Services
         public string ConnectionString { get { return connectionString; } }      
 
         /// <summary>
-        /// сервис для поиска
+        /// сервис для поиска документов
         /// </summary>
         public ISearchService SearchService { get { return InternalService; } }
 

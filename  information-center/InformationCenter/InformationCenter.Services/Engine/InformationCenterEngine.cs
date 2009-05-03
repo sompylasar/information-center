@@ -225,15 +225,9 @@ namespace InformationCenter.Services
 
         #region Modify
 
-        public void RenameTemplate(Guid TemplateID, string NewName)
-        {
-            Entities.RenameTemplate(TemplateID, NewName).First();
-        }
+        public void RenameTemplate(Guid TemplateID, string NewName) { Entities.RenameTemplate(TemplateID, NewName).First(); }
 
-        public void RenameField(Guid FieldID, string NewName)
-        {
-            Entities.RenameField(FieldID, NewName).First();
-        }
+        public void RenameField(Guid FieldID, string NewName) { Entities.RenameField(FieldID, NewName).First(); }
 
         #endregion
 
