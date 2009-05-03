@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using LogicUtils;
 
 namespace InformationCenter.Data
 {
@@ -42,27 +43,6 @@ namespace InformationCenter.Data
         public List<SearchItem> Items { get { return items; } }
 
         #endregion
-
-    }
-
-    /// <summary>
-    /// Режим поиска.
-    /// </summary>
-    [Description("Режим поиска")]
-    public enum SearchMode
-    {
-
-        /// <summary>
-        /// И
-        /// </summary>
-        [Description("И")]
-        And,
-
-        /// <summary>
-        /// Или
-        /// </summary>
-        [Description("Или")]
-        Or
 
     }
 

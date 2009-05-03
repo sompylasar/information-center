@@ -185,7 +185,7 @@ namespace InformationCenter.Services
         public object[] GetFieldValues(Guid FieldID)
         {
             List<object> result = new List<object>();
-            DoFetch("[dbo].[GetFieldValues]", reader => { while (reader.Read()) result.Add(reader[0]); }, new SqlParameter("@fieldId", FieldID));
+            DoFetch("[dbo].[GetFieldValues]", reader => { while (reader.Read()) result.Add(reader["Value"]); }, new SqlParameter("@fieldId", FieldID));
             return result.ToArray();
         }
 
@@ -194,7 +194,7 @@ namespace InformationCenter.Services
         public object GetFieldValue(Guid FieldValueID)
         {
             object result = null;
-            DoFetch("[dbo].[GetFieldConcreteValue]", reader => { if (reader.Read()) result = reader[0]; }, new SqlParameter("@@fieldValueId", FieldValueID));
+            DoFetch("[dbo].[GetFieldConcreteValue]", reader => { if (reader.Read()) result = reader["Value"]; }, new SqlParameter("@fieldValueId", FieldValueID));
             return result;
         }
 

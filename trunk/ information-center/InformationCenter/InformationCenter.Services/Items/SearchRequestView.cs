@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 using InformationCenter.Data;
+using LogicUtils;
 
 namespace InformationCenter.Services
 {
