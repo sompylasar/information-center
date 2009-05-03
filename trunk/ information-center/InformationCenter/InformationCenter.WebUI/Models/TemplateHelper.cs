@@ -19,7 +19,7 @@ namespace InformationCenter.WebUI.Models
             {
                 templateId = new Guid(GuidStr);
             }
-            catch (FormatException ex)
+            catch (FormatException)
             {
                 templateId = Guid.Empty;
             }

@@ -19,7 +19,7 @@ namespace InformationCenter.WebUI.Models
             {
                 Id = new Guid(GuidStr);
             }
-            catch (FormatException ex)
+            catch (FormatException)
             {
                 Id = Guid.Empty;
             }

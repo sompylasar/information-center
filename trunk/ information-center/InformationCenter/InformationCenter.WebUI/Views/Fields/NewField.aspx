@@ -26,7 +26,7 @@
         
         <p><span class="error"><%=ViewData["error"]%></span></p>
         <p><span class="success"><%=ViewData["success"]%></span></p>
-        <p><label for="fileToUpload">Имя поля:</label><input type="text" name="fieldName" value="" />
+        <p><label for="fileToUpload">Имя поля:</label><input type="text" name="fieldName" value="" /></p>
         <div>
             <ul style="list-style-type: none;">
             <%

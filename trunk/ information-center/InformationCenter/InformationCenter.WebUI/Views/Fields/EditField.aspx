@@ -37,7 +37,7 @@
         
         <p><span class="error"><%=ViewData["error"]%></span></p>
         <p><span class="success"><%=ViewData["success"]%></span></p>
-        <p><label for="fileToUpload">Имя поля:</label><input type="text" name="fieldName" value="<%=Html.Encode(FieldName) %>" />
+        <p><label for="fileToUpload">Имя поля:</label><input type="text" name="fieldName" value="<%=Html.Encode(FieldName) %>" /></p>
         <input type=hidden name="fieldId" value="<%=Html.Encode(FieldId) %>" />
         <div>
             <ul style="list-style-type: none;">
