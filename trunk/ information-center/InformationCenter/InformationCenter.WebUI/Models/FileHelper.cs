@@ -17,7 +17,7 @@ namespace InformationCenter.WebUI.Models
             int pos = combinedFilename.LastIndexOf(SEPARATOR);
             if (pos < 0) pos = combinedFilename.Length;
             filename = combinedFilename.Substring(0, pos);
-            contentType = combinedFilename.Substring(pos+SEPARATOR.Length);
+            contentType = (pos >= combinedFilename.Length ? "" : combinedFilename.Substring(pos+SEPARATOR.Length));
         }
     }
 }
