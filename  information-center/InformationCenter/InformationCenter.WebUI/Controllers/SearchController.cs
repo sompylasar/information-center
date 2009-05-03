@@ -64,6 +64,14 @@ namespace InformationCenter.WebUI.Controllers
         public ActionResult New()
         {
             ClearPrevSearch();
+
+            List<string> keys = new List<string>(TempData.Keys);
+            foreach (string fieldKey in keys)
+            {
+                if (fieldKey.StartsWith("_"))
+                    TempData[fieldKey] = null;
+            }
+
             return RedirectToAction("Index");
         }
 
@@ -85,6 +93,9 @@ namespace InformationCenter.WebUI.Controllers
                 {
                     var fieldValueStr = (HttpContext.Request[fieldKey] ?? "").Trim();
                     bool use = (HttpContext.Request["use" + fieldKey] == "true");
+
+                    TempData[fieldKey] = fieldValueStr;
+
                     if (!use) continue;
 
                     if (fieldKey.StartsWith("_"))

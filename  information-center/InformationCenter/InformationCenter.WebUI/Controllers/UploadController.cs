@@ -194,8 +194,7 @@ namespace InformationCenter.WebUI.Controllers
                                                                                                   file.ContentType),
                                                                        file.ContentType, file.ContentLength);
 
-                            // TODO: fill description Name properly
-                            string descriptionName = (TempData["SelectedTemplate"] != null ? ((TemplateView)TempData["SelectedTemplate"]).Name : "");
+                            string descriptionName = (Request["DescriptionName"] ?? (TempData["SelectedTemplate"] != null ? ((TemplateView)TempData["SelectedTemplate"]).Name : ""));
                             _client.ServiceCenter.UploadService.AddDescription(documentId, descriptionName, descriptionFieldsWithValues);
                         }
 

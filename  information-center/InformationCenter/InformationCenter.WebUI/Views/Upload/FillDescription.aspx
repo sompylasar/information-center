@@ -307,6 +307,7 @@
         <p><span class="error"><%=ViewData["error"]%></span></p>
         <p><span class="success"><%=ViewData["success"]%></span></p>
         <p><label for="fileToUpload">Документ:</label><input type="file" id="fileToUpload" name="f" /><%= Html.ValidationMessage("f") %></p>
+        <p><label for="txtDescriptionName">Название описания:</label><input type="text" id="txtDescriptionName" name="DescriptionName" /><%= Html.ValidationMessage("DescriptionName")%></p>
         <div>
             <table id="fields"><tr id="fields_row"><td class="listbox-section">
                 <fieldset id="fields-from-container">
