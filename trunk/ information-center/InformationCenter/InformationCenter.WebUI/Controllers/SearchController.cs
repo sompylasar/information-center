@@ -63,7 +63,7 @@ namespace InformationCenter.WebUI.Controllers
 
                 foreach (string fieldKey in HttpContext.Request.Params)
                 {
-                    var fieldValueStr = HttpContext.Request[fieldKey];
+                    var fieldValueStr = (HttpContext.Request[fieldKey] ?? "").Trim();
                     bool use = (HttpContext.Request["use" + fieldKey] == "true");
                     if (!use) continue;
 
