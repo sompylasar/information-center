@@ -15,11 +15,7 @@ namespace InformationCenter.WebUI.Models
         {
             if (!controller.Request.IsAuthenticated)
             {
-                controller.Session["ReturnRedirect"] = new RedirectResult("/" 
-                    + (controller.RouteData.Values["controller"] != null 
-                        ? (string)controller.RouteData.Values["controller"]
-                            + "/" + (string)(actionNameToReturnTo ?? controller.RouteData.Values["action"])
-                        : ""));
+                controller.Session["ReturnRedirect"] = new RedirectResult(controller.Request.RawUrl);
                 return true;
             }
             return false;
