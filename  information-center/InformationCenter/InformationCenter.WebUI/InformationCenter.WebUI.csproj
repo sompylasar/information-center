@@ -70,6 +70,7 @@
     <Compile Include="Models\DownloadResult.cs" />
     <Compile Include="Models\FileHelper.cs" />
     <Compile Include="Models\ServiceCenterClient.cs" />
+    <Compile Include="Models\TemplateHelper.cs" />
     <Compile Include="Models\UrlHelperExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

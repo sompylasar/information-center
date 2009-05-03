@@ -267,6 +267,11 @@ table th
     color: red;
 }
 
+.success
+{
+    color: green;
+}
+
 #menucontainer
 {
     /*margin-top:40px;*/

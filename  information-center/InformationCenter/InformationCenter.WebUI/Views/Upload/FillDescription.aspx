@@ -227,7 +227,7 @@
                 
                 var $fieldName = $itemFrom.find('td.fieldName');
                 var $fieldValue = $itemFrom.find('td.fieldValue');
-                var fieldName = $fieldValue.attr('name');
+                var fieldName = $fieldValue.find("input").attr('name');
                 
                 var $itemTo = $('<li></li>')
                     .attr({ rel: fieldName, 'order': $itemFrom.attr('order') })
@@ -282,6 +282,7 @@
             fields = fields.OrderBy(field => field.Order).Except(selectedFields);
         %>
         <p><span class="error"><%=ViewData["error"]%></span></p>
+        <p><span class="success"><%=ViewData["success"]%></span></p>
         <p><label for="fileToUpload">Документ:</label><input type="file" id="fileToUpload" name="f" /><%= Html.ValidationMessage("f") %></p>
         <div>
             <table id="fields"><tr id="fields_row"><td class="listbox-section">
