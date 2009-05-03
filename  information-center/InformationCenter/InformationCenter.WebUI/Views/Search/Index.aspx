@@ -1,6 +1,5 @@
 <%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 <%@ Import Namespace="InformationCenter.Services"%>
-<%@ Import Namespace="InformationCenter.Data"%>
 
 <asp:Content ID="indexTitle" ContentPlaceHolderID="TitleContent" runat="server">
 Поиск документов - Информационный центр ВУЗа
@@ -85,7 +84,7 @@
             var additionalFields = fields.Skip(2);
             fields = fields.Except(additionalFields);
             
-            var request = (SearchRequest)(ViewData["SearchRequest"] ?? new SearchRequest());
+            var request = (SearchRequestView)(ViewData["SearchRequest"] ?? new SearchRequestView());
             var useAdditional = Convert.ToBoolean(ViewData["UseAdditionalFields"]);
         %>
         <p><span class="error"><%=ViewData["error"]%></span></p>
@@ -98,9 +97,9 @@
                        { 
                            object value = "";
                            bool found = false;
-                           foreach (SearchItem item in request.Items)
+                           foreach (SearchItemView item in request.Items)
                            {
-                               if (item.FieldID == field.ID)
+                               if (item.Field.ID == field.ID)
                                {
                                    value = item.FieldValue;
                                    found = true;
@@ -136,9 +135,9 @@
                { 
                    object value = "";
                    bool found = false;
-                   foreach (SearchItem item in request.Items)
+                   foreach (SearchItemView item in request.Items)
                    {
-                       if (item.FieldID == field.ID)
+                       if (item.Field.ID == field.ID)
                        {
                            value = item.FieldValue;
                            found = true;
