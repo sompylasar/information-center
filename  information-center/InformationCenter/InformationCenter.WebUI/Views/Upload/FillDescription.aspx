@@ -166,38 +166,39 @@
                 
                 check_selected();
             };
-            var deselect_all = function (items, except) {
-                except = $(except);
-                $(items)
-                    .filter(function () {return ($.inArray(this, except) < 0);})
-                    .removeAttr('selected').removeClass('selected');
+            var select_items = function (items) {
+                $(items).attr('selected', 'selected').addClass('selected');
             }
+            var deselect_items = function (items) {
+                $(items).removeAttr('selected').removeClass('selected');
+            }
+
             var extend_tr = function (tr) {
-                var $tr = $(tr);
+                var $target = $(tr);
                 
-                $tr.find('td').unbind('.select').bind('click.select', function () {
+                $target.find('td').unbind('.select-item').bind('click.select-item', function () {
                     if (false && !isCtrlDown) {
-                        deselect_all( $('#fields .listbox-to tr') , $tr );
+                        deselect_items( $target.siblings() );
                     }
                     
-                    if ($tr.is('[selected]')) $tr.removeAttr('selected').removeClass('selected');
-                    else $tr.attr('selected', 'selected').addClass('selected');
+                    if ($target.is('[selected]')) deselect_items( $target );
+                    else select_items( $target );
                     
                     check_selected();
                 });
                 
-                $tr.find('input').unbind('.select').bind('click.select', function (event) {event.stopPropagation();})
+                $target.find('input').unbind('.select-item').bind('click.select-item', function (event) {event.stopPropagation();})
             };
             var extend_li = function (li) {
-                var $li = $(li);
+                var $target = $(li);
                 
-                $li.unbind('.select').bind('click.select', function () {
+                $target.unbind('.select-item').bind('click.select-item', function () {
                     if (false && !isCtrlDown) {
-                        deselect_all( $('#fields .listbox-from li'), $li );
+                        deselect_items( $target.siblings() );
                     }
                     
-                    if ($li.is('[selected]')) $li.removeAttr('selected').removeClass('selected');
-                    else $li.attr('selected', 'selected').addClass('selected');
+                    if ($target.is('[selected]')) deselect_items( $target );
+                    else select_items( $target );
                     
                     check_selected();
                 });
