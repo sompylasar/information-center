@@ -46,8 +46,7 @@
                     var fieldKey = $input.attr('name');
                     $use_cb = $(':checkbox[name=use'+fieldKey+']');
                     $input.next('span.field-validation-error').hide();
-                    if ($input.val() == '') $use_cb.removeAttr('checked');
-                    else $use_cb.attr('checked', 'checked');
+                    if ($input.val() != '') $use_cb.attr('checked', 'checked');
                 });
             }
             
@@ -74,12 +73,13 @@
                 
             check_additional();
             
-            $(':text[name^=_]').change(function () {
-                check_filled(this);
-            });
+            $(':text[name^=_]')
+                .blur(function () { check_filled(this); })
+                .focus(function () { $(this).addClass('focus'); })
+                .blur(function () { $(this).removeClass('focus'); });
             
             $('#frmSearchDocument').submit(function () {
-                check_filled( $(':text[name^=_]', this) );
+                check_filled( $('.focus:text[name^=_]', this) );
             });
         });
     </script>
@@ -104,7 +104,7 @@
                 <table class="search-fields">
                     <% foreach (FieldView field in fields)
                        { 
-                           object value = "";
+                           object value = (TempData["_"+field.ID] ?? "");
                            bool found = false;
                            foreach (SearchItemView item in request.Items)
                            {
@@ -137,12 +137,13 @@
             </div>
         </p>
         <p><button type="submit">Найти!</button></p>
+        <p><a href="/Search/New">Новый поиск</a></p>
     </form>
     <div id="frmSearchDocument_additional" style="display:none;">
         <table class="search-fields search-fields-additional">
             <% foreach (FieldView field in additionalFields)
                {
-                   object value = "";
+                   object value = (TempData["_" + field.ID] ?? "");
                    bool found = false;
                    foreach (SearchItemView item in request.Items)
                    {
