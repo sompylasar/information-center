@@ -298,7 +298,7 @@
             </td></tr></table>
         </div>
         <p><button type="submit">Сохранить</button></p>
-        <%=Html.ActionLink("Назад", "Index", "Templates")%>
+        <%=Html.ActionLink("Управление шаблонами", "Index", "Templates")%>
 
     </form>
 </asp:Content>

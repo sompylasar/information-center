@@ -19,7 +19,7 @@
         </ul>
     </div>
     
-     <%=Html.ActionLink("Назад", "Index", "Management")%>
+     <%=Html.ActionLink("Управление", "Index", "Management")%>
 
 </asp:Content>
 
