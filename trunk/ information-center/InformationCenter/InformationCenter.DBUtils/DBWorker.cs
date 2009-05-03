@@ -12,37 +12,56 @@ namespace InformationCenter.DBUtils
 {
     public class DBWorker
     {
-        public DBWorker(SqlConnectionStringBuilder csb)
-        {
-            if (csb == null)
-                throw new ArgumentNullException("csb", "Некорректная строка подключения");
+        //public DBWorker(SqlConnectionStringBuilder csb)
+        //{
+        //    if (csb == null)
+        //        throw new ArgumentNullException("csb", "Некорректная строка подключения");
 
-            if (String.IsNullOrEmpty(csb.ConnectionString.Trim()))
-                throw new ArgumentException("Некорректная строка подключения", "csb");
+        //    if (String.IsNullOrEmpty(csb.ConnectionString.Trim()))
+        //        throw new ArgumentException("Некорректная строка подключения", "csb");
 
-            this.csb = new SqlConnectionStringBuilder(csb.ConnectionString);
-            provider = new SqlConnectionProvider();
-        }
+        //    this.csb = new SqlConnectionStringBuilder(csb.ConnectionString);
+        //    provider = new SqlConnectionProvider();
+        //}
         public DBWorker(string connectionString)
         {
             if(String.IsNullOrEmpty(connectionString.Trim()))
                 throw new ArgumentNullException("connectionString", "Некорректная строка подключения");
 
-            csb = new SqlConnectionStringBuilder(connectionString);
+            ConnectionString = connectionString;
             provider = new SqlConnectionProvider();
         }
 
-        public string ConnectionString { get { return csb.ConnectionString; } }
+        public string ConnectionString
+        {
+            get { return connectionString; }
+            set
+            {
+                connectionString = value;
+                csb = new SqlConnectionStringBuilder(DbConnectionString);
+            }
+        }
+        private string connectionString { get; set; }
+        protected string DbConnectionString
+        {
+            get
+            {
+                int a = ConnectionString.IndexOf('\'');
+                return ConnectionString.Substring(a).Trim('\'');
+            }
+        }
+
+        public string EntityConnectionString { get; set; }
         private SqlConnectionStringBuilder csb = new SqlConnectionStringBuilder();
         private IDbConnectionProvider provider {get; set; }
-        
+
         #region Execute
         /// <summary>
         /// Выполнить запрос к БД
         /// </summary>
         /// <param name="Query">Текст запроса</param>
         /// <returns>Результат запроса</returns>
-        private DataTable ExecuteQuery(string Query)
+            internal DataTable ExecuteQuery(string Query)
         {
             if (Query.Trim() == string.Empty)
                 throw new ArgumentException("Пустая строка", Query);
@@ -247,7 +266,7 @@ namespace InformationCenter.DBUtils
                                                                       new ColumnDescription
                                                                           {
                                                                               Name = "FieldID",
-                                                                              Type = SqlDbType.UniqueIdentifier
+                                                                              Type = "UniqueIdentifier"
                                                                           }
                                                                   });
 
@@ -312,16 +331,18 @@ namespace InformationCenter.DBUtils
             cds.Add(new ColumnDescription
             {
                 Name = "FieldID",
-                Type = SqlDbType.UniqueIdentifier
+                Type = "UniqueIdentifier"
             });
 
-            foreach (var fieldType in fields.Keys.Select(f => { if (!f.FieldTypeReference.IsLoaded) f.FieldTypeReference.Load(); return f.FieldType; }).Distinct())
+            var ent = new Entities(ConnectionString);
+            
+            foreach (var fieldType in ent.FieldType.ToArray())
             {
-                //cds.Add(new ColumnDescription()
-                //    {
-                //        Name = "FieldValue",
-                //        Type = Enum.Parse(typeof(SqlDbType))
-                //    });
+                cds.Add(new ColumnDescription()
+                    {
+                        Name = "FieldValue" + fieldType.SqlName,
+                        Type = fieldType.SqlType
+                    });
             }
             string query = GenQueryCreateTable(tempTableName, cds);
 
@@ -332,12 +353,14 @@ namespace InformationCenter.DBUtils
             {
                 query += Environment.NewLine +
                          " INSERT INTO " + tempTableName +
-                         @"(FieldID, FieldValue)
-                    VALUES
-                    (@id" + i.ToString() + ", @value" + i + ") ";
+                         @"(FieldID, FieldValue"+field.Key.FieldType.SqlName+
+                         ") VALUES (@id" + i.ToString() + ", @value" + i + ") ";
 
-                parameters.Add(new SqlParameter("@id" + i.ToString(), field.Key.ID) {DbType = DbType.Guid});
-                parameters.Add(new SqlParameter("@value" + i.ToString(), field.Key.ID));
+                parameters.Add(new SqlParameter("@id" + i.ToString(), field.Key.ID) { SqlDbType = SqlDbType.UniqueIdentifier});
+                if (field.Value is Guid)
+                    parameters.Add(new SqlParameter("@value" + i.ToString(), (Guid)field.Value) { SqlDbType = SqlDbType.UniqueIdentifier });
+                else
+                    parameters.Add(new SqlParameter("@value" + i.ToString(), field.Value));
 
                 ++i;
             }
@@ -352,7 +375,7 @@ namespace InformationCenter.DBUtils
             parameters.Add(new SqlParameter("@name", docDescriptionName));
             parameters.Add(new SqlParameter("@tempFieldsTableName", tempTableName));
             parameters.Add(new SqlParameter("@documentId", documentId) {DbType = DbType.Guid});
-            var pId = new SqlParameter("@tID", Guid.NewGuid())
+            var pId = new SqlParameter("@id", Guid.NewGuid())
                           {DbType = DbType.Guid, Direction = ParameterDirection.Output};
             parameters.Add(pId);
 
@@ -392,12 +415,12 @@ namespace InformationCenter.DBUtils
                                                                       new ColumnDescription
                                                                           {
                                                                               Name = "FieldID",
-                                                                              Type = SqlDbType.UniqueIdentifier
+                                                                              Type = "UniqueIdentifier"
                                                                           },
                                                                       new ColumnDescription
                                                                           {
                                                                               Name = "FieldValue",
-                                                                              Type = SqlDbType.UniqueIdentifier
+                                                                              Type = "UniqueIdentifier"
                                                                           }
                                                                   });
 
@@ -432,7 +455,7 @@ namespace InformationCenter.DBUtils
             catch (Exception exc)
             {
                 tempTableName = string.Empty;
-                Debug.WriteLine("CreateFieldsTempTable > " + exc.Message);
+                Debug.WriteLine("SearchDocDescription > " + exc.Message);
                 throw exc;
             }
             finally
@@ -450,9 +473,9 @@ namespace InformationCenter.DBUtils
             result.AddRange(ParseDataTable<DocDescription>(table,
                 new[]
                 {
-                    new ColumnDescription(){Name = "ID", PropName = "ID", Type = SqlDbType.UniqueIdentifier},
-                    new ColumnDescription(){Name = "Name", PropName = "ID", Type = SqlDbType.NVarChar},
-                    new ColumnDescription(){Name = "DocumentID", PropName = "DocumentID", Type = SqlDbType.UniqueIdentifier}
+                    new ColumnDescription(){Name = "ID", PropName = "ID", Type = "UniqueIdentifier"},
+                    new ColumnDescription(){Name = "Name", PropName = "Name", Type = "NVarChar(256)"},
+                    new ColumnDescription(){Name = "DocumentID", PropName = "DocumentID", Type = "UniqueIdentifier"}
                 }));
             return result.ToArray();
         }
@@ -509,8 +532,7 @@ namespace InformationCenter.DBUtils
             string result = "CREATE TABLE " + TempTableName + "(";
             foreach (var prop in props)
             {
-                SqlDbType type = prop.Type;
-                result += prop.Name + " " + Enum.GetName(typeof(SqlDbType), type);
+                result += prop.Name + " " + prop.Type;
                 result += ", ";
             }
             result = result.TrimEnd(',', ' ');
@@ -525,7 +547,7 @@ namespace InformationCenter.DBUtils
         {
             public string Name { get; set; }
             public string PropName { get; set; }
-            public SqlDbType Type { get; set; }
+            public string Type { get; set; }
         }
     }
 }
