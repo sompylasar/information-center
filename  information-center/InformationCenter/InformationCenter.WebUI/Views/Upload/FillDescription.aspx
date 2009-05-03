@@ -418,13 +418,5 @@
             </td></tr></table>
         </div>
         <p><button type="submit">Загрузить</button></p>
-        <p>
-        <% if (ViewData["Templates"] != null && ((IEnumerable<TemplateView>)ViewData["Templates"]).Count() > 0)
-           { %>
-            <a href="javascript:window.history.go(-1)">Назад к выбору шаблона</a>
-        <% } else { %>
-            <%=Html.ActionLink("Выбор шаблона", "SelectTemplate", "Upload")%>
-        <% } %>
-        </p>
     </form>
 </asp:Content>
