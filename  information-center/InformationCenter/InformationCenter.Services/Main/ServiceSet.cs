@@ -133,34 +133,6 @@ namespace InformationCenter.Services
             return Array.ConvertAll<Field, FieldView>(Engine.GetTemplateFields(TemplateView.ID), input => new FieldView(input));
         }
 
-        #endregion
-
-        #region Add
-
-        public bool AddTemplate(string Name, IEnumerable<FieldView> FieldViews)
-        {
-            return Engine.AddTemplate(Name, FieldViews.Select(fv => fv.Field));
-        }
-
-        public bool AddDescription(Guid DocumentID, string Name, Dictionary<FieldView, object> FieldsWithValues)
-        {
-            if (FieldsWithValues == null) throw new ArgumentNullException("FieldsWithValues");
-            if (Engine.CreateQuery<Document>().Where(d => d.ID == DocumentID).FirstOrDefault() == null)
-                throw new DocumentNotFoundException(DocumentID);
-            Dictionary<Field, object> param = new Dictionary<Field, object>();
-            foreach (var pair in FieldsWithValues) param.Add(pair.Key.Field, pair.Value);
-            return Engine.AddDocumentDescription(Name, DocumentID, param);
-        }
-
-        public void AddFieldToTemplate(Guid TemplateID, Guid FieldID)
-        {
-            Engine.AddFieldToTemplate(TemplateID, FieldID);
-        }
-
-        #endregion
-
-        #region Other
-
         /// <summary>
         /// поиск документов
         /// </summary>
@@ -215,11 +187,66 @@ namespace InformationCenter.Services
              */
         }
 
+        #endregion
+
+        #region Add
+
+        public void AddField(string Name, FieldTypeView Type)
+        {
+            Engine.AddField(Name, Type.ID);
+        }
+
+        public bool AddTemplate(string Name, IEnumerable<FieldView> FieldViews)
+        {
+            return Engine.AddTemplate(Name, FieldViews.Select(fv => fv.Field));
+        }
+
+        public bool AddDescription(Guid DocumentID, string Name, Dictionary<FieldView, object> FieldsWithValues)
+        {
+            if (FieldsWithValues == null) throw new ArgumentNullException("FieldsWithValues");
+            if (Engine.CreateQuery<Document>().Where(d => d.ID == DocumentID).FirstOrDefault() == null)
+                throw new DocumentNotFoundException(DocumentID);
+            Dictionary<Field, object> param = new Dictionary<Field, object>();
+            foreach (var pair in FieldsWithValues) param.Add(pair.Key.Field, pair.Value);
+            return Engine.AddDocumentDescription(Name, DocumentID, param);
+        }
+
+        public void AddFieldToTemplate(Guid TemplateID, Guid FieldID)
+        {
+            Engine.AddFieldToTemplate(TemplateID, FieldID);
+        }
+
+        #endregion
+
+        #region Remove/Delete
+
         public void RemoveFieldFromTemplate(TemplateView TemplateView, FieldView FieldView)
         {
             Engine.RemoveFieldFromTemplate(TemplateView.ID, FieldView.ID);
-        }    
-               
+        } 
+
+        public void DeleteTemplate(TemplateView Template) { Engine.DeleteTemplate(Template.ID); }
+
+        public void DeleteField(FieldView Field) { Engine.DeleteField(Field.ID); }
+
+        #endregion
+
+        #region Modify
+
+        public void RenameField(FieldView Field, string NewName)
+        {
+            Engine.RenameField(Field.ID, NewName);
+        }
+
+        public void RenameTemplate(TemplateView Template, string NewName)
+        {
+            Engine.RenameTemplate(Template.ID, NewName);
+        }
+
+        #endregion
+
+        #region Other
+
         public Guid Upload(Stream Stream, string FileName, string contentType, int ContentLength)
         {
             Exception ex = ValidateFile(Stream, FileName, contentType, ContentLength);

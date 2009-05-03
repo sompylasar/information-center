@@ -20,7 +20,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("InformationCenterModel", "FK_FieldTemplate_Template", "Template", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(InformationCenter.Data.Template), "NNFieldTemplate", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(InformationCenter.Data.NNFieldTemplate))]
 
 // Original file name:
-// Generation date: 03.05.2009 1:07:44
+// Generation date: 03.05.2009 16:15:06
 namespace InformationCenter.Data
 {
     
@@ -571,6 +571,56 @@ namespace InformationCenter.Data
                 tempSearchItemTableParameter = new global::System.Data.Objects.ObjectParameter("tempSearchItemTable", typeof(string));
             }
             return base.ExecuteFunction<DocDescription>("SearchDescriptions", tempSearchItemTableParameter);
+        }
+        /// <summary>
+        /// There are no comments for InformationCenterModel.RenameField in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectResult<IntValue> RenameField(global::System.Nullable<global::System.Guid> fieldId, string newName)
+        {
+            global::System.Data.Objects.ObjectParameter fieldIdParameter;
+            if (fieldId.HasValue)
+            {
+                fieldIdParameter = new global::System.Data.Objects.ObjectParameter("fieldId", fieldId);
+            }
+            else
+            {
+                fieldIdParameter = new global::System.Data.Objects.ObjectParameter("fieldId", typeof(global::System.Guid));
+            }
+            global::System.Data.Objects.ObjectParameter newNameParameter;
+            if ((newName != null))
+            {
+                newNameParameter = new global::System.Data.Objects.ObjectParameter("newName", newName);
+            }
+            else
+            {
+                newNameParameter = new global::System.Data.Objects.ObjectParameter("newName", typeof(string));
+            }
+            return base.ExecuteFunction<IntValue>("RenameField", fieldIdParameter, newNameParameter);
+        }
+        /// <summary>
+        /// There are no comments for InformationCenterModel.RenameTemplate in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectResult<IntValue> RenameTemplate(global::System.Nullable<global::System.Guid> templateId, string newName)
+        {
+            global::System.Data.Objects.ObjectParameter templateIdParameter;
+            if (templateId.HasValue)
+            {
+                templateIdParameter = new global::System.Data.Objects.ObjectParameter("templateId", templateId);
+            }
+            else
+            {
+                templateIdParameter = new global::System.Data.Objects.ObjectParameter("templateId", typeof(global::System.Guid));
+            }
+            global::System.Data.Objects.ObjectParameter newNameParameter;
+            if ((newName != null))
+            {
+                newNameParameter = new global::System.Data.Objects.ObjectParameter("newName", newName);
+            }
+            else
+            {
+                newNameParameter = new global::System.Data.Objects.ObjectParameter("newName", typeof(string));
+            }
+            return base.ExecuteFunction<IntValue>("RenameTemplate", templateIdParameter, newNameParameter);
         }
     }
     /// <summary>
