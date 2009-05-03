@@ -196,11 +196,12 @@ namespace InformationCenter.WebUI.Controllers
                 }
             }
 
+            /*
             if (suggestions.Count <= 0)
             {
                 suggestions.Add("(нет вариантов)");
                 callbackData.Add(false);
-            }
+            }*/
 
             object autocomplete = new
             {
