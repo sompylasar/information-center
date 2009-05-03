@@ -91,15 +91,15 @@ namespace InformationCenter.WebUI.Controllers
 
                 foreach (string fieldKey in HttpContext.Request.Params)
                 {
-                    var fieldValueStr = (HttpContext.Request[fieldKey] ?? "").Trim();
-                    bool use = (HttpContext.Request["use" + fieldKey] == "true");
-
-                    TempData[fieldKey] = fieldValueStr;
-
-                    if (!use) continue;
-
                     if (fieldKey.StartsWith("_"))
                     {
+                        string fieldValueStr = (HttpContext.Request[fieldKey] ?? "").Trim();
+                        bool use = (HttpContext.Request["use" + fieldKey] == "true");
+
+                        TempData[fieldKey] = fieldValueStr;
+
+                        if (!use) continue;
+
                         Guid fieldId = new Guid(fieldKey.Substring(1));
 
                         FieldView field = null;

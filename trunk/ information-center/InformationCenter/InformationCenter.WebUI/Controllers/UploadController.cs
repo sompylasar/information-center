@@ -27,15 +27,19 @@ namespace InformationCenter.WebUI.Controllers
 
         public ActionResult SelectTemplate()
         {
-            Session["SelectedTemplate"] = null;
-            Session["UploadSelectedFields"] = null;
-
             if (AuthHelper.NeedRedirectToAuth(this, "SelectTemplate")) return RedirectToAction("LogOn", "Account");
 
             ActionResult actionResult = View("Error");
             InitServiceCenterClient();
             if (_client.Available)
             {
+                TemplateView selectedTemplate = (TemplateView)Session["SelectedTemplate"];
+                ViewData["SelectedTemplate"] = selectedTemplate;
+                ViewData["SelectedTemplateName"] = (selectedTemplate != null ? selectedTemplate.Name : "");
+
+                Session["SelectedTemplate"] = null;
+                Session["UploadSelectedFields"] = null;
+
                 var templates = _client.ServiceCenter.DocumentDescriptionService.GetTemplates();
 
                 // skip template selection if no templates found
@@ -43,7 +47,7 @@ namespace InformationCenter.WebUI.Controllers
 
                 ViewData["Templates"] = templates;
 
-                ViewData["error"] = TempData["Error"];
+                ViewData["error"] = TempData["error"];
 
                 actionResult = View("SelectTemplate");
             }
@@ -122,10 +126,9 @@ namespace InformationCenter.WebUI.Controllers
             {
                 actionResult = View("FillDescription");
 
-                TemplateView selectedTemplate = (TemplateView)Session["SelectedTemplate"];
-
                 ViewData["Fields"] = _client.ServiceCenter.SearchService.GetFields();
                 ViewData["Templates"] = _client.ServiceCenter.DocumentDescriptionService.GetTemplates();
+                TemplateView selectedTemplate = (TemplateView)Session["SelectedTemplate"];
                 ViewData["SelectedTemplate"] = selectedTemplate;
                 ViewData["SelectedTemplateName"] = (selectedTemplate != null ? selectedTemplate.Name : "");
 

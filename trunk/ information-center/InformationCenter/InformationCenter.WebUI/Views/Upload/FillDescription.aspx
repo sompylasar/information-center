@@ -1,8 +1,9 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+<%@ Import Namespace="InformationCenter.WebUI.Helpers"%>
 <%@ Import Namespace="InformationCenter.Services"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-Загрузка документов - Информационный центр ВУЗа
+Загрузка документа - Информационный центр ВУЗа
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="MainHeaderContent" runat="server">
@@ -361,7 +362,8 @@
         });
     </script>
 
-    <h2>Загрузка нового документа</h2>
+    <h2>Заполнение описания</h2>
+    <%=Html.Breadcrumbs().AddTextLink("Загрузка документа").AddActionLink("Выбор шаблона описания", "SelectTemplate").Last("Заполнение описания") %>
     
     <%= Html.ValidationSummary("Введенные данные некорректны. Проверьте их и повторите попытку.") %>
     
