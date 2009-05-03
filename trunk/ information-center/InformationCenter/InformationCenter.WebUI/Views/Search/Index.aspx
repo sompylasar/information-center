@@ -46,10 +46,11 @@
                 var $input = $(this);
                 $input.autocomplete({ 
                     serviceUrl: '/Search/Autocomplete/'+$input.attr('name').replace(/^_/, ''),
-                    minChars: 1, 
+                    minChars: 0, 
                     delimiter: /(,|;)\s*/, // regex or character
+                    width: 202,
                     maxHeight: 400,
-                    deferRequestBy: 200, //miliseconds
+                    deferRequestBy: 50, //miliseconds
                     onSelect: function (value, data) { 
                         if (!data) 
                             $input.val(''); 
