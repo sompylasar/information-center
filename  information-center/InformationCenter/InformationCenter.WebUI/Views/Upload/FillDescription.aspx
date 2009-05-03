@@ -84,6 +84,12 @@
         	border: 0;
         	height: 100%;
         }
+        
+        #fileToUpload, #txtDescriptionName 
+        {
+        	width: 50%;
+        }
+        
         #fields/*, #fields #fields-from-container, #fields #fields-to-container*/
         {
         	border: 0;
@@ -289,6 +295,28 @@
                     remove_one(this);
                 });
             });
+            
+            
+            function validate_upload(uploadForm) {
+                var valid = true;
+                var file = $.trim($('#fileToUpload', uploadForm).val());
+                if (file == '') {
+                    $('#fileToUpload', uploadForm).next('.field-validation-error').html('Файл не выбран.');
+                    valid = false;
+                }
+                var descriptionName = $.trim($('#txtDescriptionName', uploadForm).val() || '');
+                if (descriptionName == '') {
+                    $('#txtDescriptionName', uploadForm).next('.field-validation-error').html('Название описания не должно быть пустым.');
+                    valid = false;
+                }
+                return valid;
+            }
+            
+            if ($.browser.mozilla) $('#fileToUpload').attr('size', 50);
+            
+            $('#frmUpload').submit(function () {
+                return validate_upload(this);
+            })
         });
     </script>
 
@@ -305,9 +333,22 @@
             fields = fields.OrderBy(field => field.Order).Except(selectedFields);
         %>
         <p><span class="error"><%=ViewData["error"]%></span></p>
-        <p><span class="success"><%=ViewData["success"]%></span></p>
-        <p><label for="fileToUpload">Документ:</label><input type="file" id="fileToUpload" name="f" /><%= Html.ValidationMessage("f") %></p>
-        <p><label for="txtDescriptionName">Название описания:</label><input type="text" id="txtDescriptionName" name="DescriptionName" /><%= Html.ValidationMessage("DescriptionName")%></p>
+        <div>
+            <table class="layout">
+            <tr><td width="15%"><label for="fileToUpload">Документ:</label></td><td width="75%"><input type="file" id="fileToUpload" name="f" /><%
+            {
+                string message = Html.ValidationMessage("f");
+                if (string.IsNullOrEmpty(message)) message = " <span class=\"field-validation-error\"></span>";
+                Response.Write(message);
+            }%></td></tr>
+            <tr><td><label for="txtDescriptionName">Название описания:</label></td><td><input type="text" id="txtDescriptionName" name="DescriptionName" maxlength="256" value="<%=ViewData["SelectedTemplateName"] %>" /><%
+            {
+                string message = Html.ValidationMessage("DescriptionName");
+                if (string.IsNullOrEmpty(message)) message = " <span class=\"field-validation-error\"></span>";
+                Response.Write(message);
+            }%></td></tr>
+            </table>
+        </div>
         <div>
             <table id="fields"><tr id="fields_row"><td class="listbox-section">
                 <fieldset id="fields-from-container">

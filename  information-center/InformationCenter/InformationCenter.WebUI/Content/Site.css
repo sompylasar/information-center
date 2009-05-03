@@ -257,6 +257,17 @@ table th
 
 /* MISC  
 ----------------------------------------------------------*/
+table.layout 
+{
+	width: 100%;
+	border: 0;
+}
+table.layout tr, table.layout td 
+{
+	border: 0;
+}
+
+
 .clear
 {
     clear: both;
@@ -324,6 +335,7 @@ div#title h1
 .field-validation-error
 {
     color: #ff0000;
+    margin-left: 5px;
 }
 
 .input-validation-error
@@ -340,3 +352,12 @@ div#title h1
 
 
 .hidden { display: none; }
+
+.file-name { font-weight: bold; }
+.file-type { margin-left: 10px; color: purple; }
+.description-name { display: block; padding-top: 5px; font-weight: bold; }
+.description-fields, .description-fields li 
+{
+	padding-left: 1em;
+	list-style-type: none;
+}

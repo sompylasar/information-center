@@ -49,16 +49,16 @@
                       FileHelper.SplitFilename(result.Document.FileName, out filename, out contentType);
                       %>
                 <li>
-                    <div><span class="filename"><%=Html.Encode(filename) %></span><span class="filetype"><%=string.IsNullOrEmpty(contentType) ? "" : "("+Html.Encode(contentType)+")" %></span></div>
+                    <div><span class="file-name"><%=Html.ActionLink(filename, "Index", "Download", new { id = result.Document.ID }, null)%></span><span class="file-type"><%=string.IsNullOrEmpty(contentType) ? "" : "("+Html.Encode(contentType)+")" %></span></div>
                     <div>
-                        <label><%=Html.Encode(result.Name) %></label>
-                        <ul>
+                        <label class="description-name"><%=Html.Encode(result.Name) %></label>
+                        <ul class="description-fields">
                         <% foreach (FieldValueView descriptionField in result.DescriptionFields) { %>
                         <li><%=Html.Encode(descriptionField.Field.Name + "=\"" + descriptionField.Value + "\"") %></li>
                         <% } %>
                         </ul>
                     </div>
-                    <div><%=Html.ActionLink("Просмотр", "Index", "Download", new { id = result.Document.ID }, null)%></div>
+                    <div></div>
                 </li>
                 <%}%>
             </ol>
