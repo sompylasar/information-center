@@ -55,15 +55,7 @@
         	border-color: #000000 !important;
         	background-color: #E3E3E3 !important;
         }
-        td.listbox-section
-        {
-        	padding: 2px;
-        	vertical-align: top;
-        	/*min-width: 300px;
-        	width: 300px;*/
-        	border: 0;
-        	height: 100%;
-        }
+        
         table.listbox-to
         {
         	border: 0;
@@ -79,6 +71,16 @@
         table.listbox-to tr.selected td.fieldName, table.listbox-to tr:hover td.fieldName
         {
         	border-right: 0px;
+        }
+        
+        td.listbox-section
+        {
+        	padding: 2px;
+        	vertical-align: top;
+        	/*min-width: 300px;
+        	width: 300px;*/
+        	border: 0;
+        	height: 100%;
         }
         #fields/*, #fields #fields-from-container, #fields #fields-to-container*/
         {
