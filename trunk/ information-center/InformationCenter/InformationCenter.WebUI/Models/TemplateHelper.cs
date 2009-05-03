@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Web;
+using System.Web.Mvc;
 using InformationCenter.Services;
 using FormatException=System.FormatException;
 
@@ -48,6 +51,28 @@ namespace InformationCenter.WebUI.Models
 
             }
             return result;
+        }
+
+        public static IEnumerable<FieldView> GetSelectedFields(HttpContextBase HttpCtx, IEnumerable<FieldView> AllFields)
+        {
+            List<FieldView> selectedFields = new List<FieldView>();
+            foreach (string fieldKey in HttpCtx.Request.Params)
+            {
+                if (fieldKey.StartsWith("_"))
+                {
+                    Guid fieldId = new Guid(fieldKey.Substring(1));
+                    foreach (FieldView f in AllFields)
+                    {
+                        if (f.ID == fieldId)
+                        {
+                            selectedFields.Add(f);
+                            break;
+                        }
+                    }
+                    
+                }
+            }
+            return selectedFields;
         }
     }
 }

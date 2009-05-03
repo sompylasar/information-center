@@ -250,6 +250,7 @@
     
     <%= Html.ValidationSummary("Введенные данные некорректны. Проверьте их и повторите попытку.") %>
     
+   
     <form action="/Templates/CommitChanges" id="frmTemplate" method="post" enctype="multipart/form-data">
         <%
             var selectedFields = (IEnumerable<FieldView>)(ViewData["SelectedFields"] ?? new FieldView[0]);
@@ -294,19 +295,18 @@
                             <li rel="_<%=field.ID %>" order="<%=field.Order %>"><span class="unselectable"><%=Html.Encode(field.Name) %> (<%=Html.Encode(field.FieldTypeView.FieldTypeName) %>)</span><input style="Display:none;" type="text" name="_<%=field.ID %>" /></li>
                             <% } %>
                         </ul>
-                        <!--
-                        <table class="listbox-to">
-                            <% foreach (FieldView field in selectedFields) { %>
-                            <tr order="<%=field.Order %>"><td class="fieldName"><span class="unselectable"><%=Html.Encode(field.Name) %> (<%=Html.Encode(field.FieldTypeView.FieldTypeName) %>)</span></td></tr>
-                            <% } %>
-                        </table>
-                        -->
                     </div>
                 </fieldset>
             </td></tr></table>
         </div>
         <p><button type="submit">Сохранить</button></p>
-        <p>
+
+    </form>
+    <form action="/Templates/DeleteTemplate" id="Form2" method="post" enctype="multipart/form-data">
+        <input type=hidden name="templateId" value="<%=Html.Encode(TemplateId) %>" />
+        <p><button type="submit">Удалить шаблон</button></p>
+    </form>
+            <p>
         <% if (ViewData["Templates"] != null && ((IEnumerable<TemplateView>)ViewData["Templates"]).Count() > 0)
            { %>
             <a href="javascript:window.history.go(-1)">Назад к выбору шаблона</a>
@@ -314,5 +314,4 @@
             <%=Html.ActionLink("Выбор шаблона", "SelectTemplate", "Templates")%>
         <% } %>
         </p>
-    </form>
 </asp:Content>

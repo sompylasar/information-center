@@ -27,7 +27,24 @@ namespace InformationCenter.WebUI.Controllers
 
         public ActionResult NewTemplate()
         {
-            return View();
+            if (AuthHelper.NeedRedirectToAuth(this, "EditTemplate")) return RedirectToAction("LogOn", "Account");
+
+            ActionResult actionResult = View();
+            InitServiceCenterClient();
+            if (_client.Available)
+            {
+                    var fields = _client.ServiceCenter.SearchService.GetFields().ToList();
+                  
+                    ViewData["SelectedFields"] = null;
+                    ViewData["Fields"] = fields;
+                
+            }
+            else
+            {
+                ViewData["error"] = "Сервис редактирования шаблонов в данный момент недоступен.";
+            }
+
+            return actionResult;
         }
 
         public ActionResult SelectTemplate()
@@ -187,6 +204,116 @@ namespace InformationCenter.WebUI.Controllers
 
 
 
+
+            }
+            else
+            {
+                ViewData["error"] = "Сервис редактирования шаблонов в данный момент недоступен.";
+            }
+
+            return actionResult;
+
+        }
+
+        public ActionResult AddTemplate()
+        {
+            if (AuthHelper.NeedRedirectToAuth(this, "AddTemplate")) return RedirectToAction("LogOn", "Account");
+
+            ActionResult actionResult = View("NewTemplate");
+            InitServiceCenterClient();
+
+            string templateName = (string)HttpContext.Request["templateName"];
+            if (templateName != null)
+                templateName = templateName.Trim();
+            List<FieldView> fields = _client.ServiceCenter.SearchService.GetFields().ToList();
+            if (_client.Available)
+            {
+                IEnumerable<TemplateView> allTemplates = _client.ServiceCenter.DocumentDescriptionService.GetTemplates();
+
+                IEnumerable<FieldView> selectedFields = TemplateHelper.GetSelectedFields(HttpContext, fields);
+                if (templateName != null && templateName != "")
+                {
+                    
+                    if (selectedFields.Count() > 0)
+                    {
+                        if (TemplateHelper.CheckTemplateName(templateName, allTemplates))
+                        {
+                            if (_client.ServiceCenter.DocumentDescriptionService.AddTemplate(templateName,
+                                                                                             selectedFields))
+                            {
+                                ViewData["success"] = "Шаблон успешно создан";
+                            }
+                            else
+                            {
+                                ViewData["error"] = "Ошибка сохранения шаблона";
+                            }
+
+                        }
+                        else
+                        {
+                            ViewData["error"] = "Шаблом с таким именем уже существует, задайте другое имя";
+                        }
+                    }
+                    else
+                    {
+                        ViewData["error"] = "Не выбрано ни одного поля";
+                    }
+                }
+                else
+                {
+                    ViewData["error"] = "Не задано имя шаблона";
+                }
+
+                foreach (var field in selectedFields)
+                {
+                    fields.Remove(field);
+                }
+
+                ViewData["TemplateName"] = templateName;
+                ViewData["SelectedFields"] = selectedFields;
+                ViewData["Fields"] = fields;
+
+
+            }
+            else
+            {
+                ViewData["error"] = "Сервис редактирования шаблонов в данный момент недоступен.";
+            }
+
+            return actionResult;
+
+        }
+
+        public ActionResult DeleteTemplate()
+        {
+            if (AuthHelper.NeedRedirectToAuth(this, "DeleteTemplate")) return RedirectToAction("LogOn", "Account");
+
+            ActionResult actionResult = View("SelectTemplate");
+            InitServiceCenterClient();
+
+            string templateIdStr = (HttpContext.Request["templateId"] ?? "");
+
+            if (_client.Available)
+            {
+                IEnumerable<TemplateView> allTemplates = _client.ServiceCenter.DocumentDescriptionService.GetTemplates();
+                TemplateView selectedTemplate = TemplateHelper.GetTemplateByGUIDStr(templateIdStr, allTemplates);
+                if (selectedTemplate != null)
+                {
+                    //Todo: Собственно удалить шаблон
+                    
+                    ViewData["success"] = "Шаблон \"" + selectedTemplate.Name + "\" успешно удален.";
+                    ViewData["error"] =  "На самом деле, нефига но не удален, так как еще не докрутили удаление.";
+                }
+                else
+                {
+                    ViewData["error"] = "Указанный шаблон не найден.";
+                }
+
+                allTemplates = _client.ServiceCenter.DocumentDescriptionService.GetTemplates();
+                if (allTemplates.Count() <= 0)
+                    ViewData["error"] = "Ни одного шаблона не создано";
+                else
+                    ViewData["Templates"] = allTemplates;
 
             }
             else
