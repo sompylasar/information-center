@@ -1,5 +1,6 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 <%@ Import Namespace="InformationCenter.Services"%>
+<%@ Import Namespace="InformationCenter.WebUI.Helpers"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainHeaderContent" runat="server">
 Информационный центр ВУЗа
@@ -26,6 +27,7 @@
 %>
     
     <h2>Редактирование поля "<%=Html.Encode(FieldName)%>"</h2>
+    <%=Html.Breadcrumbs().AddActionLink("Управление полями", "Index").AddActionLink("Выбор поля", "SelectField").Last("Редактирование поля")%>
     
     <%= Html.ValidationSummary("Введенные данные некорректны. Проверьте их и повторите попытку.") %>
     
@@ -61,9 +63,5 @@
         <input type=hidden name="fieldId" value="<%=Html.Encode(FieldId) %>" />
         <p><button type="submit">Удалить поле</button></p>
     </form>
-            <p>
-       
-            <%=Html.ActionLink("Выбор поля", "SelectField", "Fields")%>
-
-        </p>
+ 
 </asp:Content>

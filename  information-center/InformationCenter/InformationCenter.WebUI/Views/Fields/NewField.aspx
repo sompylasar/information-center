@@ -1,5 +1,6 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 <%@ Import Namespace="InformationCenter.Services"%>
+<%@ Import Namespace="InformationCenter.WebUI.Helpers"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainHeaderContent" runat="server">
 Информационный центр ВУЗа
@@ -14,6 +15,7 @@
 
 
     <h2>Создание поля</h2>
+    <%=Html.Breadcrumbs().AddActionLink("Управление полями", "Index").Last("Создание поля")%>
     
     <%= Html.ValidationSummary("Введенные данные некорректны. Проверьте их и повторите попытку.") %>
     
@@ -43,9 +45,5 @@
         <p><button type="submit">Сохранить</button></p>
 
     </form>
-            <p>
-       
-            <%=Html.ActionLink("Управление полями", "Index", "Fields")%>
 
-        </p>
 </asp:Content>
