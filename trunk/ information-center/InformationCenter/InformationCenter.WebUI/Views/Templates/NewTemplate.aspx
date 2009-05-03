@@ -1,8 +1,8 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 <%@ Import Namespace="InformationCenter.Services"%>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-Создание шаблона - Информационный центр ВУЗа
+<asp:Content ID="Content1" ContentPlaceHolderID="MainHeaderContent" runat="server">
+Информационный центр ВУЗа
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="MainHeaderContent" runat="server">
@@ -297,6 +297,7 @@
             </td></tr></table>
         </div>
         <p><button type="submit">Сохранить</button></p>
+        <%=Html.ActionLink("Назад", "Index", "Templates")%>
 
     </form>
 </asp:Content>

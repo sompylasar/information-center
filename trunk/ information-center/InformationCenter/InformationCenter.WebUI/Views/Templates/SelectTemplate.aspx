@@ -36,6 +36,8 @@
         </div>
         <p><button type="submit">Выбрать</button></p>
     </form>
+    
+    <%=Html.ActionLink("Назад", "Index", "Templates")%>
 
 </asp:Content>
 
