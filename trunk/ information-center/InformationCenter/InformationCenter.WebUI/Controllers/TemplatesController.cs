@@ -103,6 +103,7 @@ namespace InformationCenter.WebUI.Controllers
                 }
                 catch (Exception ex)
                 {
+                    actionResult = View("SelectTemplate");
                     ViewData["error"] = ex.Message;
                 }
             }
@@ -295,16 +296,16 @@ namespace InformationCenter.WebUI.Controllers
                 TemplateView selectedTemplate = TemplateHelper.GetTemplateByGUIDStr(templateIdStr, allTemplates);
                 if (selectedTemplate != null)
                 {
-                    //Todo: Собственно удалить шаблон
-                    
-                    ViewData["success"] = "Шаблон \"" + selectedTemplate.Name + "\" успешно удален.";
-                    ViewData["error"] =  "На самом деле, нефига но не удален, так как еще не докрутили удаление.";
+                    string tempTmlName = selectedTemplate.Name;
+                    _client.ServiceCenter.DocumentDescriptionService.DeleteTemplate(selectedTemplate);
+                    ViewData["success"] = "Шаблон \"" + tempTmlName + "\" успешно удален.";
+
                 }
                 else
                 {
                     ViewData["error"] = "Указанный шаблон не найден.";
                 }
-
+                
                 allTemplates = _client.ServiceCenter.DocumentDescriptionService.GetTemplates();
                 if (allTemplates.Count() <= 0)
                     ViewData["error"] = "Ни одного шаблона не создано";
