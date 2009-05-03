@@ -6,7 +6,8 @@
 </asp:Content>
 
 
-<asp:Content ID="Content4" ContentPlaceHolderID="HeadContent" runat="server">
+<asp:Content ID="Content3" ContentPlaceHolderID="TitleContent" runat="server">
+	Редактирование поля
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -30,6 +31,7 @@
     <form action="/Fields/CommitChanges" id="frmField" method="post" enctype="multipart/form-data">
         <%
             var dataTypes = (IEnumerable<FieldTypeView>)(ViewData["DataTypes"] ?? new FieldTypeView[0]);
+            
 
         %>
         
@@ -38,13 +40,13 @@
         <p><label for="fileToUpload">Имя поля:</label><input type="text" name="fieldName" value="<%=Html.Encode(FieldName) %>" />
         <input type=hidden name="fieldId" value="<%=Html.Encode(FieldId) %>" />
         <div>
-            <ul>
+            <ul style="list-style-type: none;">
             <%
                 foreach (FieldTypeView dataType in dataTypes)
             {
 
 %>
-                <input type="radio" readonly value="<%=dataType.FieldTypeName%>" <%=Current.FieldTypeView == dataType ? "checked" : ""%> />
+                <li><input name="dataType" type="radio" value="<%=dataType.ID%>" <%=Current.FieldTypeView.ID == dataType.ID ? "checked=\"checked\"" : ""%> disabled="disabled"><%=dataType.FieldTypeName%></input></li>
                 <%
             }%>
             </ul>
@@ -52,7 +54,7 @@
         <p><button type="submit">Сохранить</button></p>
 
     </form>
-    <form action="/Templates/DeleteTemplate" id="Form2" method="post" enctype="multipart/form-data">
+    <form action="/Fields/DeleteField" id="Form2" method="post" enctype="multipart/form-data">
         <input type=hidden name="fieldId" value="<%=Html.Encode(FieldId) %>" />
         <p><button type="submit">Удалить поле</button></p>
     </form>

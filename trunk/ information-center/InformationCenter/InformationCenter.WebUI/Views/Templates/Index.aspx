@@ -4,6 +4,11 @@
 Информационный центр ВУЗа
 </asp:Content>
 
+
+<asp:Content ID="Content3" ContentPlaceHolderID="TitleContent" runat="server">
+	Управление шаблонами
+</asp:Content>
+
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
     <h2>Управление шаблонами</h2>
@@ -18,8 +23,3 @@
 
 </asp:Content>
 
-<asp:Content ID="Content3" ContentPlaceHolderID="HeadContent" runat="server">
-</asp:Content>
-
-<asp:Content ID="Content4" ContentPlaceHolderID="MainHeaderContent" runat="server">
-</asp:Content>
