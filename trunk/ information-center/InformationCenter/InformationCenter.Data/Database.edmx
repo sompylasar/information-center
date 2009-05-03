@@ -283,6 +283,10 @@
           <Parameter Name="fieldTypeId" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="id" Type="uniqueidentifier" Mode="InOut" />
         </Function>
+        <Function Name="AddFieldsToDescription" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="uniqueidentifier" Mode="InOut" />
+          <Parameter Name="tempFieldsTableName" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="AddFieldToTemplate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="templateId" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="fieldId" Type="uniqueidentifier" Mode="In" />
@@ -327,6 +331,14 @@
         <Function Name="RemoveFieldFromTemplate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="templateId" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="fieldId" Type="uniqueidentifier" Mode="In" />
+        </Function>
+        <Function Name="RenameField" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fieldId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="newName" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="RenameTemplate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="templateId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="newName" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="SearchDescriptions" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="tempSearchItemTable" Type="nvarchar" Mode="In" />
@@ -418,7 +430,13 @@
             <Parameter Name="templateId" Mode="In" Type="Guid" />
             <Parameter Name="fieldId" Mode="In" Type="Guid" /></FunctionImport>
           <FunctionImport Name="SearchDescriptions" EntitySet="DocDescription" ReturnType="Collection(InformationCenterModel.DocDescription)">
-            <Parameter Name="tempSearchItemTable" Mode="In" Type="String" /></FunctionImport></EntityContainer>
+            <Parameter Name="tempSearchItemTable" Mode="In" Type="String" /></FunctionImport>
+          <FunctionImport Name="RenameField" EntitySet="IntValue" ReturnType="Collection(InformationCenterModel.IntValue)">
+            <Parameter Name="fieldId" Mode="In" Type="Guid" />
+            <Parameter Name="newName" Mode="In" Type="String" /></FunctionImport>
+          <FunctionImport Name="RenameTemplate" EntitySet="IntValue" ReturnType="Collection(InformationCenterModel.IntValue)">
+            <Parameter Name="templateId" Mode="In" Type="Guid" />
+            <Parameter Name="newName" Mode="In" Type="String" /></FunctionImport></EntityContainer>
         <EntityType Name="DateTimeFieldValue">
           <Key>
             <PropertyRef Name="ID" />
@@ -773,7 +791,9 @@
           <FunctionImportMapping FunctionImportName="AddUser" FunctionName="InformationCenterModel.Store.AddUser" />
           <FunctionImportMapping FunctionImportName="AddFieldToTemplate" FunctionName="InformationCenterModel.Store.AddFieldToTemplate" />
           <FunctionImportMapping FunctionImportName="RemoveFieldFromTemplate" FunctionName="InformationCenterModel.Store.RemoveFieldFromTemplate" />
-          <FunctionImportMapping FunctionImportName="SearchDescriptions" FunctionName="InformationCenterModel.Store.SearchDescriptions" /></EntityContainerMapping>
+          <FunctionImportMapping FunctionImportName="SearchDescriptions" FunctionName="InformationCenterModel.Store.SearchDescriptions" />
+          <FunctionImportMapping FunctionImportName="RenameField" FunctionName="InformationCenterModel.Store.RenameField" />
+          <FunctionImportMapping FunctionImportName="RenameTemplate" FunctionName="InformationCenterModel.Store.RenameTemplate" /></EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

@@ -107,7 +107,7 @@ namespace InformationCenter.Services
 
         #endregion
 
-        #region Delete
+        #region Remove/Delete
 
         /// <summary>
         /// удаляет документ по его идентификатору
@@ -218,6 +218,20 @@ namespace InformationCenter.Services
         public double?[] GetFloatCollection() { return Entities.FloatFieldValue.Select(v => v.Value).Distinct().ToArray(); }
 
         public DateTime?[] GetDateTimeCollection() { return Entities.DateTimeFieldValue.Select(v => v.Value).Distinct().ToArray(); }
+
+        #endregion
+
+        #region Modify
+
+        public void RenameTemplate(Guid TemplateID, string NewName)
+        {
+            Entities.RenameTemplate(TemplateID, NewName).First();
+        }
+
+        public void RenameField(Guid FieldID, string NewName)
+        {
+            Entities.RenameField(FieldID, NewName).First();
+        }
 
         #endregion
 
