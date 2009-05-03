@@ -15,10 +15,12 @@
     <%FieldView Current = (FieldView)ViewData["SelectedField"];
         string FieldName = "";
         string FieldId = "";
+        string FieldOrder = "";
         if (Current != null)
         {
             FieldName = Current.Name;
             FieldId = Current.ID.ToString();
+            FieldOrder = Current.Order.ToString();
         }
 
 %>
@@ -37,7 +39,8 @@
         
         <p><span class="error"><%=ViewData["error"]%></span></p>
         <p><span class="success"><%=ViewData["success"]%></span></p>
-        <p><label for="fileToUpload">Имя поля:</label><input type="text" name="fieldName" value="<%=Html.Encode(FieldName) %>" /></p>
+        <p><label for="fieldName">Имя поля:</label><input type="text" name="fieldName" value="<%=Html.Encode(FieldName) %>" /></p>
+        <p><label for="fieldOrder">Порядок:</label><input type="text" name="fieldOrder" value="<%=Html.Encode(FieldOrder) %>" /></p>
         <input type=hidden name="fieldId" value="<%=Html.Encode(FieldId) %>" />
         <div>
             <ul style="list-style-type: none;">

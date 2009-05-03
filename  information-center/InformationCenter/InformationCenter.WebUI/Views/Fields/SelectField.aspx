@@ -26,7 +26,7 @@
         <p><label for="selField">Поле:</label><select id="selField" name="field">
             <% foreach (FieldView field in fields)
                {  %>
-            <option value="<%=field.ID %>"><%=field.Name+" ("+field.FieldTypeView.FieldTypeName+")"%></option>
+            <option value="<%=field.ID %>" order="<%=field.Order %>"><%=field.Name+" ("+field.FieldTypeView.FieldTypeName+")"%></option>
             <% } %>
             <% if (fields.Count() == 0)
                { %>
