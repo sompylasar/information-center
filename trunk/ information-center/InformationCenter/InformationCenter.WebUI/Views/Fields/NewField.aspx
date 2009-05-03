@@ -44,7 +44,7 @@
     </form>
             <p>
        
-            <%=Html.ActionLink("Назад", "Index", "Fields")%>
+            <%=Html.ActionLink("Управление полями", "Index", "Fields")%>
 
         </p>
 </asp:Content>

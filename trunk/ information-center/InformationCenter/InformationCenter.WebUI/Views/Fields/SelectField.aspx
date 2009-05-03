@@ -38,7 +38,7 @@
         </div>
         <p><button type="submit">Выбрать</button></p>
     </form>
-     <%=Html.ActionLink("Назад", "Index", "Fields")%>
+     <%=Html.ActionLink("Управление полями", "Index", "Fields")%>
 
 </asp:Content>
 
