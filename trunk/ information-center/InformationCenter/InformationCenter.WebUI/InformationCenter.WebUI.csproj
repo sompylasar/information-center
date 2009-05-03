@@ -67,6 +67,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Pagination.cs" />
     <Compile Include="Models\AppSettings.cs" />
     <Compile Include="Models\AuthHelper.cs" />
     <Compile Include="Helpers\BreadcrumbsHtmlHelperExtensions.cs" />
@@ -95,6 +96,7 @@
     <Content Include="Content\jquery.autocomplete\styles.css" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="Content\Pagination.xml" />
     <Content Include="Scripts\jquery.listbox_pair.js" />
     <Content Include="Views\Download\Download.aspx" />
     <Content Include="Views\Download\Index.aspx" />
