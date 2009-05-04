@@ -240,7 +240,7 @@ namespace InformationCenter.Services
 
         public void RenameField(Guid FieldID, string NewName) { Entities.RenameField(FieldID, NewName).First(); }
 
-        public void ChangeFieldOrder(Guid FieldID, int Order) { Entities.ChangeFieldOrderNumber(FieldID, Order); }
+        public void ChangeFieldOrder(Guid FieldID, int Order) { Entities.ChangeFieldOrderNumber(FieldID, Order).First(); }
 
         #endregion
 
