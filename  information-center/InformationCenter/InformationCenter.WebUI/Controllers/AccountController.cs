@@ -100,17 +100,18 @@ namespace InformationCenter.WebUI.Controllers
         public ActionResult Register()
         {
             return RedirectToAction("LogOn");
-
+            /**
             ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
 
             return View();
+            /**/
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Register(string userName, string email, string password, string confirmPassword)
         {
             return RedirectToAction("LogOn");
-
+            /**
             ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
 
             if (ValidateRegistration(userName, email, password, confirmPassword))
@@ -120,7 +121,7 @@ namespace InformationCenter.WebUI.Controllers
 
                 if (createStatus == MembershipCreateStatus.Success)
                 {
-                    FormsAuth.SignIn(userName, false /* createPersistentCookie */);
+                    FormsAuth.SignIn(userName, false);
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -131,16 +132,18 @@ namespace InformationCenter.WebUI.Controllers
 
             // If we got this far, something failed, redisplay form
             return View();
+            /**/
         }
 
         [Authorize]
         public ActionResult ChangePassword()
         {
             return RedirectToAction("LogOn");
-
+            /**
             ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
 
             return View();
+            /**/
         }
 
         [Authorize]
@@ -150,7 +153,7 @@ namespace InformationCenter.WebUI.Controllers
         public ActionResult ChangePassword(string currentPassword, string newPassword, string confirmPassword)
         {
             return RedirectToAction("LogOn");
-
+            /**
             ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
 
             if (!ValidateChangePassword(currentPassword, newPassword, confirmPassword))
@@ -175,6 +178,7 @@ namespace InformationCenter.WebUI.Controllers
                 ModelState.AddModelError("_FORM", "The current password is incorrect or the new password is invalid.");
                 return View();
             }
+            /**/
         }
 
         public ActionResult ChangePasswordSuccess()
@@ -238,11 +242,11 @@ namespace InformationCenter.WebUI.Controllers
             try
             {
                 var client = new ServiceCenterClient(userName, password, integratedSecurity);
-
                 return client.Available;
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine(ex);
                 return false;
             }
         }

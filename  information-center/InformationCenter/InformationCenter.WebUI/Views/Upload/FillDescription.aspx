@@ -129,6 +129,16 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+    <h2>Заполнение описания</h2>
+    <%=Html.Breadcrumbs().AddTextLink("Загрузка документа").AddActionLink("Выбор шаблона описания", "SelectTemplate").Last("Заполнение описания") %>
+    
+    <%
+        var selectedFields = (IEnumerable<FieldView>)(ViewData["SelectedFields"] ?? new FieldView[0]);
+        selectedFields = selectedFields.OrderBy(field => field.Order);
+
+        var fields = (IEnumerable<FieldView>)(ViewData["Fields"] ?? new FieldView[0]);
+        fields = fields.OrderBy(field => field.Order).Except(selectedFields);
+    %>
     <script type="text/javascript">
         jQuery(function($) {
             $('.unselectable').attr({ 'unselectable':'on' }).bind('selectstart', function(){return false;});
@@ -362,19 +372,9 @@
         });
     </script>
 
-    <h2>Заполнение описания</h2>
-    <%=Html.Breadcrumbs().AddTextLink("Загрузка документа").AddActionLink("Выбор шаблона описания", "SelectTemplate").Last("Заполнение описания") %>
-    
     <%= Html.ValidationSummary("Введенные данные некорректны. Проверьте их и повторите попытку.") %>
     
     <form action="/Upload/Start" id="frmUpload" method="post" enctype="multipart/form-data">
-        <%
-            var selectedFields = (IEnumerable<FieldView>)(ViewData["SelectedFields"] ?? new FieldView[0]);
-            selectedFields = selectedFields.OrderBy(field => field.Order);
-
-            var fields = (IEnumerable<FieldView>)(ViewData["Fields"] ?? new FieldView[0]);
-            fields = fields.OrderBy(field => field.Order).Except(selectedFields);
-        %>
         <p><span class="error"><%=ViewData["error"]%></span></p>
         <div>
             <table class="layout">

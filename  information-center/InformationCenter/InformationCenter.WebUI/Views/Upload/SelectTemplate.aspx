@@ -13,17 +13,13 @@
 <asp:Content ID="Content4" ContentPlaceHolderID="HeadContent" runat="server"></asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <script type="text/javascript">
-        jQuery(function($) {
-            
-        });
-    </script>
-
     <h2>Выбор шаблона описания</h2>
     <%=Html.Breadcrumbs().AddTextLink("Загрузка документа").Last("Выбор шаблона описания") %>
+    
     <%
         var templates = (IEnumerable<TemplateView>)(ViewData["Templates"] ?? new TemplateView[0]);
     %>
+    
     <%= Html.ValidationSummary("Введенные данные некорректны. Проверьте их и повторите попытку.") %>
     
     <form action="/Upload/TemplateSelected" id="frmSelectTemplate" method="get" enctype="multipart/form-data">

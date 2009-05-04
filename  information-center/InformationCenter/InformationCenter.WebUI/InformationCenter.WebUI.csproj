@@ -94,6 +94,8 @@
     <Content Include="Content\Images\InformationCenterLogo.png" />
     <Content Include="Content\jquery.autocomplete\shadow.png" />
     <Content Include="Content\jquery.autocomplete\styles.css" />
+    <Content Include="Content\jquery.pagination\jquery.pagination.css" />
+    <Content Include="Scripts\jquery.pagination.js" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Content\Pagination.xml" />
@@ -136,10 +138,6 @@
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InformationCenter.LogicUtils\InformationCenter.LogicUtils.csproj">
-      <Project>{0DF8EE79-4875-424C-83C0-90EBD909F973}</Project>
-      <Name>InformationCenter.LogicUtils</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InformationCenter.Services\InformationCenter.Services.csproj">
       <Project>{ACD9A65D-E667-4468-ABDC-7E078A733B0F}</Project>
       <Name>InformationCenter.Services</Name>
