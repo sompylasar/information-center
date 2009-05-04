@@ -1,14 +1,14 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+п»ї<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 <%@ Import Namespace="InformationCenter.Services"%>
 <%@ Import Namespace="InformationCenter.WebUI.Helpers"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainHeaderContent" runat="server">
-Информационный центр ВУЗа
+РРЅС„РѕСЂРјР°С†РёРѕРЅРЅС‹Р№ С†РµРЅС‚СЂ Р’РЈР—Р°
 </asp:Content>
 
 
 <asp:Content ID="Content3" ContentPlaceHolderID="TitleContent" runat="server">
-	Редактирование поля
+	Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РїРѕР»СЏ
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -28,10 +28,10 @@
         }
 %>
     
-    <h2>Редактирование поля "<%=Html.Encode(FieldName)%>"</h2>
-    <%=Html.Breadcrumbs().AddActionLink("Управление", "Index", "Management").AddActionLink("Управление полями", "Index").AddActionLink("Выбор", "SelectField").Last("Редактирование")%>
+    <h2>Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РїРѕР»СЏ "<%=Html.Encode(FieldName)%>"</h2>
+    <%=Html.Breadcrumbs().AddActionLink("РЈРїСЂР°РІР»РµРЅРёРµ", "Index", "Management").AddActionLink("РЈРїСЂР°РІР»РµРЅРёРµ РїРѕР»СЏРјРё", "Index").AddActionLink("Р’С‹Р±РѕСЂ", "SelectField").Last("Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ")%>
     
-    <%= Html.ValidationSummary("Введенные данные некорректны. Проверьте их и повторите попытку.") %>
+    <%= Html.ValidationSummary("Р’РІРµРґРµРЅРЅС‹Рµ РґР°РЅРЅС‹Рµ РЅРµРєРѕСЂСЂРµРєС‚РЅС‹. РџСЂРѕРІРµСЂСЊС‚Рµ РёС… Рё РїРѕРІС‚РѕСЂРёС‚Рµ РїРѕРїС‹С‚РєСѓ.") %>
     
    
     <form action="/Fields/CommitChanges" id="frmField" method="post" enctype="multipart/form-data">
@@ -43,17 +43,17 @@
         
         <p><span class="error"><%=ViewData["error"]%></span></p>
         <p><span class="success"><%=ViewData["success"]%></span></p>
-        <p><label for="fieldName">Имя поля:</label><input type="text" name="fieldName" value="<%=Html.Encode(FieldName) %>" /></p>
-        <p><label for="fieldOrder">Порядок:</label><input type="text" name="fieldOrder" value="<%=Html.Encode(FieldOrder) %>" /></p>
+        <p><label for="fieldName">РРјСЏ РїРѕР»СЏ:</label><input type="text" name="fieldName" value="<%=Html.Encode(FieldName) %>" /></p>
+        <p><label for="fieldOrder">РџРѕСЂСЏРґРѕРє:</label><input type="text" name="fieldOrder" value="<%=Html.Encode(FieldOrder) %>" /></p>
         <input type=hidden name="fieldId" value="<%=Html.Encode(FieldId) %>" />
-        <p><label for="fieldCanBeBlank">Поле может быть незаполненым:</label><input type="checkbox" disabled="disabled" name="fieldCanBeBlank" <%=fieldCanBeBlack==true ? "checked=\"checked\"" : ""%>/></p>
-        <p><label for="fieldType">Тип данных: <%=Html.Encode(FieldType) %></label></p>
-        <p><button type="submit">Сохранить</button></p>
+        <p><label for="fieldCanBeBlank">РџРѕР»Рµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РЅРµР·Р°РїРѕР»РЅРµРЅС‹Рј:</label><input type="checkbox" disabled="disabled" name="fieldCanBeBlank" <%=fieldCanBeBlack==true ? "checked=\"checked\"" : ""%>/></p>
+        <p><label for="fieldType">РўРёРї РґР°РЅРЅС‹С…: <%=Html.Encode(FieldType) %></label></p>
+        <p><button type="submit">РЎРѕС…СЂР°РЅРёС‚СЊ</button></p>
 
     </form>
     <form action="/Fields/DeleteField" id="Form2" method="post" enctype="multipart/form-data">
         <input type=hidden name="fieldId" value="<%=Html.Encode(FieldId) %>" />
-        <p><button type="submit">Удалить поле</button></p>
+        <p><button type="submit">РЈРґР°Р»РёС‚СЊ РїРѕР»Рµ</button></p>
     </form>
  
 </asp:Content>

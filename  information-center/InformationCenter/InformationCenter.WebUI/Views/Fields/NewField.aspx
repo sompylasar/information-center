@@ -1,21 +1,21 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+п»ї<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 <%@ Import Namespace="InformationCenter.Services"%>
 <%@ Import Namespace="InformationCenter.WebUI.Helpers"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainHeaderContent" runat="server">
-Информационный центр ВУЗа
+РРЅС„РѕСЂРјР°С†РёРѕРЅРЅС‹Р№ С†РµРЅС‚СЂ Р’РЈР—Р°
 </asp:Content>
 
 
 <asp:Content ID="Content3" ContentPlaceHolderID="TitleContent" runat="server">
-	Создание поля
+	РЎРѕР·РґР°РЅРёРµ РїРѕР»СЏ
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
 
-    <h2>Создание поля</h2>
-    <%=Html.Breadcrumbs().AddActionLink("Управление", "Index", "Management").AddActionLink("Управление полями", "Index").Last("Создание")%>
+    <h2>РЎРѕР·РґР°РЅРёРµ РїРѕР»СЏ</h2>
+    <%=Html.Breadcrumbs().AddActionLink("РЈРїСЂР°РІР»РµРЅРёРµ", "Index", "Management").AddActionLink("РЈРїСЂР°РІР»РµРЅРёРµ РїРѕР»СЏРјРё", "Index").Last("РЎРѕР·РґР°РЅРёРµ")%>
     
     <% string fieldName = (string)ViewData["FieldName"] ?? "";
        string fieldOrder = (string)ViewData["FieldOrder"] ?? "";
@@ -24,7 +24,7 @@
 
          %>
     
-    <%= Html.ValidationSummary("Введенные данные некорректны. Проверьте их и повторите попытку.") %>
+    <%= Html.ValidationSummary("Р’РІРµРґРµРЅРЅС‹Рµ РґР°РЅРЅС‹Рµ РЅРµРєРѕСЂСЂРµРєС‚РЅС‹. РџСЂРѕРІРµСЂСЊС‚Рµ РёС… Рё РїРѕРІС‚РѕСЂРёС‚Рµ РїРѕРїС‹С‚РєСѓ.") %>
     
    
     <form action="/Fields/AddField" id="frmField" method="post" enctype="multipart/form-data">
@@ -35,9 +35,9 @@
         
         <p><span class="error"><%=ViewData["error"]%></span></p>
         <p><span class="success"><%=ViewData["success"]%></span></p>
-        <p><label for="fieldName">Имя поля:</label><input type="text" name="fieldName" value="<%=fieldName %>" /></p>
-        <p><label for="fieldOrder">Порядок:</label><input type="text" name="fieldOrder" value="<%=fieldOrder %>" /></p>
-        <p><label for="fieldCanBeBlank">Поле может быть незаполненым:</label><input type="checkbox" name="fieldCanBeBlank" <%=fieldCanBeBlank ? "checked=\"checked\"" : ""%>/></p>
+        <p><label for="fieldName">РРјСЏ РїРѕР»СЏ:</label><input type="text" name="fieldName" value="<%=fieldName %>" /></p>
+        <p><label for="fieldOrder">РџРѕСЂСЏРґРѕРє:</label><input type="text" name="fieldOrder" value="<%=fieldOrder %>" /></p>
+        <p><label for="fieldCanBeBlank">РџРѕР»Рµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РЅРµР·Р°РїРѕР»РЅРµРЅС‹Рј:</label><input type="checkbox" name="fieldCanBeBlank" <%=fieldCanBeBlank ? "checked=\"checked\"" : ""%>/></p>
         <div>
             <ul style="list-style-type: none;">
             <%
@@ -50,7 +50,7 @@
             }%>
             </ul>
         </div>
-        <p><button type="submit">Сохранить</button></p>
+        <p><button type="submit">РЎРѕС…СЂР°РЅРёС‚СЊ</button></p>
 
     </form>
 

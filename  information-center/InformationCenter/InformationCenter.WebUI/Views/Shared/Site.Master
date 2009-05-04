@@ -1,4 +1,4 @@
-<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+Ôªø<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -24,10 +24,10 @@
             <% string route = "/"+(this.ViewContext.RouteData.Values["controller"]??"Home") + "/" + (this.ViewContext.RouteData.Values["action"]??"Index") + "/"; %>
             <div id="menucontainer">
                 <ul id="menu">              
-                    <li <%=route.StartsWith("/Search/") ? " class=\"selected\"" : "" %>><%= Html.ActionLink("œÓËÒÍ", "Index", "Search")%></li>
-                    <li <%=route.StartsWith("/Upload/") ? " class=\"selected\"" : "" %>><%= Html.ActionLink("«‡„ÛÁÍ‡", "Index", "Upload")%></li>
-                    <li <%=route.StartsWith("/Management/") || route.StartsWith("/Templates/") || route.StartsWith("/Fields/") ? " class=\"selected\"" : "" %>><%= Html.ActionLink("”Ô‡‚ÎÂÌËÂ", "Index", "Management")%></li>
-                    <li <%=route.StartsWith("/Home/About/") ? " class=\"selected\"" : "" %>><%= Html.ActionLink("Œ· ‡‚ÚÓ‡ı", "About", "Home")%></li>
+                    <li <%=route.StartsWith("/Search/") ? " class=\"selected\"" : "" %>><%= Html.ActionLink("–ü–æ–∏—Å–∫", "Index", "Search")%></li>
+                    <li <%=route.StartsWith("/Upload/") ? " class=\"selected\"" : "" %>><%= Html.ActionLink("–ó–∞–≥—Ä—É–∑–∫–∞", "Index", "Upload")%></li>
+                    <li <%=route.StartsWith("/Management/") || route.StartsWith("/Templates/") || route.StartsWith("/Fields/") ? " class=\"selected\"" : "" %>><%= Html.ActionLink("–£–ø—Ä–∞–≤–ª–µ–Ω–∏–µ", "Index", "Management")%></li>
+                    <li <%=route.StartsWith("/Home/About/") ? " class=\"selected\"" : "" %>><%= Html.ActionLink("–û–± –∞–≤—Ç–æ—Ä–∞—Ö", "About", "Home")%></li>
                 </ul>
             </div>
         </div>
@@ -36,7 +36,7 @@
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
 
             <div id="footer">
-            &copy; 2009 Ã√“”, »”7-83
+            &copy; 2009 –ú–ì–¢–£, –ò–£7-83
             </div>
         </div>
     </div>

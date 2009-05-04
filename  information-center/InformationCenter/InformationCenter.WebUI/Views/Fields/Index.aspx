@@ -1,23 +1,23 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+п»ї<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 <%@ Import Namespace="InformationCenter.WebUI.Helpers"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainHeaderContent" runat="server">
-Информационный центр ВУЗа
+РРЅС„РѕСЂРјР°С†РёРѕРЅРЅС‹Р№ С†РµРЅС‚СЂ Р’РЈР—Р°
 </asp:Content>
 
 
 <asp:Content ID="Content3" ContentPlaceHolderID="TitleContent" runat="server">
-	Управление полями
+	РЈРїСЂР°РІР»РµРЅРёРµ РїРѕР»СЏРјРё
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h2>Управление полями</h2>
-    <%=Html.Breadcrumbs().AddActionLink("Управление", "Index", "Management").Last("Управление полями")%>
+    <h2>РЈРїСЂР°РІР»РµРЅРёРµ РїРѕР»СЏРјРё</h2>
+    <%=Html.Breadcrumbs().AddActionLink("РЈРїСЂР°РІР»РµРЅРёРµ", "Index", "Management").Last("РЈРїСЂР°РІР»РµРЅРёРµ РїРѕР»СЏРјРё")%>
     <div id="TemplateManagerActions">
         <ul id="TemplateActions">              
-            <li><%= Html.ActionLink("Создание поля", "NewField", "Fields")%></li>
-            <li><%= Html.ActionLink("Редактирование поля", "SelectField", "Fields")%></li>
+            <li><%= Html.ActionLink("РЎРѕР·РґР°РЅРёРµ РїРѕР»СЏ", "NewField", "Fields")%></li>
+            <li><%= Html.ActionLink("Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РїРѕР»СЏ", "SelectField", "Fields")%></li>
         </ul>
     </div>
 

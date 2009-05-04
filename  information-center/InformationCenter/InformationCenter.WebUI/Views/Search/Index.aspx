@@ -1,13 +1,13 @@
-<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+п»ї<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 <%@ Import Namespace="InformationCenter.WebUI.Helpers"%>
 <%@ Import Namespace="InformationCenter.Services"%>
 
 <asp:Content ID="indexTitle" ContentPlaceHolderID="TitleContent" runat="server">
-Поиск документов - Информационный центр ВУЗа
+РџРѕРёСЃРє РґРѕРєСѓРјРµРЅС‚РѕРІ - РРЅС„РѕСЂРјР°С†РёРѕРЅРЅС‹Р№ С†РµРЅС‚СЂ Р’РЈР—Р°
 </asp:Content>
 
 <asp:Content ID="indexMainHeader" ContentPlaceHolderID="MainHeaderContent" runat="server">
-Информационный центр ВУЗа
+РРЅС„РѕСЂРјР°С†РёРѕРЅРЅС‹Р№ С†РµРЅС‚СЂ Р’РЈР—Р°
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="HeadContent" runat="server">
@@ -84,7 +84,7 @@
 </asp:Content>
 
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
-    <h2>Поиск документов</h2>
+    <h2>РџРѕРёСЃРє РґРѕРєСѓРјРµРЅС‚РѕРІ</h2>
     
     <form action="/Search/Query" method="post" id="frmSearchDocument" class="search-form">
         <%
@@ -101,7 +101,7 @@
         <p>
             <div>
             <fieldset>
-                <legend>Основные поля</legend>
+                <legend>РћСЃРЅРѕРІРЅС‹Рµ РїРѕР»СЏ</legend>
                 <table class="search-fields">
                     <% foreach (FieldView field in fields)
                        { 
@@ -128,16 +128,16 @@
             </div>
         </p>
         <p>
-            <span id="chkUseAdditional_span" style="display:none;"><label for="chkUseAdditional" id="chkUseAdditional_label">Использовать дополнительные поля</label><input type="checkbox" id="chkUseAdditional" name="more" value="true"<%= useAdditional ? " checked=\"checked\"" : "" %> /></span>
+            <span id="chkUseAdditional_span" style="display:none;"><label for="chkUseAdditional" id="chkUseAdditional_label">РСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Рµ РїРѕР»СЏ</label><input type="checkbox" id="chkUseAdditional" name="more" value="true"<%= useAdditional ? " checked=\"checked\"" : "" %> /></span>
             <div id="frmSearchDocument_additional_in_form" style="display:none;">
             <fieldset>
-                <legend>Дополнительные поля</legend>
+                <legend>Р”РѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Рµ РїРѕР»СЏ</legend>
                 <table class="search-fields search-fields-additional">
                 </table>
             </fieldset>
             </div>
         </p>
-        <p><button type="submit"><strong>Найти!</strong></button> <button type="button" onclick="window.location.href='/Search/New'">Очистить поля</button></p>
+        <p><button type="submit"><strong>РќР°Р№С‚Рё!</strong></button> <button type="button" onclick="window.location.href='/Search/New'">РћС‡РёСЃС‚РёС‚СЊ РїРѕР»СЏ</button></p>
     </form>
     <div id="frmSearchDocument_additional" style="display:none;">
         <table class="search-fields search-fields-additional">

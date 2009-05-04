@@ -1,14 +1,14 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+п»ї<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 <%@ Import Namespace="InformationCenter.Services"%>
 <%@ Import Namespace="InformationCenter.WebUI.Helpers"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainHeaderContent" runat="server">
-Информационный центр ВУЗа
+РРЅС„РѕСЂРјР°С†РёРѕРЅРЅС‹Р№ С†РµРЅС‚СЂ Р’РЈР—Р°
 </asp:Content>
 
 
 <asp:Content ID="Content3" ContentPlaceHolderID="TitleContent" runat="server">
-	Создание шаблона
+	РЎРѕР·РґР°РЅРёРµ С€Р°Р±Р»РѕРЅР°
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="HeadContent" runat="server">
@@ -247,10 +247,10 @@
 
 %>
     
-    <h2>Создание шаблона</h2>
-    <%=Html.Breadcrumbs().AddActionLink("Управление", "Index", "Management").AddActionLink("Управление шаблонами", "Index").Last("Создание")%>
+    <h2>РЎРѕР·РґР°РЅРёРµ С€Р°Р±Р»РѕРЅР°</h2>
+    <%=Html.Breadcrumbs().AddActionLink("РЈРїСЂР°РІР»РµРЅРёРµ", "Index", "Management").AddActionLink("РЈРїСЂР°РІР»РµРЅРёРµ С€Р°Р±Р»РѕРЅР°РјРё", "Index").Last("РЎРѕР·РґР°РЅРёРµ")%>
     
-    <%= Html.ValidationSummary("Введенные данные некорректны. Проверьте их и повторите попытку.") %>
+    <%= Html.ValidationSummary("Р’РІРµРґРµРЅРЅС‹Рµ РґР°РЅРЅС‹Рµ РЅРµРєРѕСЂСЂРµРєС‚РЅС‹. РџСЂРѕРІРµСЂСЊС‚Рµ РёС… Рё РїРѕРІС‚РѕСЂРёС‚Рµ РїРѕРїС‹С‚РєСѓ.") %>
     
     <form action="/Templates/AddTemplate" id="frmTemplate" method="post" enctype="multipart/form-data">
         <%
@@ -263,12 +263,12 @@
         
         <p><span class="error"><%=ViewData["error"]%></span></p>
         <p><span class="success"><%=ViewData["success"]%></span></p>
-        <p><label for="fileToUpload">Имя шаблона:</label><input type="text" name="templateName" value="<%=Html.Encode(ViewData["TemplateName"]) %>" />
+        <p><label for="fileToUpload">РРјСЏ С€Р°Р±Р»РѕРЅР°:</label><input type="text" name="templateName" value="<%=Html.Encode(ViewData["TemplateName"]) %>" />
         <div>
             <table id="fields"><tr id="fields_row"><td class="listbox-section">
                 <fieldset id="fields-from-container">
-                    <legend>Доступные поля шаблона</legend>
-                    <span class="listbox-from-empty"><%=(fields.Count() + selectedFields.Count() > 0 ? "(все доступные поля выбраны)" : "(список пуст)") %></span>
+                    <legend>Р”РѕСЃС‚СѓРїРЅС‹Рµ РїРѕР»СЏ С€Р°Р±Р»РѕРЅР°</legend>
+                    <span class="listbox-from-empty"><%=(fields.Count() + selectedFields.Count() > 0 ? "(РІСЃРµ РґРѕСЃС‚СѓРїРЅС‹Рµ РїРѕР»СЏ РІС‹Р±СЂР°РЅС‹)" : "(СЃРїРёСЃРѕРє РїСѓСЃС‚)") %></span>
                     <ul class="listbox-from">
                         <% foreach (FieldView field in fields) { %>
                         <li rel="_<%=field.ID %>" order="<%=field.Order %>"><span class="unselectable"><%=Html.Encode(field.Name) %> (<%=Html.Encode(field.FieldTypeView.FieldTypeName) %>)</span><input style="Display:none;" type="text" /></li>
@@ -277,18 +277,18 @@
                 </fieldset>
             </td><td id="fields-buttons-container">
                 <div>
-                    <button type="button" class="button-add" title="Добавить выделенные">&gt;</button>
-                    <button type="button" class="button-add-all" title="Добавить все">&gt;&gt;</button>
+                    <button type="button" class="button-add" title="Р”РѕР±Р°РІРёС‚СЊ РІС‹РґРµР»РµРЅРЅС‹Рµ">&gt;</button>
+                    <button type="button" class="button-add-all" title="Р”РѕР±Р°РІРёС‚СЊ РІСЃРµ">&gt;&gt;</button>
                 </div>
                 <br />
                 <div>
-                    <button type="button" class="button-remove" title="Убрать выделенные">&lt;</button>
-                    <button type="button" class="button-remove-all" title="Убрать все">&lt;&lt;</button>
+                    <button type="button" class="button-remove" title="РЈР±СЂР°С‚СЊ РІС‹РґРµР»РµРЅРЅС‹Рµ">&lt;</button>
+                    <button type="button" class="button-remove-all" title="РЈР±СЂР°С‚СЊ РІСЃРµ">&lt;&lt;</button>
                 </div>
             </td><td class="listbox-section">
                 <fieldset id="fields-to-container">
-                    <legend>Выбранные поля шаблона</legend>
-                    <span class="listbox-to-empty">(добавьте необходимые поля)</span>
+                    <legend>Р’С‹Р±СЂР°РЅРЅС‹Рµ РїРѕР»СЏ С€Р°Р±Р»РѕРЅР°</legend>
+                    <span class="listbox-to-empty">(РґРѕР±Р°РІСЊС‚Рµ РЅРµРѕР±С…РѕРґРёРјС‹Рµ РїРѕР»СЏ)</span>
                     <div class="listbox-to-wrapper">
                          <ul class="listbox-to">
                             <% foreach (FieldView field in selectedFields) { %>
@@ -299,7 +299,7 @@
                 </fieldset>
             </td></tr></table>
         </div>
-        <p><button type="submit">Сохранить</button></p>
+        <p><button type="submit">РЎРѕС…СЂР°РЅРёС‚СЊ</button></p>
 
 
     </form>

@@ -1,4 +1,4 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+п»ї<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 <%@ Import Namespace="InformationCenter.Services"%>
 <%@ Import Namespace="LogicUtils"%>
 <%@ Import Namespace="InformationCenter.WebUI.Models"%>
@@ -6,11 +6,11 @@
 
 
 <asp:Content ID="searchResultsTitle" ContentPlaceHolderID="TitleContent" runat="server">
-Результаты поиска - Информационный центр ВУЗа
+Р РµР·СѓР»СЊС‚Р°С‚С‹ РїРѕРёСЃРєР° - РРЅС„РѕСЂРјР°С†РёРѕРЅРЅС‹Р№ С†РµРЅС‚СЂ Р’РЈР—Р°
 </asp:Content>
 
 <asp:Content ID="searchResultsMainHeader" ContentPlaceHolderID="MainHeaderContent" runat="server">
-Информационный центр ВУЗа
+РРЅС„РѕСЂРјР°С†РёРѕРЅРЅС‹Р№ С†РµРЅС‚СЂ Р’РЈР—Р°
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="HeadContent" runat="server">
@@ -30,7 +30,7 @@
 </asp:Content>
 
 <asp:Content ID="searchResultsContent" ContentPlaceHolderID="MainContent" runat="server">
-    <h2>Результаты поиска</h2>
+    <h2>Р РµР·СѓР»СЊС‚Р°С‚С‹ РїРѕРёСЃРєР°</h2>
     
     <%
         var fields = (IEnumerable<FieldView>)(ViewData["Fields"] ?? new FieldView[0]);
@@ -52,7 +52,7 @@
                 }
             }
             query += sep + fieldName + "=\"" + fieldValue + "\"";
-            sep = " " + (request.Mode == SearchMode.And ? "И" : "ИЛИ") + " ";
+            sep = " " + (request.Mode == SearchMode.And ? "Р" : "РР›Р") + " ";
         }
     %>
     <script type="text/javascript">
@@ -77,8 +77,8 @@
                 items_per_page: 10,
                 num_display_entries: 5,
                 num_edge_entries: 2,
-                prev_text: 'Предыдущая',
-                next_text: 'Следующая',
+                prev_text: 'РџСЂРµРґС‹РґСѓС‰Р°СЏ',
+                next_text: 'РЎР»РµРґСѓСЋС‰Р°СЏ',
                 callback: function onPageSelect(page_index) {
                     var start_index = page_index*pagination_options.items_per_page;
                     var next_start_index = Math.min((page_index+1) * pagination_options.items_per_page, results_length);
@@ -108,12 +108,12 @@
     </script>
     
     <div>
-        <div id="query-container"><label for="query">Запрос:</label><span id="query"><%=Html.Encode(string.IsNullOrEmpty(query) ? "(пустой)" : query) %></span></div>
-        <% string error = (resultsCount <= 0 ? "По Вашему запросу не найдено ни одного документа." : Html.Encode(ViewData["error"] ?? "")); %>
+        <div id="query-container"><label for="query">Р—Р°РїСЂРѕСЃ:</label><span id="query"><%=Html.Encode(string.IsNullOrEmpty(query) ? "(РїСѓСЃС‚РѕР№)" : query) %></span></div>
+        <% string error = (resultsCount <= 0 ? "РџРѕ Р’Р°С€РµРјСѓ Р·Р°РїСЂРѕСЃСѓ РЅРµ РЅР°Р№РґРµРЅРѕ РЅРё РѕРґРЅРѕРіРѕ РґРѕРєСѓРјРµРЅС‚Р°." : Html.Encode(ViewData["error"] ?? "")); %>
         <% if (!string.IsNullOrEmpty(error)) { %><p><span class="error"><%=error %></span></p><% } %>
-        <div class="search-pagination"><label class="pagination-label">Страницы: </label><div class="pagination"></div><div style="clear:both;"></div></div>
+        <div class="search-pagination"><label class="pagination-label">РЎС‚СЂР°РЅРёС†С‹: </label><div class="pagination"></div><div style="clear:both;"></div></div>
         <div id="results-container" class="search-results">
-            <span id="total"><%=resultsCount==0 ? "" : "Найдено документов: "+resultsCount.ToString() %></span>
+            <span id="total"><%=resultsCount==0 ? "" : "РќР°Р№РґРµРЅРѕ РґРѕРєСѓРјРµРЅС‚РѕРІ: "+resultsCount.ToString() %></span>
             <ol class="search-results-list">
                 <%foreach (DocDescriptionView result in results) {%>
                 <li>
@@ -123,8 +123,8 @@
                 <%}%>
             </ol>
         </div>
-        <div class="search-pagination"><label class="pagination-label">Страницы: </label><div class="pagination"></div><div style="clear:both;"></div></div>
-        <p><a href="/Search/Index">Изменить условия поиска</a><br />
-        <a href="/Search/New">Новый поиск</a></p>
+        <div class="search-pagination"><label class="pagination-label">РЎС‚СЂР°РЅРёС†С‹: </label><div class="pagination"></div><div style="clear:both;"></div></div>
+        <p><a href="/Search/Index">РР·РјРµРЅРёС‚СЊ СѓСЃР»РѕРІРёСЏ РїРѕРёСЃРєР°</a><br />
+        <a href="/Search/New">РќРѕРІС‹Р№ РїРѕРёСЃРє</a></p>
     </div>
 </asp:Content>

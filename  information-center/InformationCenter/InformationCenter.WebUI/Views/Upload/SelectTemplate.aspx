@@ -1,31 +1,31 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+п»ї<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 <%@ Import Namespace="InformationCenter.WebUI.Helpers"%>
 <%@ Import Namespace="InformationCenter.Services"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-Загрузка документа - Информационный центр ВУЗа
+Р—Р°РіСЂСѓР·РєР° РґРѕРєСѓРјРµРЅС‚Р° - РРЅС„РѕСЂРјР°С†РёРѕРЅРЅС‹Р№ С†РµРЅС‚СЂ Р’РЈР—Р°
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="MainHeaderContent" runat="server">
-Информационный центр ВУЗа
+РРЅС„РѕСЂРјР°С†РёРѕРЅРЅС‹Р№ С†РµРЅС‚СЂ Р’РЈР—Р°
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="HeadContent" runat="server"></asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <h2>Выбор шаблона описания</h2>
-    <%=Html.Breadcrumbs().AddTextLink("Загрузка документа").Last("Выбор шаблона описания") %>
+    <h2>Р’С‹Р±РѕСЂ С€Р°Р±Р»РѕРЅР° РѕРїРёСЃР°РЅРёСЏ</h2>
+    <%=Html.Breadcrumbs().AddTextLink("Р—Р°РіСЂСѓР·РєР° РґРѕРєСѓРјРµРЅС‚Р°").Last("Р’С‹Р±РѕСЂ С€Р°Р±Р»РѕРЅР° РѕРїРёСЃР°РЅРёСЏ") %>
     
     <%
         var templates = (IEnumerable<TemplateView>)(ViewData["Templates"] ?? new TemplateView[0]);
     %>
     
-    <%= Html.ValidationSummary("Введенные данные некорректны. Проверьте их и повторите попытку.") %>
+    <%= Html.ValidationSummary("Р’РІРµРґРµРЅРЅС‹Рµ РґР°РЅРЅС‹Рµ РЅРµРєРѕСЂСЂРµРєС‚РЅС‹. РџСЂРѕРІРµСЂСЊС‚Рµ РёС… Рё РїРѕРІС‚РѕСЂРёС‚Рµ РїРѕРїС‹С‚РєСѓ.") %>
     
     <form action="/Upload/TemplateSelected" id="frmSelectTemplate" method="get" enctype="multipart/form-data">
         <p><span class="error"><%=ViewData["error"]%></span></p>
-        <p><label for="selTemplate">Шаблон:</label><select id="selTemplate" name="tpl">
-            <option value="">(не использовать)</option>
+        <p><label for="selTemplate">РЁР°Р±Р»РѕРЅ:</label><select id="selTemplate" name="tpl">
+            <option value="">(РЅРµ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ)</option>
             <% foreach (TemplateView template in templates) {  %>
             <option value="<%=template.ID %>"<%=template==Session["SelectedTemplate"] ? " selected=\"selected\"" : "" %>><%=template.Name %></option>
             <% } %>
@@ -33,6 +33,6 @@
         <div>
             
         </div>
-        <p><button type="submit">Выбрать</button></p>
+        <p><button type="submit">Р’С‹Р±СЂР°С‚СЊ</button></p>
     </form>
 </asp:Content>
