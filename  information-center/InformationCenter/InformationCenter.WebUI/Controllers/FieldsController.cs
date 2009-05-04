@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -35,7 +35,7 @@ namespace InformationCenter.WebUI.Controllers
 
 
                 if (fields.Count() <= 0)
-                    ViewData["error"] = "Ни одного поля не создано";
+                    ViewData["error"] = "РќРё РѕРґРЅРѕРіРѕ РїРѕР»СЏ РЅРµ СЃРѕР·РґР°РЅРѕ";
                 else
                     ViewData["Fields"] = fields;
 
@@ -43,7 +43,7 @@ namespace InformationCenter.WebUI.Controllers
             }
             else
             {
-                ViewData["error"] = "Сервис редактирования полей в данный момент недоступен.";
+                ViewData["error"] = "РЎРµСЂРІРёСЃ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ РїРѕР»РµР№ РІ РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ РЅРµРґРѕСЃС‚СѓРїРµРЅ.";
             }
 
             return actionResult;
@@ -67,7 +67,7 @@ namespace InformationCenter.WebUI.Controllers
                 try
                 {
                     if (selectedField == null)
-                        throw new Exception("Указанное поле не найдено.");
+                        throw new Exception("РЈРєР°Р·Р°РЅРЅРѕРµ РїРѕР»Рµ РЅРµ РЅР°Р№РґРµРЅРѕ.");
                     ViewData["SelectedField"] = selectedField;
 
                     ViewData["DataTypes"] = dataTypes;
@@ -80,7 +80,7 @@ namespace InformationCenter.WebUI.Controllers
             }
             else
             {
-                ViewData["error"] = "Сервис редактирования полей в данный момент недоступен.";
+                ViewData["error"] = "РЎРµСЂРІРёСЃ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ РїРѕР»РµР№ РІ РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ РЅРµРґРѕСЃС‚СѓРїРµРЅ.";
             }
 
             return actionResult;
@@ -128,7 +128,7 @@ namespace InformationCenter.WebUI.Controllers
                             {
                                 
                                 _client.ServiceCenter.DocumentDescriptionService.ChangeFieldOrder(selectedField, fieldOrder);
-                                ViewData["success"] = "Поле успешно сохранено";
+                                ViewData["success"] = "РџРѕР»Рµ СѓСЃРїРµС€РЅРѕ СЃРѕС…СЂР°РЅРµРЅРѕ";
                             }
 
                             if (selectedField.Name != fieldName)
@@ -136,7 +136,7 @@ namespace InformationCenter.WebUI.Controllers
                                 _client.ServiceCenter.DocumentDescriptionService.RenameField(selectedField, fieldName);
                                 fields = _client.ServiceCenter.SearchService.GetFields();
                                 selectedField = FieldHelper.GetFieldByGUIDStr(fieldIdStr, fields);
-                                ViewData["success"] = "Поле успешно сохранено";
+                                ViewData["success"] = "РџРѕР»Рµ СѓСЃРїРµС€РЅРѕ СЃРѕС…СЂР°РЅРµРЅРѕ";
                             }
 
                         }
@@ -145,17 +145,17 @@ namespace InformationCenter.WebUI.Controllers
                             if (selectedField.Order != fieldOrder && !(ParceResult && fieldOrder >= 0))
                             {
                                 ViewData["error"] =
-                                    "Ошибка при вводе порядка поля. Ожидается положительное целое число или 0";
+                                    "РћС€РёР±РєР° РїСЂРё РІРІРѕРґРµ РїРѕСЂСЏРґРєР° РїРѕР»СЏ. РћР¶РёРґР°РµС‚СЃСЏ РїРѕР»РѕР¶РёС‚РµР»СЊРЅРѕРµ С†РµР»РѕРµ С‡РёСЃР»Рѕ РёР»Рё 0";
                             }
                             if (selectedField.Name != fieldName && !FieldNameCheckResult)
                             {
-                                ViewData["error"] = "Поле с таким именем уже существует, задайте другое имя.";
+                                ViewData["error"] = "РџРѕР»Рµ СЃ С‚Р°РєРёРј РёРјРµРЅРµРј СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚, Р·Р°РґР°Р№С‚Рµ РґСЂСѓРіРѕРµ РёРјСЏ.";
                             }
                         }
                     }
                     else
                     {
-                        ViewData["success"] = "Нет изменений";
+                        ViewData["success"] = "РќРµС‚ РёР·РјРµРЅРµРЅРёР№";
                     }
 
                 }
@@ -168,7 +168,7 @@ namespace InformationCenter.WebUI.Controllers
             }
             else
             {
-                ViewData["error"] = "Сервис редактирования полей в данный момент недоступен.";
+                ViewData["error"] = "РЎРµСЂРІРёСЃ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ РїРѕР»РµР№ РІ РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ РЅРµРґРѕСЃС‚СѓРїРµРЅ.";
             }
 
             return actionResult;
@@ -193,26 +193,26 @@ namespace InformationCenter.WebUI.Controllers
                 {
                     string tempFieldName = selectedField.Name;
                     _client.ServiceCenter.DocumentDescriptionService.DeleteField(selectedField);
-                    ViewData["success"] = "Поле \"" + tempFieldName + "\" успешно удалено.";
+                    ViewData["success"] = "РџРѕР»Рµ \"" + tempFieldName + "\" СѓСЃРїРµС€РЅРѕ СѓРґР°Р»РµРЅРѕ.";
 
                 }
                 else
                 {
-                    ViewData["error"] = "Указанное поле не найдено.";
+                    ViewData["error"] = "РЈРєР°Р·Р°РЅРЅРѕРµ РїРѕР»Рµ РЅРµ РЅР°Р№РґРµРЅРѕ.";
                 }
 
                 fields = _client.ServiceCenter.SearchService.GetFields();
 
 
                 if (fields.Count() <= 0)
-                    ViewData["error"] = "Ни одного поля не создано";
+                    ViewData["error"] = "РќРё РѕРґРЅРѕРіРѕ РїРѕР»СЏ РЅРµ СЃРѕР·РґР°РЅРѕ";
                 else
                     ViewData["Fields"] = fields;
 
             }
             else
             {
-                ViewData["error"] = "Сервис редактирования шаблонов в данный момент недоступен.";
+                ViewData["error"] = "РЎРµСЂРІРёСЃ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ С€Р°Р±Р»РѕРЅРѕРІ РІ РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ РЅРµРґРѕСЃС‚СѓРїРµРЅ.";
             }
 
             return actionResult;
@@ -267,28 +267,28 @@ namespace InformationCenter.WebUI.Controllers
                                 
                                 _client.ServiceCenter.DocumentDescriptionService.AddField(fieldName, fieldType, fieldCanBeBlank, fieldOrder);
 
-                                ViewData["success"] = "Поле успешно создано";
+                                ViewData["success"] = "РџРѕР»Рµ СѓСЃРїРµС€РЅРѕ СЃРѕР·РґР°РЅРѕ";
 
                             }
                             else
                             {
                                 ViewData["error"] =
-                                    "Ошибка при вводе порядка поля. Ожидается положительное целое число или 0";
+                                    "РћС€РёР±РєР° РїСЂРё РІРІРѕРґРµ РїРѕСЂСЏРґРєР° РїРѕР»СЏ. РћР¶РёРґР°РµС‚СЃСЏ РїРѕР»РѕР¶РёС‚РµР»СЊРЅРѕРµ С†РµР»РѕРµ С‡РёСЃР»Рѕ РёР»Рё 0";
                             }
                         }
                         else
                         {
-                            ViewData["error"] = "Поле с таким именем уже существует, задайте другое имя";
+                            ViewData["error"] = "РџРѕР»Рµ СЃ С‚Р°РєРёРј РёРјРµРЅРµРј СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚, Р·Р°РґР°Р№С‚Рµ РґСЂСѓРіРѕРµ РёРјСЏ";
                         }
                     }
                     else
                     {
-                        ViewData["error"] = "Не выбран тип данных";
+                        ViewData["error"] = "РќРµ РІС‹Р±СЂР°РЅ С‚РёРї РґР°РЅРЅС‹С…";
                     }
                 }
                 else
                 {
-                    ViewData["error"] = "Не задано имя поля";
+                    ViewData["error"] = "РќРµ Р·Р°РґР°РЅРѕ РёРјСЏ РїРѕР»СЏ";
                 }
 
                 ViewData["FieldName"] = fieldName;
@@ -301,7 +301,7 @@ namespace InformationCenter.WebUI.Controllers
             }
             else
             {
-                ViewData["error"] = "Сервис создания полей в данный момент недоступен.";
+                ViewData["error"] = "РЎРµСЂРІРёСЃ СЃРѕР·РґР°РЅРёСЏ РїРѕР»РµР№ РІ РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ РЅРµРґРѕСЃС‚СѓРїРµРЅ.";
             }
 
             return actionResult;
@@ -325,7 +325,7 @@ namespace InformationCenter.WebUI.Controllers
             }
             else
             {
-                ViewData["error"] = "Сервис создания полей в данный момент недоступен.";
+                ViewData["error"] = "РЎРµСЂРІРёСЃ СЃРѕР·РґР°РЅРёСЏ РїРѕР»РµР№ РІ РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ РЅРµРґРѕСЃС‚СѓРїРµРЅ.";
             }
 
             return actionResult;

@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Web.Mvc;
@@ -55,7 +55,7 @@ namespace InformationCenter.WebUI.Controllers
             }
             else
             {
-                ViewData["error"] = "Сервис загрузки документов в данный момент недоступен."
+                ViewData["error"] = "РЎРµСЂРІРёСЃ Р·Р°РіСЂСѓР·РєРё РґРѕРєСѓРјРµРЅС‚РѕРІ РІ РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ РЅРµРґРѕСЃС‚СѓРїРµРЅ."
                     + " " + _client.ServiceCenterException.Message;
             }
 
@@ -99,7 +99,7 @@ namespace InformationCenter.WebUI.Controllers
                 try
                 {
                     if (isTemplateSelected && selectedTemplate == null)
-                        throw new Exception("Шаблон с идентификатором "+selectedTemplateIdStr+" не найден.");
+                        throw new Exception("РЁР°Р±Р»РѕРЅ СЃ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂРѕРј "+selectedTemplateIdStr+" РЅРµ РЅР°Р№РґРµРЅ.");
 
                     actionResult = RedirectToAction("FillDescription");
                     Session["SelectedTemplate"] = selectedTemplate;
@@ -111,7 +111,7 @@ namespace InformationCenter.WebUI.Controllers
             }
             else
             {
-                ViewData["error"] = "Сервис загрузки документов в данный момент недоступен."
+                ViewData["error"] = "РЎРµСЂРІРёСЃ Р·Р°РіСЂСѓР·РєРё РґРѕРєСѓРјРµРЅС‚РѕРІ РІ РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ РЅРµРґРѕСЃС‚СѓРїРµРЅ."
                     + " " + _client.ServiceCenterException.Message;
             }
 
@@ -156,7 +156,7 @@ namespace InformationCenter.WebUI.Controllers
             }
             else
             {
-                ViewData["error"] = "Сервис загрузки документов в данный момент недоступен."
+                ViewData["error"] = "РЎРµСЂРІРёСЃ Р·Р°РіСЂСѓР·РєРё РґРѕРєСѓРјРµРЅС‚РѕРІ РІ РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ РЅРµРґРѕСЃС‚СѓРїРµРЅ."
                     + " " + _client.ServiceCenterException.Message;
             }
 
@@ -176,12 +176,12 @@ namespace InformationCenter.WebUI.Controllers
                 var file = HttpContext.Request.Files["f"];
                 if (file == null)
                 {
-                    ModelState.AddModelError("f", "Файл не был загружен.");
+                    ModelState.AddModelError("f", "Р¤Р°Р№Р» РЅРµ Р±С‹Р» Р·Р°РіСЂСѓР¶РµРЅ.");
                 }
                 string descriptionName = (Request["DescriptionName"] ?? "").Trim();
                 if (string.IsNullOrEmpty(descriptionName))
                 {
-                    ModelState.AddModelError("DescriptionName", "Название описания не должно быть пустым.");
+                    ModelState.AddModelError("DescriptionName", "РќР°Р·РІР°РЅРёРµ РѕРїРёСЃР°РЅРёСЏ РЅРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РїСѓСЃС‚С‹Рј.");
                 }
                 TempData["DescriptionName"] = descriptionName;
 
@@ -231,7 +231,7 @@ namespace InformationCenter.WebUI.Controllers
             }
             else
             {
-                ViewData["error"] = "Сервис загрузки документов в данный момент недоступен."
+                ViewData["error"] = "РЎРµСЂРІРёСЃ Р·Р°РіСЂСѓР·РєРё РґРѕРєСѓРјРµРЅС‚РѕРІ РІ РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ РЅРµРґРѕСЃС‚СѓРїРµРЅ."
                     + " " + _client.ServiceCenterException.Message;
             }
 
@@ -249,12 +249,12 @@ namespace InformationCenter.WebUI.Controllers
                 {
                     string descriptionIdStr = Request["id"];
                     if (id == null && string.IsNullOrEmpty(descriptionIdStr))
-                        throw new Exception("Идентификатор описания не задан.");
+                        throw new Exception("РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РѕРїРёСЃР°РЅРёСЏ РЅРµ Р·Р°РґР°РЅ.");
                     Guid descriptionId = (id == null ? new Guid(descriptionIdStr) : id.Value);
 
                     DocDescriptionView description = _client.ServiceCenter.DocumentDescriptionService.GetDescription(descriptionId);
                     if (description == null)
-                        throw new Exception("Описание с указанным идентификатором не найдено.");
+                        throw new Exception("РћРїРёСЃР°РЅРёРµ СЃ СѓРєР°Р·Р°РЅРЅС‹Рј РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂРѕРј РЅРµ РЅР°Р№РґРµРЅРѕ.");
 
                     DocumentView document = description.Document;
 
@@ -305,7 +305,7 @@ namespace InformationCenter.WebUI.Controllers
             }
             else
             {
-                ViewData["error"] = "Сервис загрузки документов в данный момент недоступен."
+                ViewData["error"] = "РЎРµСЂРІРёСЃ Р·Р°РіСЂСѓР·РєРё РґРѕРєСѓРјРµРЅС‚РѕРІ РІ РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ РЅРµРґРѕСЃС‚СѓРїРµРЅ."
                                     + " " + _client.ServiceCenterException.Message;
             }
             return actionResult;
@@ -322,12 +322,12 @@ namespace InformationCenter.WebUI.Controllers
                 {
                     string descriptionIdStr = Request["id"];
                     if (id == null && string.IsNullOrEmpty(descriptionIdStr))
-                        throw new Exception("Идентификатор описания не задан.");
+                        throw new Exception("РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РѕРїРёСЃР°РЅРёСЏ РЅРµ Р·Р°РґР°РЅ.");
                     Guid descriptionId = (id == null ? new Guid(descriptionIdStr) : id.Value);
 
                     DocDescriptionView description = _client.ServiceCenter.DocumentDescriptionService.GetDescription(descriptionId);
                     if (description == null)
-                        throw new Exception("Описание с указанным идентификатором не найдено.");
+                        throw new Exception("РћРїРёСЃР°РЅРёРµ СЃ СѓРєР°Р·Р°РЅРЅС‹Рј РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂРѕРј РЅРµ РЅР°Р№РґРµРЅРѕ.");
 
                     DocumentView document = description.Document;
 
@@ -335,7 +335,7 @@ namespace InformationCenter.WebUI.Controllers
                     string descriptionName = (Request["DescriptionName"] ?? "").Trim();
                     if (string.IsNullOrEmpty(descriptionName))
                     {
-                        ModelState.AddModelError("DescriptionName", "Название описания не должно быть пустым.");
+                        ModelState.AddModelError("DescriptionName", "РќР°Р·РІР°РЅРёРµ РѕРїРёСЃР°РЅРёСЏ РЅРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РїСѓСЃС‚С‹Рј.");
                     }
                     TempData["DescriptionName"] = descriptionName;
 
@@ -375,7 +375,7 @@ namespace InformationCenter.WebUI.Controllers
                             Session["UploadSelectedFields"] = null;
 
 
-                            TempData["success"] = "Редактирование описания завершено успешно.";
+                            TempData["success"] = "Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РѕРїРёСЃР°РЅРёСЏ Р·Р°РІРµСЂС€РµРЅРѕ СѓСЃРїРµС€РЅРѕ.";
 
                             actionResult = View("FinishedEditing");
                             //actionResult = RedirectToAction("EditDescription", new { id = descriptionId });
@@ -397,7 +397,7 @@ namespace InformationCenter.WebUI.Controllers
             }
             else
             {
-                ViewData["error"] = "Сервис загрузки документов в данный момент недоступен."
+                ViewData["error"] = "РЎРµСЂРІРёСЃ Р·Р°РіСЂСѓР·РєРё РґРѕРєСѓРјРµРЅС‚РѕРІ РІ РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ РЅРµРґРѕСЃС‚СѓРїРµРЅ."
                     + " " + _client.ServiceCenterException.Message;
             }
 
