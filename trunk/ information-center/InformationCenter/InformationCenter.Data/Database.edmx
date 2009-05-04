@@ -131,7 +131,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Value" Type="nchar" MaxLength="512" />
+          <Property Name="Value" Type="nvarchar" MaxLength="512" />
         </EntityType>
         <EntityType Name="Template">
           <Key>
@@ -281,6 +281,8 @@
         <Function Name="AddField" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="text" Type="nvarchar" Mode="In" />
           <Parameter Name="fieldTypeId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="nullable" Type="bit" Mode="In" />
+          <Parameter Name="orderNumber" Type="int" Mode="In" />
           <Parameter Name="id" Type="uniqueidentifier" Mode="InOut" />
         </Function>
         <Function Name="AddFieldsToDescription" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -300,6 +302,10 @@
           <Parameter Name="name" Type="nvarchar" Mode="In" />
           <Parameter Name="login" Type="nvarchar" Mode="In" />
           <Parameter Name="pass" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="ChangeFieldOrderNumber" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fieldId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="newOrderNumber" Type="int" Mode="In" />
         </Function>
         <Function Name="DeleteDocument" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id" Type="uniqueidentifier" Mode="In" />
@@ -409,10 +415,6 @@
             <Parameter Name="fieldId" Mode="In" Type="Guid" /></FunctionImport>
           <FunctionImport Name="GetStringCollection" EntitySet="StringFieldValue" ReturnType="Collection(InformationCenterModel.StringFieldValue)">
             <Parameter Name="fieldId" Mode="In" Type="Guid" /></FunctionImport>
-          <FunctionImport Name="AddField" EntitySet="IntValue" ReturnType="Collection(InformationCenterModel.IntValue)">
-            <Parameter Name="text" Mode="In" Type="String" />
-            <Parameter Name="fieldTypeId" Mode="In" Type="Guid" />
-            <Parameter Name="id" Mode="InOut" Type="Guid" /></FunctionImport>
           <FunctionImport Name="DeleteDocument" EntitySet="IntValue" ReturnType="Collection(InformationCenterModel.IntValue)">
             <Parameter Name="id" Mode="In" Type="Guid" /></FunctionImport>
           <FunctionImport Name="DeleteField" EntitySet="IntValue" ReturnType="Collection(InformationCenterModel.IntValue)">
@@ -436,7 +438,13 @@
             <Parameter Name="newName" Mode="In" Type="String" /></FunctionImport>
           <FunctionImport Name="RenameTemplate" EntitySet="IntValue" ReturnType="Collection(InformationCenterModel.IntValue)">
             <Parameter Name="templateId" Mode="In" Type="Guid" />
-            <Parameter Name="newName" Mode="In" Type="String" /></FunctionImport></EntityContainer>
+            <Parameter Name="newName" Mode="In" Type="String" /></FunctionImport>
+          <FunctionImport Name="AddField" EntitySet="IntValue" ReturnType="Collection(InformationCenterModel.IntValue)">
+            <Parameter Name="text" Mode="In" Type="String" />
+            <Parameter Name="fieldTypeId" Mode="In" Type="Guid" />
+            <Parameter Name="nullable" Mode="In" Type="Boolean" />
+            <Parameter Name="orderNumber" Mode="In" Type="Int32" />
+            <Parameter Name="id" Mode="InOut" Type="Guid" /></FunctionImport></EntityContainer>
         <EntityType Name="DateTimeFieldValue">
           <Key>
             <PropertyRef Name="ID" />
@@ -784,7 +792,6 @@
           <FunctionImportMapping FunctionImportName="GetFloatCollection" FunctionName="InformationCenterModel.Store.GetFieldValues" />
           <FunctionImportMapping FunctionImportName="GetDateTimeCollection" FunctionName="InformationCenterModel.Store.GetFieldValues" />
           <FunctionImportMapping FunctionImportName="GetStringCollection" FunctionName="InformationCenterModel.Store.GetFieldValues" />
-          <FunctionImportMapping FunctionImportName="AddField" FunctionName="InformationCenterModel.Store.AddField" />
           <FunctionImportMapping FunctionImportName="DeleteDocument" FunctionName="InformationCenterModel.Store.DeleteDocument" />
           <FunctionImportMapping FunctionImportName="DeleteField" FunctionName="InformationCenterModel.Store.DeleteField" />
           <FunctionImportMapping FunctionImportName="DeleteTemplate" FunctionName="InformationCenterModel.Store.DeleteTemplate" />
@@ -793,7 +800,8 @@
           <FunctionImportMapping FunctionImportName="RemoveFieldFromTemplate" FunctionName="InformationCenterModel.Store.RemoveFieldFromTemplate" />
           <FunctionImportMapping FunctionImportName="SearchDescriptions" FunctionName="InformationCenterModel.Store.SearchDescriptions" />
           <FunctionImportMapping FunctionImportName="RenameField" FunctionName="InformationCenterModel.Store.RenameField" />
-          <FunctionImportMapping FunctionImportName="RenameTemplate" FunctionName="InformationCenterModel.Store.RenameTemplate" /></EntityContainerMapping>
+          <FunctionImportMapping FunctionImportName="RenameTemplate" FunctionName="InformationCenterModel.Store.RenameTemplate" />
+          <FunctionImportMapping FunctionImportName="AddField" FunctionName="InformationCenterModel.Store.AddField" /></EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

@@ -42,7 +42,9 @@ namespace InformationCenter.Services
         /// </summary>
         /// <param name="Name">имя поля</param>
         /// <param name="Type">представление типа поля</param>
-        void AddField(string Name, FieldTypeView Type);
+        /// <param name="Nullable">признак того, что поле может не иметь значения</param>
+        /// <param name="Order">приоритет поля</param>
+        void AddField(string Name, FieldTypeView Type, bool Nullable, int Order);
 
         /// <summary>
         /// добавить новый шаблон в хранилище
