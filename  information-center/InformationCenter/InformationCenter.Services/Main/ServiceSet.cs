@@ -113,9 +113,9 @@ namespace InformationCenter.Services
             return doc == null ? null : new DocumentView(doc);
         }
 
-        public DocDescriptionView GetDescription(Guid ID)
+        public DocDescriptionView GetDescription(Guid DescriptionID)
         {
-            DocDescription desc = Engine.GetDescription(ID);
+            DocDescription desc = Engine.GetDescription(DescriptionID);
             return desc == null ? null : new DocDescriptionView(desc);
         }
 

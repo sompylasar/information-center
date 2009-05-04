@@ -38,7 +38,7 @@ namespace InformationCenter.Services
         /// </summary>
         /// <param name="descriptionId">идентификатор описания</param>
         /// <returns>представление описания</returns>
-        DocDescriptionView GetDescription(Guid descriptionId);
+        DocDescriptionView GetDescription(Guid DescriptionID);
 
         #endregion
 
@@ -125,6 +125,7 @@ namespace InformationCenter.Services
         void DeleteDocumentDescription(DocDescriptionView DocumentDescription);
 
         #endregion
+
     }
 
 }
