@@ -10,7 +10,9 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Загрузка завершена</h2>
+    
     <% bool success = string.IsNullOrEmpty((string)ViewData["error"]); %>
+    
     <div>
         <%if (success) { %>
         <p class="success">Загрузка документа завершена успешно.</p>

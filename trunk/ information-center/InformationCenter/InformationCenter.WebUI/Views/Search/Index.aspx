@@ -15,9 +15,6 @@
     <link rel="stylesheet" type="text/css" href="/Content/jquery.autocomplete/styles.css" />
     <style type="text/css">
     </style>
-</asp:Content>
-
-<asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript">
         jQuery(function($) {
             function check_additional() {
@@ -84,7 +81,9 @@
             });
         });
     </script>
-    
+</asp:Content>
+
+<asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Поиск документов</h2>
     
     <form action="/Search/Query" method="post" id="frmSearchDocument" class="search-form">

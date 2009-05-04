@@ -375,3 +375,11 @@ div#title h1
 	padding-left: 1em;
 	list-style-type: none;
 }
+
+
+
+.pagination-label 
+{
+	float: left;
+	line-height: 1.5em;
+}
