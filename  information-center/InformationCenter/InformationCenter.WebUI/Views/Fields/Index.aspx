@@ -13,7 +13,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
     <h2>Управление полями</h2>
-    <%=Html.Breadcrumbs().Last("Управление полями")%>
+    <%=Html.Breadcrumbs().AddActionLink("Управление", "Index", "Management").Last("Управление полями")%>
     <div id="TemplateManagerActions">
         <ul id="TemplateActions">              
             <li><%= Html.ActionLink("Создание поля", "NewField", "Fields")%></li>

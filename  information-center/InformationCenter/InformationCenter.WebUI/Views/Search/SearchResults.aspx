@@ -88,21 +88,10 @@
         <p id="results-container" class="search-results">
             <span id="total"><%=resultsCount==0 ? "" : "Найдено документов: "+resultsCount.ToString() %></span>
             <ol class="search-results-list">
-                <%foreach (DocDescriptionView result in results){
-                      string filename, contentType;
-                      FileHelper.SplitFilename(result.Document.FileName, out filename, out contentType);
-                      %>
+                <%foreach (DocDescriptionView result in results) {%>
                 <li>
-                    <div><span class="file-name"><%=Html.ActionLink(filename, "Index", "Download", new { id = result.Document.ID }, null)%></span><span class="file-type"><%=string.IsNullOrEmpty(contentType) ? "" : "("+Html.Encode(contentType)+")" %></span></div>
-                    <div>
-                        <span class="description-name"><label><%=Html.Encode(result.Name) %></label><%=Html.ActionLink("[редактировать]", "EditDescription", "Upload", new { id = result.Document.ID }, null)%></span>
-                        <ul class="description-fields">
-                        <% foreach (FieldValueView descriptionField in result.DescriptionFieldValues) { %>
-                        <li><%=Html.Encode(descriptionField.Field.Name + "=\"" + descriptionField.Value + "\"") %></li>
-                        <% } %>
-                        </ul>
-                    </div>
-                    <div></div>
+                    <% ViewData["Description"] = result; 
+                      Html.RenderPartial("DocDescriptionView", ViewData); %>
                 </li>
                 <%}%>
             </ol>

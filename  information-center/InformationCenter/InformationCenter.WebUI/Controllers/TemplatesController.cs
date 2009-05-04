@@ -23,7 +23,7 @@ namespace InformationCenter.WebUI.Controllers
 
         public ActionResult NewTemplate()
         {
-            if (AuthHelper.NeedRedirectToAuth(this, "EditTemplate")) return RedirectToAction("LogOn", "Account");
+            if (AuthHelper.NeedRedirectToAuth(this)) return RedirectToAction("LogOn", "Account");
 
             ActionResult actionResult = View();
             InitServiceCenterClient();
@@ -37,7 +37,8 @@ namespace InformationCenter.WebUI.Controllers
             }
             else
             {
-                ViewData["error"] = "Сервис редактирования шаблонов в данный момент недоступен.";
+                ViewData["error"] = "Сервис редактирования шаблонов в данный момент недоступен."
+                    + " " + _client.ServiceCenterException.Message;
             }
 
             return actionResult;
@@ -45,7 +46,7 @@ namespace InformationCenter.WebUI.Controllers
 
         public ActionResult SelectTemplate()
         {
-            if (AuthHelper.NeedRedirectToAuth(this, "SelectTemplate")) return RedirectToAction("LogOn", "Account");
+            if (AuthHelper.NeedRedirectToAuth(this)) return RedirectToAction("LogOn", "Account");
 
             ActionResult actionResult = View("Error");
             InitServiceCenterClient();
@@ -63,7 +64,8 @@ namespace InformationCenter.WebUI.Controllers
             }
             else
             {
-                ViewData["error"] = "Сервис редактирования шаблонов в данный момент недоступен.";
+                ViewData["error"] = "Сервис редактирования шаблонов в данный момент недоступен."
+                    + " " + _client.ServiceCenterException.Message;
             }
 
             return actionResult;
@@ -71,7 +73,7 @@ namespace InformationCenter.WebUI.Controllers
 
         public ActionResult EditTemplate()
         {
-            if (AuthHelper.NeedRedirectToAuth(this, "EditTemplate")) return RedirectToAction("LogOn", "Account");
+            if (AuthHelper.NeedRedirectToAuth(this)) return RedirectToAction("LogOn", "Account");
 
             ActionResult actionResult = View();
             InitServiceCenterClient();
@@ -109,7 +111,8 @@ namespace InformationCenter.WebUI.Controllers
             }
             else
             {
-                ViewData["error"] = "Сервис редактирования шаблонов в данный момент недоступен.";
+                ViewData["error"] = "Сервис редактирования шаблонов в данный момент недоступен."
+                    + " " + _client.ServiceCenterException.Message;
             }
 
             return actionResult;
@@ -117,7 +120,7 @@ namespace InformationCenter.WebUI.Controllers
 
         public ActionResult CommitChanges()
         {
-            if (AuthHelper.NeedRedirectToAuth(this, "CommitChanges")) return RedirectToAction("LogOn", "Account");
+            if (AuthHelper.NeedRedirectToAuth(this)) return RedirectToAction("LogOn", "Account");
 
             ActionResult actionResult = View("EditTemplate");
             InitServiceCenterClient();
@@ -158,7 +161,7 @@ namespace InformationCenter.WebUI.Controllers
                             }
                             if (field == null)
                             {
-                                ModelState.AddModelError(fieldKey, "Поле с идентификатором " + fieldId + " не найдено");
+                                ModelState.AddModelError(fieldKey, "Поле с идентификатором " + fieldId + " не найдено.");
                                 continue;
                             }
 
@@ -178,7 +181,7 @@ namespace InformationCenter.WebUI.Controllers
                             else
                             {
                                 Err = true;
-                                ViewData["error"] = "Шаблон с таким именем уже существует, задайте другое имя";
+                                ViewData["error"] = "Шаблон с таким именем уже существует, задайте другое имя.";
                             }
                         }
                         if (!Err)
@@ -197,13 +200,13 @@ namespace InformationCenter.WebUI.Controllers
                                                                                                     field.ID);
                             }
 
-                            ViewData["success"] = "Шаблон успешно сохранен";
+                            ViewData["success"] = "Шаблон успешно сохранен.";
                         }
 
                     }
                     else
                     {
-                        ViewData["error"] = "Не выбрано ни одного поля";
+                        ViewData["error"] = "Не выбрано ни одного поля.";
                     }
 
                     ViewData["SelectedTemplate"] = selectedTemplate;
@@ -211,15 +214,12 @@ namespace InformationCenter.WebUI.Controllers
                     ViewData["Fields"] = fields;
 
                 }
-                
-
-
-
 
             }
             else
             {
-                ViewData["error"] = "Сервис редактирования шаблонов в данный момент недоступен.";
+                ViewData["error"] = "Сервис редактирования шаблонов в данный момент недоступен."
+                    + " " + _client.ServiceCenterException.Message;
             }
 
             return actionResult;
@@ -228,7 +228,7 @@ namespace InformationCenter.WebUI.Controllers
 
         public ActionResult AddTemplate()
         {
-            if (AuthHelper.NeedRedirectToAuth(this, "AddTemplate")) return RedirectToAction("LogOn", "Account");
+            if (AuthHelper.NeedRedirectToAuth(this)) return RedirectToAction("LogOn", "Account");
 
             ActionResult actionResult = View("NewTemplate");
             InitServiceCenterClient();
@@ -249,30 +249,32 @@ namespace InformationCenter.WebUI.Controllers
                     {
                         if (TemplateHelper.CheckTemplateName(templateName, allTemplates))
                         {
-                            if (_client.ServiceCenter.DocumentDescriptionService.AddTemplate(templateName,
-                                                                                             selectedFields))
-                            {
-                                ViewData["success"] = "Шаблон успешно создан";
+                            try {
+                                _client.ServiceCenter.DocumentDescriptionService.AddTemplate(templateName,
+                                                                                             selectedFields);
+                            
+                            
+                                ViewData["success"] = "Шаблон успешно создан.";
                             }
-                            else
+                            catch (Exception ex)
                             {
-                                ViewData["error"] = "Ошибка сохранения шаблона";
+                                ViewData["error"] = "Ошибка создания шаблона: " + ex.Message;
                             }
 
                         }
                         else
                         {
-                            ViewData["error"] = "Шаблон с таким именем уже существует, задайте другое имя";
+                            ViewData["error"] = "Шаблон с таким именем уже существует, задайте другое имя.";
                         }
                     }
                     else
                     {
-                        ViewData["error"] = "Не выбрано ни одного поля";
+                        ViewData["error"] = "Не выбрано ни одного поля.";
                     }
                 }
                 else
                 {
-                    ViewData["error"] = "Не задано имя шаблона";
+                    ViewData["error"] = "Не задано имя шаблона.";
                 }
 
                 foreach (var field in selectedFields)
@@ -288,7 +290,8 @@ namespace InformationCenter.WebUI.Controllers
             }
             else
             {
-                ViewData["error"] = "Сервис редактирования шаблонов в данный момент недоступен.";
+                ViewData["error"] = "Сервис редактирования шаблонов в данный момент недоступен."
+                    + " " + _client.ServiceCenterException.Message;
             }
 
             return actionResult;
@@ -297,7 +300,7 @@ namespace InformationCenter.WebUI.Controllers
 
         public ActionResult DeleteTemplate()
         {
-            if (AuthHelper.NeedRedirectToAuth(this, "DeleteTemplate")) return RedirectToAction("LogOn", "Account");
+            if (AuthHelper.NeedRedirectToAuth(this)) return RedirectToAction("LogOn", "Account");
 
             ActionResult actionResult = View("SelectTemplate");
             InitServiceCenterClient();
@@ -322,14 +325,15 @@ namespace InformationCenter.WebUI.Controllers
                 
                 allTemplates = _client.ServiceCenter.DocumentDescriptionService.GetTemplates();
                 if (allTemplates.Count() <= 0)
-                    ViewData["error"] = "Ни одного шаблона не создано";
+                    ViewData["error"] = "Ни одного шаблона не создано.";
                 else
                     ViewData["Templates"] = allTemplates;
 
             }
             else
             {
-                ViewData["error"] = "Сервис редактирования шаблонов в данный момент недоступен.";
+                ViewData["error"] = "Сервис редактирования шаблонов в данный момент недоступен."
+                    + " " + _client.ServiceCenterException.Message;
             }
 
             return actionResult;

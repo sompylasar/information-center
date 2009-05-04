@@ -12,7 +12,6 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-
     <%FieldView Current = (FieldView)ViewData["SelectedField"];
         string FieldName = "";
         string FieldId = "";
@@ -27,11 +26,10 @@
             FieldType = Current.FieldTypeView.FieldTypeName;
             fieldCanBeBlack = Current.Nullable;
         }
-
 %>
     
     <h2>Редактирование поля "<%=Html.Encode(FieldName)%>"</h2>
-    <%=Html.Breadcrumbs().AddActionLink("Управление полями", "Index").AddActionLink("Выбор поля", "SelectField").Last("Редактирование поля")%>
+    <%=Html.Breadcrumbs().AddActionLink("Управление", "Index", "Management").AddActionLink("Управление полями", "Index").AddActionLink("Выбор", "SelectField").Last("Редактирование")%>
     
     <%= Html.ValidationSummary("Введенные данные некорректны. Проверьте их и повторите попытку.") %>
     

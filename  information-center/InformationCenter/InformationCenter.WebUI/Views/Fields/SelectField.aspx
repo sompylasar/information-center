@@ -14,8 +14,8 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
     <h2>Редактирование поля</h2>
-    <%=Html.Breadcrumbs().AddActionLink("Управление полями", "Index").Last("Выбор поля")%>
-        <%
+    <%=Html.Breadcrumbs().AddActionLink("Управление", "Index", "Management").AddActionLink("Управление полями", "Index").Last("Выбор")%>
+    <%
             var fields = (IEnumerable<FieldView>)(ViewData["Fields"] ?? new FieldView[0]);
 
     %>

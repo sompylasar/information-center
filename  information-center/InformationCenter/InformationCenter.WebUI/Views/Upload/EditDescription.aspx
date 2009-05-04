@@ -129,10 +129,12 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <h2>Заполнение описания</h2>
+    <h2>Редактирование описания</h2>
     <%=Html.Breadcrumbs().AddTextLink("Поиск").Last("Редактирование описания") %>
     
     <%
+        DocDescriptionView description = (DocDescriptionView)ViewData["Description"];
+        
         var selectedFields = (IEnumerable<FieldView>)(ViewData["SelectedFields"] ?? new FieldView[0]);
         selectedFields = selectedFields.OrderBy(field => field.Order);
 
@@ -374,15 +376,14 @@
 
     <%= Html.ValidationSummary("Введенные данные некорректны. Проверьте их и повторите попытку.") %>
     
-    <form action="/Upload/UpdateDescription" id="frmEditDescription" method="post" enctype="multipart/form-data">
+    <form action="/Upload/UpdateDescription/<%=description.ID %>" id="frmEditDescription" method="post" enctype="multipart/form-data">
         <p><span class="success"><%=ViewData["success"]%></span></p>
         <p><span class="error"><%=ViewData["error"]%></span></p>
         
         <div>
-            <input name="DocumentId" type="hidden" value="<%=ViewData["DocumentId"] ?? ""%>" />
             <table class="layout">
-            <tr><td width="15%"><label for="fileToUpload">Документ:</label></td><td width="75%"><input disabled="disabled" type="text" id="fileToUpload" name="f" value="<%=ViewData["UploadFileName"] ?? "" %>" /><%=Html.ValidationMessage("f")%></td></tr>
-            <tr><td><label for="txtDescriptionName">Название описания:</label></td><td><input type="text" id="txtDescriptionName" name="DescriptionName" maxlength="256" value="<%=ViewData["DescriptionName"] ?? TempData["DescriptionName"] %>" /><%= Html.ValidationMessage("DescriptionName")%></td></tr>
+            <tr><td style="width:15%"><label for="fileToUpload">Документ:</label></td><td style="width:75%"><input type="text" disabled="disabled" id="fileToUpload" name="f" value="<%=(ViewData["Document"] is DocumentView ? (((DocumentView)ViewData["Document"]).FileName ?? "") : "(описание не связано с документом)") %>" /><%=Html.ValidationMessage("f")%></td></tr>
+            <tr><td><label for="txtDescriptionName">Название описания:</label></td><td><input type="text" id="txtDescriptionName" name="DescriptionName" maxlength="256" value="<%=TempData["DescriptionName"] ?? ViewData["DescriptionName"] %>" /><%= Html.ValidationMessage("DescriptionName")%></td></tr>
             </table>
         </div>
         <div>
@@ -413,7 +414,7 @@
                     <div class="listbox-to-wrapper">
                         <table class="listbox-to">
                             <% foreach (FieldView field in selectedFields) { %>
-                            <tr order="<%=field.Order %>" <%=field.Nullable ? " nullable=\"nullable\"" : "" %> ><td class="fieldName"><span class="unselectable"><%=Html.Encode(field.Name) %> (<%=Html.Encode(field.FieldTypeView.FieldTypeName) %>)</span></td><td class="fieldValue"><input type="text" name="_<%=field.ID %>" value="<%=Html.Encode((TempData["_"+field.ID].ToString()) ?? "") %>" /></td></tr>
+                            <tr order="<%=field.Order %>" <%=field.Nullable ? " nullable=\"nullable\"" : "" %> ><td class="fieldName"><span class="unselectable"><%=Html.Encode(field.Name) %> (<%=Html.Encode(field.FieldTypeView.FieldTypeName) %>)</span></td><td class="fieldValue"><input type="text" name="_<%=field.ID %>" value="<%=Html.Encode(ViewData["_"+field.ID] ?? "") %>" /></td></tr>
                             <% } %>
                         </table>
                     </div>

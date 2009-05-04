@@ -33,6 +33,13 @@ namespace InformationCenter.Services
         /// <returns>массив представлений типов полей хранилища</returns>
         FieldTypeView[] GetFieldTypes();
 
+        /// <summary>
+        /// получить представление описания по идентификатору описания
+        /// </summary>
+        /// <param name="descriptionId">идентификатор описания</param>
+        /// <returns>представление описания</returns>
+        DocDescriptionView GetDescription(Guid descriptionId);
+
         #endregion
 
         #region Add
@@ -44,21 +51,23 @@ namespace InformationCenter.Services
         /// <param name="Type">представление типа поля</param>
         /// <param name="Nullable">признак того, что поле может не иметь значения</param>
         /// <param name="Order">приоритет поля</param>
-        void AddField(string Name, FieldTypeView Type, bool Nullable, int Order);
+        /// <returns>идентификатор добавленного поля</returns>
+        Guid AddField(string Name, FieldTypeView Type, bool Nullable, int Order);
 
         /// <summary>
         /// добавить новый шаблон в хранилище
         /// </summary>
         /// <param name="Name">имя шаблона</param>
         /// <param name="FieldViews">набор представлений полей шаблона</param>
-        /// <returns>признак успешного выполнения</returns>
-        bool AddTemplate(string Name, IEnumerable<FieldView> FieldViews);
+        /// <returns>идентификатор добавленного шаблона описания</returns>
+        Guid AddTemplate(string Name, IEnumerable<FieldView> FieldViews);
 
         /// <summary>
         /// добавить поле к шаблону
         /// </summary>
         /// <param name="TemplateID">идентификатор шаблона</param>
         /// <param name="FieldID">идентификатор поля</param>
+        /// <exception cref="">в случае провала генерирует исключение</exception>
         void AddFieldToTemplate(Guid TemplateID, Guid FieldID);
 
         #endregion
@@ -116,7 +125,6 @@ namespace InformationCenter.Services
         void DeleteDocumentDescription(DocDescriptionView DocumentDescription);
 
         #endregion
-
     }
 
 }

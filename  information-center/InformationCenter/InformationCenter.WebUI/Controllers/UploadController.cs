@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Web.Mvc;
 using InformationCenter.Services;
 using InformationCenter.WebUI.Models;
+using System.Web.Routing;
 
 namespace InformationCenter.WebUI.Controllers
 {
@@ -27,7 +28,7 @@ namespace InformationCenter.WebUI.Controllers
 
         public ActionResult SelectTemplate()
         {
-            if (AuthHelper.NeedRedirectToAuth(this, "SelectTemplate")) return RedirectToAction("LogOn", "Account");
+            if (AuthHelper.NeedRedirectToAuth(this)) return RedirectToAction("LogOn", "Account");
 
             ActionResult actionResult = View("Error");
             InitServiceCenterClient();
@@ -62,7 +63,7 @@ namespace InformationCenter.WebUI.Controllers
 
         public ActionResult TemplateSelected()
         {
-            if (AuthHelper.NeedRedirectToAuth(this, "SelectTemplate")) return RedirectToAction("LogOn", "Account");
+            if (AuthHelper.NeedRedirectToAuth(this)) return RedirectToAction("LogOn", "Account");
 
             ActionResult actionResult = View("Error");
             InitServiceCenterClient();
@@ -118,7 +119,7 @@ namespace InformationCenter.WebUI.Controllers
 
         public ActionResult FillDescription()
         {
-            if (AuthHelper.NeedRedirectToAuth(this, "SelectTemplate")) return RedirectToAction("LogOn", "Account");
+            if (AuthHelper.NeedRedirectToAuth(this)) return RedirectToAction("LogOn", "Account");
 
             ActionResult actionResult = View("Error");
             InitServiceCenterClient();
@@ -132,13 +133,13 @@ namespace InformationCenter.WebUI.Controllers
                 ViewData["SelectedTemplate"] = selectedTemplate;
                 ViewData["SelectedTemplateName"] = (selectedTemplate != null ? selectedTemplate.Name : "");
 
-                if (TempData["ModelState"] != null)
+                var previousModelState = (ModelStateDictionary)TempData["ModelState"];
+                if (previousModelState != null)
                 {
-                    foreach (var state in (ModelStateDictionary)TempData["ModelState"])
-                    {
-                        ModelState.Add(state);
-                    }
-                    TempData["ModelState"] = null;
+                    foreach (KeyValuePair<string, ModelState> kvp in previousModelState)
+                        if (!ModelState.ContainsKey(kvp.Key))
+                            ModelState.Add(kvp.Key, kvp.Value);
+                    TempData["ModelState"] = ModelState;
                 }
 
                 try
@@ -163,7 +164,7 @@ namespace InformationCenter.WebUI.Controllers
 
         public ActionResult Start()
         {
-            if (AuthHelper.NeedRedirectToAuth(this, "UploadForm")) return RedirectToAction("LogOn", "Account");
+            if (AuthHelper.NeedRedirectToAuth(this)) return RedirectToAction("LogOn", "Account");
 
             ActionResult actionResult = View("Error");
             InitServiceCenterClient();
@@ -234,35 +235,64 @@ namespace InformationCenter.WebUI.Controllers
         }
         public ActionResult EditDescription(Guid? id)
         {
-            if (AuthHelper.NeedRedirectToAuth(this, "UploadForm")) return RedirectToAction("LogOn", "Account");
+            if (AuthHelper.NeedRedirectToAuth(this)) return RedirectToAction("LogOn", "Account");
 
-            ActionResult actionResult = View();
+            ActionResult actionResult = View("Error");
             InitServiceCenterClient();
             if (_client.Available)
             {
                 try
                 {
+                    string descriptionIdStr = Request["id"];
+                    if (id == null && string.IsNullOrEmpty(descriptionIdStr))
+                        throw new Exception("Идентификатор описания не задан.");
+                    Guid descriptionId = (id == null ? new Guid(descriptionIdStr) : id.Value);
 
-                    Guid documentId = (id == null ? new Guid(Request["id"]) : id.Value);
+                    DocDescriptionView description = _client.ServiceCenter.DocumentDescriptionService.GetDescription(descriptionId);
+                    if (description == null)
+                        throw new Exception("Описание с указанным идентификатором не найдено.");
 
-                    DocumentView document = _client.ServiceCenter.DownloadService.GetDocument(documentId);
-                    if (document == null)
-                        throw new Exception("Документ с указанным идентификатором не найден.");
+                    DocumentView document = description.Document;
 
-                    List<FieldView> selectedFields = new List<FieldView>();
-
-                    foreach (FieldValueView fieldValue in document.Descriptions[0].DescriptionFieldValues)
-                    {
-                        selectedFields.Add(fieldValue.Field);
-                        TempData["_" + fieldValue.Field.ID] = fieldValue.Value;
+                    var previousModelState = (ModelStateDictionary)TempData["ModelState"];
+                    if (previousModelState != null)
+                    {   
+                        foreach (KeyValuePair<string, ModelState> kvp in previousModelState)
+                            if (!ModelState.ContainsKey(kvp.Key))
+                                ModelState.Add(kvp.Key, kvp.Value);
+                        TempData["ModelState"] = ModelState;
                     }
+                    ViewData["error"] = TempData["error"];
+                    ViewData["success"] = TempData["success"];
 
-                    ViewData["DocumentId"] = document.ID;
-                    ViewData["UploadFileName"] = document.FileName;
-                    ViewData["DescriptionName"] = document.Descriptions[0].Name;
-                    ViewData["SelectedFields"] = selectedFields;
+                    if (ModelState.IsValid)
+                    {
+                        List<FieldView> selectedFields = new List<FieldView>();
+                        foreach (FieldValueView fieldValue in description.DescriptionFieldValues)
+                        {
+                            selectedFields.Add(fieldValue.Field);
+                            ViewData["_" + fieldValue.Field.ID] = fieldValue.Value;
+                        }
+                        ViewData["SelectedFields"] = selectedFields;
+                    }
+                    else
+                    {
+                        foreach (FieldValueView fieldValue in description.DescriptionFieldValues)
+                        {
+                            ViewData["_" + fieldValue.Field.ID] = TempData["_" + fieldValue.Field.ID];
+                        }
+                        ViewData["SelectedFields"] = TempData["SelectedFields"];
+                    }
+                    ViewData["Description"] = description;
+                    ViewData["DescriptionName"] = (TempData["DescriptionName"] ?? description.Name);
+                    ViewData["Document"] = document;
+                    
                     ViewData["Fields"] = _client.ServiceCenter.SearchService.GetFields();
 
+                    TempData["SelectedFields"] = ViewData["SelectedFields"];
+                    TempData["DescriptionName"] = ViewData["DescriptionName"];
+
+                    actionResult = View("EditDescription");
                 }
                 catch (Exception ex)
                 {
@@ -276,85 +306,90 @@ namespace InformationCenter.WebUI.Controllers
             }
             return actionResult;
         }
-        public ActionResult UpdateDescription()
+        public ActionResult UpdateDescription(Guid? id)
         {
-            if (AuthHelper.NeedRedirectToAuth(this, "UploadForm")) return RedirectToAction("LogOn", "Account");
+            if (AuthHelper.NeedRedirectToAuth(this)) return RedirectToAction("LogOn", "Account");
 
             ActionResult actionResult = View("Error");
             InitServiceCenterClient();
             if (_client.Available)
             {
-                actionResult = View("EditDescription");
- 
-                string documentIdStr = (Request["DocumentId"] ?? "").Trim();
-                if (string.IsNullOrEmpty(documentIdStr))
-                {
-                    ModelState.AddModelError("DocumentId", "Не выбран документ для редактирования.");
-                }
-
-                string descriptionName = (Request["DescriptionName"] ?? "").Trim();
-                if (string.IsNullOrEmpty(descriptionName))
-                {
-                    ModelState.AddModelError("DescriptionName", "Название описания не должно быть пустым.");
-                }
-                TempData["DescriptionName"] = descriptionName;
-
-                DocumentView document = null;
                 try
                 {
-                    Guid documentId = new Guid(documentIdStr);
+                    string descriptionIdStr = Request["id"];
+                    if (id == null && string.IsNullOrEmpty(descriptionIdStr))
+                        throw new Exception("Идентификатор описания не задан.");
+                    Guid descriptionId = (id == null ? new Guid(descriptionIdStr) : id.Value);
 
-                    document = _client.ServiceCenter.DownloadService.GetDocument(documentId);
-                    if (document == null)
-                        ModelState.AddModelError("Document", "Указанный документ не найден.");
+                    DocDescriptionView description = _client.ServiceCenter.DocumentDescriptionService.GetDescription(descriptionId);
+                    if (description == null)
+                        throw new Exception("Описание с указанным идентификатором не найдено.");
 
-                }
-                catch (Exception)
-                {
-                    ModelState.AddModelError("DocumentId", "Неверный формат идентификатора документа.");
-                }
-                
+                    DocumentView document = description.Document;
 
 
-                var fields = (IEnumerable<FieldView>)_client.ServiceCenter.SearchService.GetFields();
-                var selectedFields = new List<FieldView>();
-
-
-                var descriptionFieldsWithValues = FieldTypeHelper.GetFieldValues(fields, selectedFields, HttpContext, TempData, ModelState);
-
-
-                ViewData["DocumentId"] = documentIdStr;
-                if (document != null)
-                    ViewData["UploadFileName"] = document.FileName;
-                ViewData["Fields"] = fields;
-                ViewData["SelectedFields"] = selectedFields;
-                Session["UploadSelectedFields"] = selectedFields;
-
-                if (ModelState.IsValid)
-                {
-                    try
+                    string descriptionName = (Request["DescriptionName"] ?? "").Trim();
+                    if (string.IsNullOrEmpty(descriptionName))
                     {
-                        _client.ServiceCenter.DocumentDescriptionService.DeleteDocumentDescription(document.Descriptions[0]);
-
-                        _client.ServiceCenter.UploadService.AddDescription(document.ID, descriptionName, descriptionFieldsWithValues);
-
-
-
-                        actionResult = View("FinishedEditing");
-                        TempData.Clear();
-                        Session["SelectedTemplate"] = null;
-                        Session["UploadSelectedFields"] = null;
+                        ModelState.AddModelError("DescriptionName", "Название описания не должно быть пустым.");
                     }
-                    catch (Exception ex)
+                    TempData["DescriptionName"] = descriptionName;
+
+
+                    var fields = (IEnumerable<FieldView>)_client.ServiceCenter.SearchService.GetFields();
+                    
+                    var selectedFields = new List<FieldView>();
+                    var descriptionFieldsWithValues = FieldTypeHelper.GetFieldValues(fields, selectedFields, HttpContext, TempData, ModelState);
+
+                    TempData["SelectedFields"] = selectedFields;
+
+
+                    foreach (KeyValuePair<FieldView,object> fieldValue in descriptionFieldsWithValues)
                     {
-                        TempData["error"] = ex.Message;
+                        TempData["_" + fieldValue.Key.ID] = fieldValue.Value;
+                    }
+
+
+                    actionResult = RedirectToAction("EditDescription", new { id = descriptionId });
+
+                    if (ModelState.IsValid)
+                    {
+                        try
+                        {
+                            ViewData["Description"] = description;
+
+                            _client.ServiceCenter.DocumentDescriptionService.DeleteDocumentDescription(description);
+
+                            descriptionId = _client.ServiceCenter.UploadService.AddDescription(document.ID, descriptionName, descriptionFieldsWithValues);
+                            description = _client.ServiceCenter.DocumentDescriptionService.GetDescription(descriptionId);
+
+                            ViewData["Description"] = description;
+
+
+                            TempData.Clear();
+                            Session["SelectedTemplate"] = null;
+                            Session["UploadSelectedFields"] = null;
+
+
+                            TempData["success"] = "Редактирование описания завершено успешно.";
+
+                            actionResult = View("FinishedEditing");
+                            //actionResult = RedirectToAction("EditDescription", new { id = descriptionId });
+                        }
+                        catch (Exception ex)
+                        {
+                            TempData["error"] = ex.Message;
+                        }
+                    }
+                    else
+                    {
+                        TempData["ModelState"] = ModelState;
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    TempData["ModelState"] = ModelState;
+                    TempData["error"] = ex.Message;
                 }
-                
             }
             else
             {

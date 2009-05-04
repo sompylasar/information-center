@@ -1,4 +1,5 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+<%@ Import Namespace="InformationCenter.Services" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
 Редактирование завершено - Информационный центр ВУЗа
@@ -15,17 +16,19 @@
     
     <div>
         <%if (success) { %>
-        <p class="success">Редактирование документа завершено успешно.</p>
+        <p class="success">Редактирование описания завершено успешно.</p>
         <%}else{ %>
-        <p class="error">Редактирование документа завершено с ошибкой.</p>
+        <p class="error">Редактирование описания завершено с ошибкой.</p>
         <p class="error"><%=Html.Encode(ViewData["error"]) %></p>
-        <!--<p>Чтобы вернуться к редактированию, используйте кнопку &laquo;Назад&raquo; Вашего браузера.</p>-->
         <%} %>
+        <div>
+            <% ViewData["Description"] = ViewData["Description"]; 
+               Html.RenderPartial("DocDescriptionView", ViewData); %>
+        </div>
         <p>
             <% if (!success) { %>
-            <a href="javascript:window.history.go(-1)">Назад к редактированию</a><br />
+            <%= Html.ActionLink("Назад к редактированию", "EditDescription", new { id = ((DocDescriptionView)ViewData["Description"]).ID })%>
             <% } %>
-           
         </p>
     </div>
 </asp:Content>

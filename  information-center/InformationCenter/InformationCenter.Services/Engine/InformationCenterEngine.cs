@@ -102,12 +102,12 @@ namespace InformationCenter.Services
             Entities.AddFieldToTemplate(TemplateID, FieldID).First();
         }
 
-        public bool AddDocumentDescription(string Name, Guid DocumentID, Dictionary<Field, object> FieldsWithValues)
+        public Guid AddDocumentDescription(string Name, Guid DocumentID, Dictionary<Field, object> FieldsWithValues)
         {
             return Worker.AddDocDescription(Name, DocumentID, FieldsWithValues);
         }
 
-        public bool AddTemplate(string Name, IEnumerable<Field> Fields) { return Worker.AddTemplate(Name, Fields); }
+        public Guid AddTemplate(string Name, IEnumerable<Field> Fields) { return Worker.AddTemplate(Name, Fields); }
 
         public Guid AddField(string Name, Guid FieldTypeID, bool Nullable, int Order)
         {
@@ -159,6 +159,8 @@ namespace InformationCenter.Services
         /// <param name="ID">идентификатор документа</param>
         /// <returns>документ</returns>
         public Document GetDocument(Guid ID) { return Entities.Document.Where(d => d.ID == ID).FirstOrDefault(); }
+
+        public DocDescription GetDescription(Guid ID) { return Entities.DocDescription.Where(d => d.ID == ID).FirstOrDefault(); }
 
         public Document[] GetDocuments() { return Entities.Document.ToArray(); }
         
@@ -247,7 +249,6 @@ namespace InformationCenter.Services
         #endregion
 
         #endregion
-
     }
 
 }

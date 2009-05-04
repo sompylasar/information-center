@@ -25,7 +25,7 @@ namespace InformationCenter.WebUI.Controllers
 
         public ActionResult SelectField()
         {
-            if (AuthHelper.NeedRedirectToAuth(this, "SelectField")) return RedirectToAction("LogOn", "Account");
+            if (AuthHelper.NeedRedirectToAuth(this)) return RedirectToAction("LogOn", "Account");
 
             ActionResult actionResult = View("Error");
             InitServiceCenterClient();
@@ -51,7 +51,7 @@ namespace InformationCenter.WebUI.Controllers
 
         public ActionResult EditField()
         {
-            if (AuthHelper.NeedRedirectToAuth(this, "EditField")) return RedirectToAction("LogOn", "Account");
+            if (AuthHelper.NeedRedirectToAuth(this)) return RedirectToAction("LogOn", "Account");
 
             ActionResult actionResult = View();
             InitServiceCenterClient();
@@ -88,7 +88,7 @@ namespace InformationCenter.WebUI.Controllers
 
         public ActionResult CommitChanges()
         {
-            if (AuthHelper.NeedRedirectToAuth(this, "CommitChanges")) return RedirectToAction("LogOn", "Account");
+            if (AuthHelper.NeedRedirectToAuth(this)) return RedirectToAction("LogOn", "Account");
 
             ActionResult actionResult = View("EditField");
             InitServiceCenterClient();
@@ -176,7 +176,7 @@ namespace InformationCenter.WebUI.Controllers
         }
         public ActionResult DeleteField()
         {
-            if (AuthHelper.NeedRedirectToAuth(this, "DeleteField")) return RedirectToAction("LogOn", "Account");
+            if (AuthHelper.NeedRedirectToAuth(this)) return RedirectToAction("LogOn", "Account");
 
             ActionResult actionResult = View("SelectField");
             InitServiceCenterClient();
@@ -221,7 +221,7 @@ namespace InformationCenter.WebUI.Controllers
 
         public ActionResult AddField()
         {
-            if (AuthHelper.NeedRedirectToAuth(this, "AddField")) return RedirectToAction("LogOn", "Account");
+            if (AuthHelper.NeedRedirectToAuth(this)) return RedirectToAction("LogOn", "Account");
 
             ActionResult actionResult = View("NewField");
             InitServiceCenterClient();
@@ -310,7 +310,7 @@ namespace InformationCenter.WebUI.Controllers
 
         public ActionResult NewField()
         {
-            if (AuthHelper.NeedRedirectToAuth(this, "NewField")) return RedirectToAction("LogOn", "Account");
+            if (AuthHelper.NeedRedirectToAuth(this)) return RedirectToAction("LogOn", "Account");
 
             ActionResult actionResult = View("NewField");
             InitServiceCenterClient();
