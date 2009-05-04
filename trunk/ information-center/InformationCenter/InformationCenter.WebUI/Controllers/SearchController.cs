@@ -77,7 +77,7 @@ namespace InformationCenter.WebUI.Controllers
 
         public ActionResult Query(bool? more)
         {
-            if (AuthHelper.NeedRedirectToAuth(this,"Index")) return RedirectToAction("LogOn", "Account");
+            if (AuthHelper.NeedRedirectToAuth(this)) return RedirectToAction("LogOn", "Account");
 
             ActionResult actionResult = View("Error");
             InitServiceCenterClient();
@@ -179,7 +179,7 @@ namespace InformationCenter.WebUI.Controllers
             var suggestions = new List<string>();
             var callbackData = new List<object>();
 
-            if (!AuthHelper.NeedRedirectToAuth(this, "Index"))
+            if (!AuthHelper.NeedRedirectToAuth(this))
             {
                 InitServiceCenterClient();
                 if (_client.Available)

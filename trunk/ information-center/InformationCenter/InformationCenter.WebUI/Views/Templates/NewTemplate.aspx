@@ -248,7 +248,8 @@
 %>
     
     <h2>Создание шаблона</h2>
-    <%=Html.Breadcrumbs().AddActionLink("Управление шаблонами", "Index").Last("Создание шаблона")%>
+    <%=Html.Breadcrumbs().AddActionLink("Управление", "Index", "Management").AddActionLink("Управление шаблонами", "Index").Last("Создание")%>
+    
     <%= Html.ValidationSummary("Введенные данные некорректны. Проверьте их и повторите попытку.") %>
     
     <form action="/Templates/AddTemplate" id="frmTemplate" method="post" enctype="multipart/form-data">

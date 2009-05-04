@@ -8,11 +8,6 @@ namespace InformationCenter.WebUI.Models
     {
         public static bool NeedRedirectToAuth(Controller controller)
         {
-            return NeedRedirectToAuth(controller, null);
-        }
-
-        public static bool NeedRedirectToAuth(Controller controller, string actionNameToReturnTo)
-        {
             if (!controller.Request.IsAuthenticated)
             {
                 controller.Session["ReturnRedirect"] = new RedirectResult(controller.Request.RawUrl);

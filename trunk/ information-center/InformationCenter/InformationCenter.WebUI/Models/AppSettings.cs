@@ -4,7 +4,7 @@ namespace InformationCenter.WebUI.Models
 {
     public static class AppSettings
     {
-        private const string DATA_SOURCE = @".\SQLEXPRESS";
+        private const string DATA_SOURCE = @".\SQL2K8";
         private const string INITIAL_CATALOG = "InformationCenter";
 
         public static string BuildConnectionString(string userName, string password, bool integratedSecurity)

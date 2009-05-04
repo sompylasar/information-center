@@ -14,8 +14,9 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
     <h2>Редактирование шаблонов</h2>
-    <%=Html.Breadcrumbs().AddActionLink("Управление шаблонами", "Index").Last("Выбор шаблона")%>
-        <%
+    <%=Html.Breadcrumbs().AddActionLink("Управление", "Index", "Management").AddActionLink("Управление шаблонами", "Index").Last("Выбор")%>
+    
+    <%
         var templates = (IEnumerable<TemplateView>)(ViewData["Templates"] ?? new TemplateView[0]);
     %>
     <%= Html.ValidationSummary("Введенные данные некорректны. Проверьте их и повторите попытку.") %>

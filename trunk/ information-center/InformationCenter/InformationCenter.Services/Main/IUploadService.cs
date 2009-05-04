@@ -33,8 +33,8 @@ namespace InformationCenter.Services
         /// <param name="DocumentID">идентификатор документа</param>
         /// <param name="Name">имя описания</param>
         /// <param name="FieldsWithValues">элементы описания</param>
-        /// <returns>true - успех, false - ошибка</returns>
-        bool AddDescription(Guid DocumentID, string Name, Dictionary<FieldView, object> FieldsWithValues);
+        /// <returns>идентификатор добавленного описания</returns>
+        Guid AddDescription(Guid DocumentID, string Name, Dictionary<FieldView, object> FieldsWithValues);
 
     }
 

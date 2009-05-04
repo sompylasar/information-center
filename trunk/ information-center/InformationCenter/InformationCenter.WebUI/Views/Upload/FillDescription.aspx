@@ -378,7 +378,7 @@
         <p><span class="error"><%=ViewData["error"]%></span></p>
         <div>
             <table class="layout">
-            <tr><td width="15%"><label for="fileToUpload">Документ:</label></td><td width="75%"><input type="file" id="fileToUpload" name="f" value="<%=TempData["UploadFileName"] ?? "" %>" /><%=Html.ValidationMessage("f")%></td></tr>
+            <tr><td style="width:15%"><label for="fileToUpload">Документ:</label></td><td style="width:75%"><input type="file" id="fileToUpload" name="f" value="<%=TempData["UploadFileName"] ?? "" %>" /><%=Html.ValidationMessage("f")%></td></tr>
             <tr><td><label for="txtDescriptionName">Название описания:</label></td><td><input type="text" id="txtDescriptionName" name="DescriptionName" maxlength="256" value="<%=TempData["DescriptionName"] ?? ViewData["SelectedTemplateName"] %>" /><%= Html.ValidationMessage("DescriptionName")%></td></tr>
             </table>
         </div>

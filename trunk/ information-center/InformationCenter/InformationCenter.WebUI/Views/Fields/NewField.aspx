@@ -15,7 +15,7 @@
 
 
     <h2>Создание поля</h2>
-    <%=Html.Breadcrumbs().AddActionLink("Управление полями", "Index").Last("Создание поля")%>
+    <%=Html.Breadcrumbs().AddActionLink("Управление", "Index", "Management").AddActionLink("Управление полями", "Index").Last("Создание")%>
     
     <% string fieldName = (string)ViewData["FieldName"] ?? "";
        string fieldOrder = (string)ViewData["FieldOrder"] ?? "";

@@ -15,5 +15,6 @@
     <ul>
         <li><%=Html.ActionLink("Поиск", "Index", "Search")%></li>
         <li><%=Html.ActionLink("Загрузка", "Index", "Upload")%></li>
+        <li><%=Html.ActionLink("Управление", "Index", "Management")%></li>
     </ul>
 </asp:Content>

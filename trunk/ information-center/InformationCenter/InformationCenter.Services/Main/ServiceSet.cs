@@ -113,6 +113,12 @@ namespace InformationCenter.Services
             return doc == null ? null : new DocumentView(doc);
         }
 
+        public DocDescriptionView GetDescription(Guid ID)
+        {
+            DocDescription desc = Engine.GetDescription(ID);
+            return desc == null ? null : new DocDescriptionView(desc);
+        }
+
         /// <summary>
         /// получить все типы полей
         /// </summary>
@@ -201,17 +207,17 @@ namespace InformationCenter.Services
 
         #region Add
 
-        public void AddField(string Name, FieldTypeView Type, bool Nullable, int Order)
+        public Guid AddField(string Name, FieldTypeView Type, bool Nullable, int Order)
         {
-            Engine.AddField(Name, Type.ID, Nullable, Order);
+            return Engine.AddField(Name, Type.ID, Nullable, Order);
         }
 
-        public bool AddTemplate(string Name, IEnumerable<FieldView> FieldViews)
+        public Guid AddTemplate(string Name, IEnumerable<FieldView> FieldViews)
         {
             return Engine.AddTemplate(Name, FieldViews.Select(fv => fv.Field));
         }
 
-        public bool AddDescription(Guid DocumentID, string Name, Dictionary<FieldView, object> FieldsWithValues)
+        public Guid AddDescription(Guid DocumentID, string Name, Dictionary<FieldView, object> FieldsWithValues)
         {
             if (FieldsWithValues == null) throw new ArgumentNullException("FieldsWithValues");
             if (Engine.CreateQuery<Document>().Where(d => d.ID == DocumentID).FirstOrDefault() == null)

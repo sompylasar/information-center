@@ -109,6 +109,7 @@
     <Content Include="Views\Management\Index.aspx" />
     <Content Include="Views\Search\Index.aspx" />
     <Content Include="Views\Search\SearchResults.aspx" />
+    <Content Include="Views\Shared\DocDescriptionView.ascx" />
     <Content Include="Views\Templates\EditTemplate.aspx" />
     <Content Include="Views\Templates\SelectTemplate.aspx" />
     <Content Include="Views\Templates\Index.aspx" />
