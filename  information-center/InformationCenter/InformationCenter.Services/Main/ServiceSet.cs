@@ -247,6 +247,12 @@ namespace InformationCenter.Services
             Engine.Refresh(RefreshMode.StoreWins, Field.Field);
         }
 
+        public void DeleteDocumentDescription(DocDescriptionView DocumentDescription)
+        {
+            Engine.DeleteDocumentDescription(DocumentDescription.ID);
+            Engine.Refresh(RefreshMode.StoreWins, DocumentDescription.Description);
+        }
+
         #endregion
 
         #region Modify

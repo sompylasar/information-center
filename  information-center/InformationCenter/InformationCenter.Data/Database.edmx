@@ -307,6 +307,9 @@
           <Parameter Name="fieldId" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="newOrderNumber" Type="int" Mode="In" />
         </Function>
+        <Function Name="DeleteDocDescription" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="uniqueidentifier" Mode="In" />
+        </Function>
         <Function Name="DeleteDocument" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id" Type="uniqueidentifier" Mode="In" />
         </Function>
@@ -447,7 +450,9 @@
             <Parameter Name="id" Mode="InOut" Type="Guid" /></FunctionImport>
           <FunctionImport Name="ChangeFieldOrderNumber" EntitySet="IntValue" ReturnType="Collection(InformationCenterModel.IntValue)">
             <Parameter Name="fieldId" Mode="In" Type="Guid" />
-            <Parameter Name="newOrderNumber" Mode="In" Type="Int32" /></FunctionImport></EntityContainer>
+            <Parameter Name="newOrderNumber" Mode="In" Type="Int32" /></FunctionImport>
+          <FunctionImport Name="DeleteDocDescription" EntitySet="IntValue" ReturnType="Collection(InformationCenterModel.IntValue)">
+            <Parameter Name="id" Mode="In" Type="Guid" /></FunctionImport></EntityContainer>
         <EntityType Name="DateTimeFieldValue">
           <Key>
             <PropertyRef Name="ID" />
@@ -805,7 +810,8 @@
           <FunctionImportMapping FunctionImportName="RenameField" FunctionName="InformationCenterModel.Store.RenameField" />
           <FunctionImportMapping FunctionImportName="RenameTemplate" FunctionName="InformationCenterModel.Store.RenameTemplate" />
           <FunctionImportMapping FunctionImportName="AddField" FunctionName="InformationCenterModel.Store.AddField" />
-          <FunctionImportMapping FunctionImportName="ChangeFieldOrderNumber" FunctionName="InformationCenterModel.Store.ChangeFieldOrderNumber" /></EntityContainerMapping>
+          <FunctionImportMapping FunctionImportName="ChangeFieldOrderNumber" FunctionName="InformationCenterModel.Store.ChangeFieldOrderNumber" />
+          <FunctionImportMapping FunctionImportName="DeleteDocDescription" FunctionName="InformationCenterModel.Store.DeleteDocDescription" /></EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>
