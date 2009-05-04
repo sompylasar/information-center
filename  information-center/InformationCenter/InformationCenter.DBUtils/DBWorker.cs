@@ -290,7 +290,7 @@ namespace InformationCenter.DBUtils
                      @"EXECUTE [AddTemplate] 
                    @name
                   ,@tempFieldsTableName
-                  ,@tId";
+                  ,@tId OUTPUT";
 
             parameters.Add(new SqlParameter("@name", templateName));
             parameters.Add(new SqlParameter("@tempFieldsTableName", tempTableName));
@@ -373,7 +373,7 @@ namespace InformationCenter.DBUtils
                    @name
                   ,@documentId
                   ,@tempFieldsTableName
-                  ,@id";
+                  ,@id OUTPUT";
 
             parameters.Add(new SqlParameter("@name", docDescriptionName));
             parameters.Add(new SqlParameter("@tempFieldsTableName", tempTableName));
