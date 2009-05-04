@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using InformationCenter.Services;
 
 namespace InformationCenter.WebUI.Models
