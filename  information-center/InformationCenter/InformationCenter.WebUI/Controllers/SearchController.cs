@@ -202,7 +202,6 @@ namespace InformationCenter.WebUI.Controllers
                     }
                     catch (Exception)
                     {
-                        // TODO: remove this try/catch
                     }
                 }
             }
