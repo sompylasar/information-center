@@ -20,7 +20,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("InformationCenterModel", "FK_FieldTemplate_Template", "Template", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(InformationCenter.Data.Template), "NNFieldTemplate", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(InformationCenter.Data.NNFieldTemplate))]
 
 // Original file name:
-// Generation date: 04.05.2009 13:32:15
+// Generation date: 04.05.2009 14:18:04
 namespace InformationCenter.Data
 {
     
@@ -664,6 +664,22 @@ namespace InformationCenter.Data
                 newOrderNumberParameter = new global::System.Data.Objects.ObjectParameter("newOrderNumber", typeof(int));
             }
             return base.ExecuteFunction<IntValue>("ChangeFieldOrderNumber", fieldIdParameter, newOrderNumberParameter);
+        }
+        /// <summary>
+        /// There are no comments for InformationCenterModel.DeleteDocDescription in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectResult<IntValue> DeleteDocDescription(global::System.Nullable<global::System.Guid> id)
+        {
+            global::System.Data.Objects.ObjectParameter idParameter;
+            if (id.HasValue)
+            {
+                idParameter = new global::System.Data.Objects.ObjectParameter("id", id);
+            }
+            else
+            {
+                idParameter = new global::System.Data.Objects.ObjectParameter("id", typeof(global::System.Guid));
+            }
+            return base.ExecuteFunction<IntValue>("DeleteDocDescription", idParameter);
         }
     }
     /// <summary>

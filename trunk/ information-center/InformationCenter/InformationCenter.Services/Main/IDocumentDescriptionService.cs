@@ -109,6 +109,12 @@ namespace InformationCenter.Services
         /// <param name="Field">представление удаляемого поля</param>
         void DeleteField(FieldView Field);
 
+        /// <summary>
+        /// удалить описание документа
+        /// </summary>
+        /// <param name="DocumentDescription">представление описания</param>
+        void DeleteDocumentDescription(DocDescriptionView DocumentDescription);
+
         #endregion
 
     }

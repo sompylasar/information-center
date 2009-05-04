@@ -145,6 +145,8 @@ namespace InformationCenter.Services
         /// <param name="FieldID">идентификатор поля</param>
         public void RemoveFieldFromTemplate(Guid TemplateID, Guid FieldID) { Entities.RemoveFieldFromTemplate(TemplateID, FieldID).First(); }
 
+        public void DeleteDocumentDescription(Guid DescriptionID) { Entities.DeleteDocDescription(DescriptionID).First(); }
+
         #endregion
 
         #region Get
