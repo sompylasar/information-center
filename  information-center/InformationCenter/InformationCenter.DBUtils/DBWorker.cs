@@ -256,9 +256,9 @@ namespace InformationCenter.DBUtils
         /// <param name="templateName">Имя шаблона</param>
         /// <param name="fields">Коллекция полей описания</param>
         /// <returns>Добавило или нет</returns>
-        public bool AddTemplate(string templateName, IEnumerable<Field> fields)
+        public Guid? AddTemplate(string templateName, IEnumerable<Field> fields)
         {
-            bool result = false;
+            Guid? result = null;
 
             string tempTableName = "##FieldsTempTable_" + Guid.NewGuid().ToString("N");
             string query = GenQueryCreateTable(tempTableName, new ColumnDescription[]
@@ -300,7 +300,10 @@ namespace InformationCenter.DBUtils
 
             try
             {
-                result = ExecuteNonQuery(query, parameters.ToArray()) > 0;
+                ExecuteNonQuery(query, parameters.ToArray());
+
+                if (pId.Value is Guid)
+                    result = (Guid)pId.Value;
             }
             catch (Exception exc)
             {
@@ -322,9 +325,9 @@ namespace InformationCenter.DBUtils
             return result;
         }
 
-        public bool AddDocDescription(string docDescriptionName, Guid documentId, Dictionary<Field, object> fields)
+        public Guid? AddDocDescription(string docDescriptionName, Guid documentId, Dictionary<Field, object> fields)
         {
-            bool result = false;
+            Guid? result = null;
 
             string tempTableName = "##FieldsTempTable_" + Guid.NewGuid().ToString("N");
             List<ColumnDescription> cds = new List<ColumnDescription>();
@@ -382,7 +385,10 @@ namespace InformationCenter.DBUtils
 
             try
             {
-                result = ExecuteNonQuery(query, parameters.ToArray()) > 0;
+                ExecuteNonQuery(query, parameters.ToArray());
+
+                if (pId.Value is Guid)
+                    result = (Guid)pId.Value;
             }
             catch (Exception exc)
             {
@@ -407,7 +413,7 @@ namespace InformationCenter.DBUtils
 
             var ent = new Entities(ConnectionString);
 
-            foreach (var fieldType in ent.FieldType.ToArray())
+            foreach (var fieldType in ent.FieldType.ToArray().OrderBy(f=>f.SqlName))
             {
                 cds.Add(new ColumnDescription()
                 {
