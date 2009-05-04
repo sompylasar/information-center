@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using InformationCenter.Data;
+using System.Data.Objects;
 
 namespace InformationCenter.Services
 {
@@ -75,29 +76,54 @@ namespace InformationCenter.Services
         public object Value
         {
             get 
-            {  
+            {
                 FieldView field = Field;
                 if (field == null) throw new Exception("Ошибка");
                 FieldTypeView ftv = field.FieldTypeView;
                 if (ftv == null) throw new Exception("Ошибка");
                 Type fieldType = ftv.TypeOfField;
-                string fieldSqlType = ftv.SqlName;
-                PropertyInfo valueEntityProp = FieldValue.GetType().GetProperty(fieldSqlType);
-                if (valueEntityProp == null) throw new NotSupportedFieldTypeException(fieldType);
-                PropertyInfo referenceProp = FieldValue.GetType().GetProperty(fieldSqlType + "Reference");
-                ((EntityReference)referenceProp.GetValue(FieldValue, new object[] { })).Load();
-                EntityObject valueEntity = (EntityObject)valueEntityProp.GetValue(FieldValue, new object[] {});
-                if (valueEntity == null) throw new Exception("Ошибка");
-                object v = valueEntity.GetType().GetProperty("Value").GetValue(valueEntity, new object[] { });
+
+                EntityObject entity = GetCurrentEntity(field, ftv, fieldType);
+                object v = entity.GetType().GetProperty("Value").GetValue(entity, new object[] { });
+                
                 if (v == null && !field.Nullable) throw new NullableValueNotAllowedException(field);
                 if (v != null && v.GetType() != fieldType) throw new TypeMismatchException(fieldType, v.GetType());
                 return value = v;
+            }
+            set
+            {
+                FieldView field = Field;
+                if (field == null) throw new Exception("Ошибка");
+                FieldTypeView ftv = field.FieldTypeView;
+                if (ftv == null) throw new Exception("Ошибка");
+                Type fieldType = ftv.TypeOfField;
+                
+                if (value == null && !field.Nullable) throw new NullableValueNotAllowedException(field);
+                if (value != null && value.GetType() != fieldType) throw new TypeMismatchException(fieldType, value.GetType());
+                
+                EntityObject entity = GetCurrentEntity(field, ftv, fieldType);
+                entity.GetType().GetProperty("Value").SetValue(entity, value, new object[] { });
+                
+                ((ObjectQuery)((IEntityWithRelationships)this).RelationshipManager.GetAllRelatedEnds().First().CreateSourceQuery()).Context.
+                    Refresh(System.Data.Objects.RefreshMode.ClientWins, entity);
             }
         }
 
         #endregion
 
         #region Методы
+
+        private EntityObject GetCurrentEntity(FieldView field, FieldTypeView ftv, Type fieldType)
+        {
+            string fieldSqlType = ftv.SqlName;
+            PropertyInfo valueEntityProp = FieldValue.GetType().GetProperty(fieldSqlType);
+            if (valueEntityProp == null) throw new NotSupportedFieldTypeException(fieldType);
+            PropertyInfo referenceProp = FieldValue.GetType().GetProperty(fieldSqlType + "Reference");
+            ((EntityReference)referenceProp.GetValue(FieldValue, new object[] { })).Load();
+            EntityObject valueEntity = (EntityObject)valueEntityProp.GetValue(FieldValue, new object[] { });
+            if (valueEntity == null) throw new Exception("Ошибка");
+            return valueEntity;    
+        }
 
         /// <summary>
         /// получить хеш-код

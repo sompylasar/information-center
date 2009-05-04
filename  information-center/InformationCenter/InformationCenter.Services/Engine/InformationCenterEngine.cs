@@ -36,6 +36,13 @@ namespace InformationCenter.Services
             storedConnection = ConnectionString;
         }
 
+        public InformationCenterEngine(Entities Entities) : base(Entities) { }
+
+        public InformationCenterEngine(Entities Entities, string ConnectionString) : this(Entities)
+        {
+            storedConnection = ConnectionString;
+        }
+
         #endregion
 
         #region Свойства

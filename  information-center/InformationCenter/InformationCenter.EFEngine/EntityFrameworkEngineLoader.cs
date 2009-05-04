@@ -2,6 +2,7 @@
 using LogicUtils;
 using System.Data.Objects;
 using InformationCenter.Data;
+using System.Reflection;
 
 namespace InformationCenter.EFEngine
 {
@@ -100,7 +101,9 @@ namespace InformationCenter.EFEngine
                 {
                     try
                     {
-                        engine = (EF_Engine)EntityEngineType.GetConstructor(new Type[] { EntityContainerType }).Invoke(new object[] { entities });
+                        ConstructorInfo c_inf = EntityEngineType.GetConstructor(new Type[] { EntityContainerType, typeof(string) });
+                        if (c_inf != null) engine = (EF_Engine)c_inf.Invoke(new object[] { entities, ConnectionString });
+                        else engine = (EF_Engine)EntityEngineType.GetConstructor(new Type[] { EntityContainerType }).Invoke(new object[] { entities });
                     }
                     catch (Exception Ex)
                     {
