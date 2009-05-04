@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using InformationCenter.Services;
 using InformationCenter.WebUI.Models;
 using System.Web.Routing;
+using System.IO;
 
 namespace InformationCenter.WebUI.Controllers
 {
@@ -203,8 +204,9 @@ namespace InformationCenter.WebUI.Controllers
                     {
                         if (file != null)
                         {
+                            string filename = Path.GetFileName(file.FileName);
                             Guid documentId = _client.ServiceCenter.UploadService.Upload(file.InputStream,
-                                                                       FileHelper.CombineFilename(file.FileName,
+                                                                       FileHelper.CombineFilename(filename,
                                                                                                   file.ContentType),
                                                                        file.ContentType, file.ContentLength);
 
