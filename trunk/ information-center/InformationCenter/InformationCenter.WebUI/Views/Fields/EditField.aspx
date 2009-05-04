@@ -17,11 +17,15 @@
         string FieldName = "";
         string FieldId = "";
         string FieldOrder = "";
+        string FieldType = "";
+        bool fieldCanBeBlack = false;
         if (Current != null)
         {
             FieldName = Current.Name;
             FieldId = Current.ID.ToString();
             FieldOrder = Current.Order.ToString();
+            FieldType = Current.FieldTypeView.FieldTypeName;
+            fieldCanBeBlack = Current.Nullable;
         }
 
 %>
@@ -44,18 +48,8 @@
         <p><label for="fieldName">Имя поля:</label><input type="text" name="fieldName" value="<%=Html.Encode(FieldName) %>" /></p>
         <p><label for="fieldOrder">Порядок:</label><input type="text" name="fieldOrder" value="<%=Html.Encode(FieldOrder) %>" /></p>
         <input type=hidden name="fieldId" value="<%=Html.Encode(FieldId) %>" />
-        <div>
-            <ul style="list-style-type: none;">
-            <%
-                foreach (FieldTypeView dataType in dataTypes)
-            {
-
-%>
-                <li><input name="dataType" type="radio" value="<%=dataType.ID%>" <%=Current.FieldTypeView.ID == dataType.ID ? "checked=\"checked\"" : ""%> disabled="disabled"><%=dataType.FieldTypeName%></input></li>
-                <%
-            }%>
-            </ul>
-        </div>
+        <p><label for="fieldCanBeBlank">Поле может быть незаполненым:</label><input type="checkbox" disabled="disabled" name="fieldCanBeBlank" <%=fieldCanBeBlack==true ? "checked=\"checked\"" : ""%>/></p>
+        <p><label for="fieldType">Тип данных: <%=Html.Encode(FieldType) %></label></p>
         <p><button type="submit">Сохранить</button></p>
 
     </form>
