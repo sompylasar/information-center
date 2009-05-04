@@ -190,7 +190,7 @@ namespace InformationCenter.WebUI.Controllers
                             _client.ServiceCenter.SearchService.GetFields().Where(f => f.ID == id).FirstOrDefault();
                         if (field != null)
                         {
-                            object[] values = _client.ServiceCenter.SearchService.GetValuesOfField(field).Distinct();
+                            object[] values = _client.ServiceCenter.SearchService.GetValuesOfField(field).Distinct().ToArray();
                             foreach (var value in values)
                             {
                                 string valueStr = value.ToString().Trim();
