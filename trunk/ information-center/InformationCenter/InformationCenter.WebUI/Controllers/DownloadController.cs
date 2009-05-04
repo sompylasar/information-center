@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,13 +32,13 @@ namespace InformationCenter.WebUI.Controllers
                 try
                 {
                     if (id == null && Request["id"] == null)
-                        throw new Exception("Идентификатор документа не задан.");
+                        throw new Exception("РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РґРѕРєСѓРјРµРЅС‚Р° РЅРµ Р·Р°РґР°РЅ.");
 
                     Guid documentId = (id == null ? new Guid(Request["id"]) : id.Value);
 
                     DocumentView document = _client.ServiceCenter.DownloadService.GetDocument(documentId);
                     if (document == null)
-                        throw new Exception("Документ с указанным идентификатором не найден.");
+                        throw new Exception("Р”РѕРєСѓРјРµРЅС‚ СЃ СѓРєР°Р·Р°РЅРЅС‹Рј РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂРѕРј РЅРµ РЅР°Р№РґРµРЅ.");
 
                     ViewData["Document"] = document;
                     string filename, contentType;
@@ -62,7 +62,7 @@ namespace InformationCenter.WebUI.Controllers
             }
             else
             {
-                ViewData["error"] = "Сервис выдачи документов в данный момент недоступен."
+                ViewData["error"] = "РЎРµСЂРІРёСЃ РІС‹РґР°С‡Рё РґРѕРєСѓРјРµРЅС‚РѕРІ РІ РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ РЅРµРґРѕСЃС‚СѓРїРµРЅ."
                     + " " + _client.ServiceCenterException.Message;
             }
 

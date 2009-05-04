@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -37,7 +37,7 @@ namespace InformationCenter.WebUI.Controllers
             }
             else
             {
-                ViewData["error"] = "Сервис редактирования шаблонов в данный момент недоступен."
+                ViewData["error"] = "РЎРµСЂРІРёСЃ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ С€Р°Р±Р»РѕРЅРѕРІ РІ РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ РЅРµРґРѕСЃС‚СѓРїРµРЅ."
                     + " " + _client.ServiceCenterException.Message;
             }
 
@@ -56,7 +56,7 @@ namespace InformationCenter.WebUI.Controllers
 
 
                 if (templates.Length <= 0)
-                    ViewData["error"] = "Ни одного шаблона не создано";
+                    ViewData["error"] = "РќРё РѕРґРЅРѕРіРѕ С€Р°Р±Р»РѕРЅР° РЅРµ СЃРѕР·РґР°РЅРѕ";
                 else
                     ViewData["Templates"] = templates;
 
@@ -64,7 +64,7 @@ namespace InformationCenter.WebUI.Controllers
             }
             else
             {
-                ViewData["error"] = "Сервис редактирования шаблонов в данный момент недоступен."
+                ViewData["error"] = "РЎРµСЂРІРёСЃ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ С€Р°Р±Р»РѕРЅРѕРІ РІ РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ РЅРµРґРѕСЃС‚СѓРїРµРЅ."
                     + " " + _client.ServiceCenterException.Message;
             }
 
@@ -86,7 +86,7 @@ namespace InformationCenter.WebUI.Controllers
                 try
                 {
                     if (selectedTemplate == null)
-                        throw new Exception("Указанный шаблон не найден.");
+                        throw new Exception("РЈРєР°Р·Р°РЅРЅС‹Р№ С€Р°Р±Р»РѕРЅ РЅРµ РЅР°Р№РґРµРЅ.");
                     ViewData["SelectedTemplate"] = selectedTemplate;
 
                     
@@ -111,7 +111,7 @@ namespace InformationCenter.WebUI.Controllers
             }
             else
             {
-                ViewData["error"] = "Сервис редактирования шаблонов в данный момент недоступен."
+                ViewData["error"] = "РЎРµСЂРІРёСЃ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ С€Р°Р±Р»РѕРЅРѕРІ РІ РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ РЅРµРґРѕСЃС‚СѓРїРµРЅ."
                     + " " + _client.ServiceCenterException.Message;
             }
 
@@ -161,7 +161,7 @@ namespace InformationCenter.WebUI.Controllers
                             }
                             if (field == null)
                             {
-                                ModelState.AddModelError(fieldKey, "Поле с идентификатором " + fieldId + " не найдено.");
+                                ModelState.AddModelError(fieldKey, "РџРѕР»Рµ СЃ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂРѕРј " + fieldId + " РЅРµ РЅР°Р№РґРµРЅРѕ.");
                                 continue;
                             }
 
@@ -181,7 +181,7 @@ namespace InformationCenter.WebUI.Controllers
                             else
                             {
                                 Err = true;
-                                ViewData["error"] = "Шаблон с таким именем уже существует, задайте другое имя.";
+                                ViewData["error"] = "РЁР°Р±Р»РѕРЅ СЃ С‚Р°РєРёРј РёРјРµРЅРµРј СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚, Р·Р°РґР°Р№С‚Рµ РґСЂСѓРіРѕРµ РёРјСЏ.";
                             }
                         }
                         if (!Err)
@@ -200,13 +200,13 @@ namespace InformationCenter.WebUI.Controllers
                                                                                                     field.ID);
                             }
 
-                            ViewData["success"] = "Шаблон успешно сохранен.";
+                            ViewData["success"] = "РЁР°Р±Р»РѕРЅ СѓСЃРїРµС€РЅРѕ СЃРѕС…СЂР°РЅРµРЅ.";
                         }
 
                     }
                     else
                     {
-                        ViewData["error"] = "Не выбрано ни одного поля.";
+                        ViewData["error"] = "РќРµ РІС‹Р±СЂР°РЅРѕ РЅРё РѕРґРЅРѕРіРѕ РїРѕР»СЏ.";
                     }
 
                     ViewData["SelectedTemplate"] = selectedTemplate;
@@ -218,7 +218,7 @@ namespace InformationCenter.WebUI.Controllers
             }
             else
             {
-                ViewData["error"] = "Сервис редактирования шаблонов в данный момент недоступен."
+                ViewData["error"] = "РЎРµСЂРІРёСЃ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ С€Р°Р±Р»РѕРЅРѕРІ РІ РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ РЅРµРґРѕСЃС‚СѓРїРµРЅ."
                     + " " + _client.ServiceCenterException.Message;
             }
 
@@ -254,27 +254,27 @@ namespace InformationCenter.WebUI.Controllers
                                                                                              selectedFields);
                             
                             
-                                ViewData["success"] = "Шаблон успешно создан.";
+                                ViewData["success"] = "РЁР°Р±Р»РѕРЅ СѓСЃРїРµС€РЅРѕ СЃРѕР·РґР°РЅ.";
                             }
                             catch (Exception ex)
                             {
-                                ViewData["error"] = "Ошибка создания шаблона: " + ex.Message;
+                                ViewData["error"] = "РћС€РёР±РєР° СЃРѕР·РґР°РЅРёСЏ С€Р°Р±Р»РѕРЅР°: " + ex.Message;
                             }
 
                         }
                         else
                         {
-                            ViewData["error"] = "Шаблон с таким именем уже существует, задайте другое имя.";
+                            ViewData["error"] = "РЁР°Р±Р»РѕРЅ СЃ С‚Р°РєРёРј РёРјРµРЅРµРј СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚, Р·Р°РґР°Р№С‚Рµ РґСЂСѓРіРѕРµ РёРјСЏ.";
                         }
                     }
                     else
                     {
-                        ViewData["error"] = "Не выбрано ни одного поля.";
+                        ViewData["error"] = "РќРµ РІС‹Р±СЂР°РЅРѕ РЅРё РѕРґРЅРѕРіРѕ РїРѕР»СЏ.";
                     }
                 }
                 else
                 {
-                    ViewData["error"] = "Не задано имя шаблона.";
+                    ViewData["error"] = "РќРµ Р·Р°РґР°РЅРѕ РёРјСЏ С€Р°Р±Р»РѕРЅР°.";
                 }
 
                 foreach (var field in selectedFields)
@@ -290,7 +290,7 @@ namespace InformationCenter.WebUI.Controllers
             }
             else
             {
-                ViewData["error"] = "Сервис редактирования шаблонов в данный момент недоступен."
+                ViewData["error"] = "РЎРµСЂРІРёСЃ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ С€Р°Р±Р»РѕРЅРѕРІ РІ РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ РЅРµРґРѕСЃС‚СѓРїРµРЅ."
                     + " " + _client.ServiceCenterException.Message;
             }
 
@@ -315,24 +315,24 @@ namespace InformationCenter.WebUI.Controllers
                 {
                     string tempTmlName = selectedTemplate.Name;
                     _client.ServiceCenter.DocumentDescriptionService.DeleteTemplate(selectedTemplate);
-                    ViewData["success"] = "Шаблон \"" + tempTmlName + "\" успешно удален.";
+                    ViewData["success"] = "РЁР°Р±Р»РѕРЅ \"" + tempTmlName + "\" СѓСЃРїРµС€РЅРѕ СѓРґР°Р»РµРЅ.";
 
                 }
                 else
                 {
-                    ViewData["error"] = "Указанный шаблон не найден.";
+                    ViewData["error"] = "РЈРєР°Р·Р°РЅРЅС‹Р№ С€Р°Р±Р»РѕРЅ РЅРµ РЅР°Р№РґРµРЅ.";
                 }
                 
                 allTemplates = _client.ServiceCenter.DocumentDescriptionService.GetTemplates();
                 if (allTemplates.Count() <= 0)
-                    ViewData["error"] = "Ни одного шаблона не создано.";
+                    ViewData["error"] = "РќРё РѕРґРЅРѕРіРѕ С€Р°Р±Р»РѕРЅР° РЅРµ СЃРѕР·РґР°РЅРѕ.";
                 else
                     ViewData["Templates"] = allTemplates;
 
             }
             else
             {
-                ViewData["error"] = "Сервис редактирования шаблонов в данный момент недоступен."
+                ViewData["error"] = "РЎРµСЂРІРёСЃ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ С€Р°Р±Р»РѕРЅРѕРІ РІ РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ РЅРµРґРѕСЃС‚СѓРїРµРЅ."
                     + " " + _client.ServiceCenterException.Message;
             }
 

@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -54,7 +54,7 @@ namespace InformationCenter.WebUI.Controllers
             }
             else
             {
-                ViewData["error"] = "Сервис поиска в данный момент недоступен." 
+                ViewData["error"] = "РЎРµСЂРІРёСЃ РїРѕРёСЃРєР° РІ РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ РЅРµРґРѕСЃС‚СѓРїРµРЅ." 
                     + " "+_client.ServiceCenterException.Message;
             }
 
@@ -118,7 +118,7 @@ namespace InformationCenter.WebUI.Controllers
                         }
                         if (field == null)
                         {
-                            ModelState.AddModelError(fieldKey, "Поле с идентификатором " + fieldId + " не найдено");
+                            ModelState.AddModelError(fieldKey, "РџРѕР»Рµ СЃ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂРѕРј " + fieldId + " РЅРµ РЅР°Р№РґРµРЅРѕ");
                             continue;
                         }
 
@@ -137,7 +137,7 @@ namespace InformationCenter.WebUI.Controllers
                         }
                         catch (Exception ex)
                         {
-                            ModelState.AddModelError(fieldKey, ex.Message +  (fieldTypeView == null ? "" : " Ожидаемый тип: "+fieldTypeView.FieldTypeName));
+                            ModelState.AddModelError(fieldKey, ex.Message +  (fieldTypeView == null ? "" : " РћР¶РёРґР°РµРјС‹Р№ С‚РёРї: "+fieldTypeView.FieldTypeName));
                         }
                     }
                 }
@@ -166,7 +166,7 @@ namespace InformationCenter.WebUI.Controllers
             }
             else
             {
-                ViewData["error"] = "Сервис поиска в данный момент недоступен.";
+                ViewData["error"] = "РЎРµСЂРІРёСЃ РїРѕРёСЃРєР° РІ РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ РЅРµРґРѕСЃС‚СѓРїРµРЅ.";
             }
 
             return actionResult;
@@ -209,7 +209,7 @@ namespace InformationCenter.WebUI.Controllers
             /*
             if (suggestions.Count <= 0)
             {
-                suggestions.Add("(нет вариантов)");
+                suggestions.Add("(РЅРµС‚ РІР°СЂРёР°РЅС‚РѕРІ)");
                 callbackData.Add(false);
             }*/
 
