@@ -57,10 +57,21 @@
     %>
     <script type="text/javascript">
         jQuery(function ($) {
-            $results_list = $('#results-container .search-results-list');
-            $results = $results_list.find('li');
-            
+            var $results_list = $('#results-container .search-results-list');
+            var $results = $results_list.find('li');
             var results_length = $results.length;
+            
+            var $pagination = $(".pagination");
+            var extend_pagination = function () {
+                $pagination.find("a[href^=#]").unbind('.pagination')
+                    .bind('click.pagination', function () { return false; })
+                    .each(function () {
+                        var $a = $(this);
+                        var page = parseInt($.trim($a.text()), 10);
+                        if (!isNaN(page))
+                            $a.attr({ 'href': '#page='+page, 'page': page });
+                    });
+            };
             
             var pagination_options = {
                 items_per_page: 10,
@@ -68,20 +79,31 @@
                 num_edge_entries: 2,
                 prev_text: 'Предыдущая',
                 next_text: 'Следующая',
-                callback: function onPageSelect(page_index, $pagination) {
+                callback: function onPageSelect(page_index) {
                     var start_index = page_index*pagination_options.items_per_page;
                     var next_start_index = Math.min((page_index+1) * pagination_options.items_per_page, results_length);
+                    
+                    $results_list.attr('start', start_index+1);
 
                     $results.each(function (index) {
                         if (index >= start_index && index < next_start_index) $(this).show();
                         else $(this).hide();
                     });
+                    
+                    location.hash = '#page='+(page_index+1);
+                    extend_pagination();
                 }
             };
-            $(".pagination").pagination(results_length, pagination_options);
+            
+            $pagination.pagination(results_length, pagination_options);
+            extend_pagination();
             
             if (results_length < pagination_options.items_per_page) 
-                $(".pagination").parent().hide();
+                $pagination.parent().hide();
+            
+            var page_from_hash = /#page=([0-9]+)/.exec(location.hash)[1];
+            var current_page = Math.max(1, Math.min(Math.ceil(results_length/pagination_options.items_per_page), page_from_hash));
+            $pagination.find('a[page='+current_page+']').click();
         });
     </script>
     
