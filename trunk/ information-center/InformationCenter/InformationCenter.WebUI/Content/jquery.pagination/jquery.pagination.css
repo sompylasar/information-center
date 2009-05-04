@@ -5,8 +5,8 @@
         
 .pagination a {
     text-decoration: none;
-	border: solid 1px #AAE;
-	color: #696969;
+	border: solid 1px green;
+	color: green;
 }
 
 .pagination a, .pagination span {
@@ -22,18 +22,21 @@
 
 .pagination .current {
     background: #fff;/*#2B6;*/
-    color: #000;
-	border: solid 1px #000;
+	border: solid 1px #ddd;
+	color: #000;
 	font-weight: bold;
 }
 
 .pagination .current.prev, .pagination .current.next{
-	color:#999;
-	border-color:#999;
+	color: #696969;
+	border-color: #696969;
 	background:#fff;
+	font-weight: normal;
 }
 
 .pagination span.prev, .pagination span.next
 {
-	display: none;
+	color: #696969;
+	border-color: #696969;
+	/*display: none;*/
 }
