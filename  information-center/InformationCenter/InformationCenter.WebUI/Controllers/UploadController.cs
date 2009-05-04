@@ -211,9 +211,11 @@ namespace InformationCenter.WebUI.Controllers
                             _client.ServiceCenter.UploadService.AddDescription(documentId, descriptionName, descriptionFieldsWithValues);
                         }
 
-                        actionResult = View("Finished");
+                        TempData.Clear();
                         Session["SelectedTemplate"] = null;
                         Session["UploadSelectedFields"] = null;
+
+                        actionResult = View("Finished");
                     }
                     catch (Exception ex)
                     {
