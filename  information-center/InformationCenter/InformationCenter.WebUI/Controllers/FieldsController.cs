@@ -126,7 +126,8 @@ namespace InformationCenter.WebUI.Controllers
                         {
                             if (selectedField.Order != fieldOrder)
                             {
-                                //Todo: Save field order
+                                
+                                _client.ServiceCenter.DocumentDescriptionService.ChangeFieldOrder(selectedField, fieldOrder);
                                 ViewData["success"] = "Поле успешно сохранено";
                             }
 
@@ -228,6 +229,11 @@ namespace InformationCenter.WebUI.Controllers
             string fieldName = HttpContext.Request["fieldName"];
             string dataTypeIdStr = HttpContext.Request["DataType"];
             string fieldOrderStr = HttpContext.Request["fieldOrder"];
+            string fieldCanBeBlankStr = HttpContext.Request["fieldCanBeBlank"];
+            bool fieldCanBeBlank = false;
+            if (!string.IsNullOrEmpty(fieldCanBeBlankStr) && fieldCanBeBlankStr == "on")
+                fieldCanBeBlank = true;
+
             if (!string.IsNullOrEmpty(fieldOrderStr))
                 fieldOrderStr = fieldOrderStr.Trim();
 
@@ -258,8 +264,8 @@ namespace InformationCenter.WebUI.Controllers
 
                             if (int.TryParse(fieldOrderStr, out fieldOrder) && fieldOrder >= 0)
                             {
-                                //Todo: Save field order
-                                _client.ServiceCenter.DocumentDescriptionService.AddField(fieldName, fieldType);
+                                
+                                _client.ServiceCenter.DocumentDescriptionService.AddField(fieldName, fieldType, fieldCanBeBlank, fieldOrder);
 
                                 ViewData["success"] = "Поле успешно создано";
 
@@ -285,6 +291,10 @@ namespace InformationCenter.WebUI.Controllers
                     ViewData["error"] = "Не задано имя поля";
                 }
 
+                ViewData["FieldName"] = fieldName;
+                ViewData["FieldOrder"] = fieldOrderStr;
+                ViewData["FieldDataType"] = dataTypeIdStr;
+                ViewData["FieldCanBeBlank"] = fieldCanBeBlank;
 
                 ViewData["DataTypes"] = dataTypes;
 

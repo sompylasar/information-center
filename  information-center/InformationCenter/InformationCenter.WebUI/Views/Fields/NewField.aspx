@@ -17,6 +17,13 @@
     <h2>Создание поля</h2>
     <%=Html.Breadcrumbs().AddActionLink("Управление полями", "Index").Last("Создание поля")%>
     
+    <% string fieldName = (string)ViewData["FieldName"] ?? "";
+       string fieldOrder = (string)ViewData["FieldOrder"] ?? "";
+       string fieldDataTypeStr = (string)ViewData["FieldDataType"] ?? "";
+       bool fieldCanBeBlank = (bool?)ViewData["FieldCanBeBlank"] ?? false;
+
+         %>
+    
     <%= Html.ValidationSummary("Введенные данные некорректны. Проверьте их и повторите попытку.") %>
     
    
@@ -28,8 +35,9 @@
         
         <p><span class="error"><%=ViewData["error"]%></span></p>
         <p><span class="success"><%=ViewData["success"]%></span></p>
-        <p><label for="fileToUpload">Имя поля:</label><input type="text" name="fieldName" value="" /></p>
-        <p><label for="fieldOrder">Порядок:</label><input type="text" name="fieldOrder" value="0" /></p>
+        <p><label for="fieldName">Имя поля:</label><input type="text" name="fieldName" value="<%=fieldName %>" /></p>
+        <p><label for="fieldOrder">Порядок:</label><input type="text" name="fieldOrder" value="<%=fieldOrder %>" /></p>
+        <p><label for="fieldCanBeBlank">Поле может быть незаполненым:</label><input type="checkbox" name="fieldCanBeBlank" <%=fieldCanBeBlank ? "checked=\"checked\"" : ""%>/></p>
         <div>
             <ul style="list-style-type: none;">
             <%
@@ -37,7 +45,7 @@
             {
 
 %>
-                <li><input name="DataType" type="radio" value="<%=dataType.ID%>" ><%=dataType.FieldTypeName%></input></li>
+                <li><input name="DataType" type="radio" value="<%=dataType.ID%>" <%=dataType.ID.ToString()==fieldDataTypeStr ? "checked=\"checked\"" :"" %>><%=dataType.FieldTypeName%></input></li>
                 <%
             }%>
             </ul>
