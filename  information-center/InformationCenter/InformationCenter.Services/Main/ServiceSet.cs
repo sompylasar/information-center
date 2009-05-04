@@ -263,6 +263,12 @@ namespace InformationCenter.Services
             Engine.Refresh(RefreshMode.StoreWins, Template.Template);
         }
 
+        public void ChangeFieldOrder(FieldView Field, int Order)
+        {
+            Engine.ChangeFieldOrder(Field.ID, Order);
+            Engine.Refresh(RefreshMode.StoreWins, Field.Field);
+        }
+
         #endregion
 
         #region Other
