@@ -444,7 +444,10 @@
             <Parameter Name="fieldTypeId" Mode="In" Type="Guid" />
             <Parameter Name="nullable" Mode="In" Type="Boolean" />
             <Parameter Name="orderNumber" Mode="In" Type="Int32" />
-            <Parameter Name="id" Mode="InOut" Type="Guid" /></FunctionImport></EntityContainer>
+            <Parameter Name="id" Mode="InOut" Type="Guid" /></FunctionImport>
+          <FunctionImport Name="ChangeFieldOrderNumber" EntitySet="IntValue" ReturnType="Collection(InformationCenterModel.IntValue)">
+            <Parameter Name="fieldId" Mode="In" Type="Guid" />
+            <Parameter Name="newOrderNumber" Mode="In" Type="Int32" /></FunctionImport></EntityContainer>
         <EntityType Name="DateTimeFieldValue">
           <Key>
             <PropertyRef Name="ID" />
@@ -801,7 +804,8 @@
           <FunctionImportMapping FunctionImportName="SearchDescriptions" FunctionName="InformationCenterModel.Store.SearchDescriptions" />
           <FunctionImportMapping FunctionImportName="RenameField" FunctionName="InformationCenterModel.Store.RenameField" />
           <FunctionImportMapping FunctionImportName="RenameTemplate" FunctionName="InformationCenterModel.Store.RenameTemplate" />
-          <FunctionImportMapping FunctionImportName="AddField" FunctionName="InformationCenterModel.Store.AddField" /></EntityContainerMapping>
+          <FunctionImportMapping FunctionImportName="AddField" FunctionName="InformationCenterModel.Store.AddField" />
+          <FunctionImportMapping FunctionImportName="ChangeFieldOrderNumber" FunctionName="InformationCenterModel.Store.ChangeFieldOrderNumber" /></EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

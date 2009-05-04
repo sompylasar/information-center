@@ -79,6 +79,13 @@ namespace InformationCenter.Services
         /// <param name="NewName">новое имя шаблона</param>
         void RenameTemplate(TemplateView Template, string NewName);
 
+        /// <summary>
+        /// изменить приоритет представления поля
+        /// </summary>
+        /// <param name="Field">представление поля</param>
+        /// <param name="Order">новый приоритет</param>
+        void ChangeFieldOrder(FieldView Field, int Order);
+
         #endregion
 
         #region Remove/Delete

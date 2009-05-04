@@ -20,7 +20,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("InformationCenterModel", "FK_FieldTemplate_Template", "Template", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(InformationCenter.Data.Template), "NNFieldTemplate", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(InformationCenter.Data.NNFieldTemplate))]
 
 // Original file name:
-// Generation date: 04.05.2009 11:57:14
+// Generation date: 04.05.2009 13:32:15
 namespace InformationCenter.Data
 {
     
@@ -639,6 +639,31 @@ namespace InformationCenter.Data
                 orderNumberParameter = new global::System.Data.Objects.ObjectParameter("orderNumber", typeof(int));
             }
             return base.ExecuteFunction<IntValue>("AddField", textParameter, fieldTypeIdParameter, nullableParameter, orderNumberParameter, id);
+        }
+        /// <summary>
+        /// There are no comments for InformationCenterModel.ChangeFieldOrderNumber in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectResult<IntValue> ChangeFieldOrderNumber(global::System.Nullable<global::System.Guid> fieldId, global::System.Nullable<int> newOrderNumber)
+        {
+            global::System.Data.Objects.ObjectParameter fieldIdParameter;
+            if (fieldId.HasValue)
+            {
+                fieldIdParameter = new global::System.Data.Objects.ObjectParameter("fieldId", fieldId);
+            }
+            else
+            {
+                fieldIdParameter = new global::System.Data.Objects.ObjectParameter("fieldId", typeof(global::System.Guid));
+            }
+            global::System.Data.Objects.ObjectParameter newOrderNumberParameter;
+            if (newOrderNumber.HasValue)
+            {
+                newOrderNumberParameter = new global::System.Data.Objects.ObjectParameter("newOrderNumber", newOrderNumber);
+            }
+            else
+            {
+                newOrderNumberParameter = new global::System.Data.Objects.ObjectParameter("newOrderNumber", typeof(int));
+            }
+            return base.ExecuteFunction<IntValue>("ChangeFieldOrderNumber", fieldIdParameter, newOrderNumberParameter);
         }
     }
     /// <summary>
