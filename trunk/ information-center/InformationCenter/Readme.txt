@@ -35,7 +35,6 @@ InformationCenter.Data - проект с автосгенерированым кодом объектного представле
 InformationCenter.LogicUtils - утилитна€ библиотека
 InformationCenter.EFEngine - проект с классами дл€ работы в Entity Framework
 InformationCenter.Services - реализаци€ конкретных функций информационного центра
-Readme.txt - описание проекта и его инсталл€ции
 
 4. Ўл€пенко ƒенис - сервисы нижних уровней
 InformationCenter.DBUtils - функции сопр€жени€ с базой данных
