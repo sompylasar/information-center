@@ -98,10 +98,10 @@ namespace InformationCenter.Services
 
         public bool AddTemplate(string Name, IEnumerable<Field> Fields) { return Worker.AddTemplate(Name, Fields); }
 
-        public Guid AddField(string Name, Guid FieldTypeID)
+        public Guid AddField(string Name, Guid FieldTypeID, bool Nullable, int Order)
         {
             ObjectParameter g = new ObjectParameter("id", typeof(Guid));
-            Entities.AddField(Name, FieldTypeID, g).First();
+            Entities.AddField(Name, FieldTypeID, Nullable, Order, g).First();
             return (Guid)g.Value;
         }
 

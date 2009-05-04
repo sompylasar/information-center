@@ -201,9 +201,9 @@ namespace InformationCenter.Services
 
         #region Add
 
-        public void AddField(string Name, FieldTypeView Type)
+        public void AddField(string Name, FieldTypeView Type, bool Nullable, int Order)
         {
-            Engine.AddField(Name, Type.ID);
+            Engine.AddField(Name, Type.ID, Nullable, Order);
         }
 
         public bool AddTemplate(string Name, IEnumerable<FieldView> FieldViews)
