@@ -256,9 +256,9 @@ namespace InformationCenter.DBUtils
         /// <param name="templateName">Имя шаблона</param>
         /// <param name="fields">Коллекция полей описания</param>
         /// <returns>Добавило или нет</returns>
-        public Guid? AddTemplate(string templateName, IEnumerable<Field> fields)
+        public Guid AddTemplate(string templateName, IEnumerable<Field> fields)
         {
-            Guid? result = null;
+            Guid result = Guid.Empty;
 
             string tempTableName = "##FieldsTempTable_" + Guid.NewGuid().ToString("N");
             string query = GenQueryCreateTable(tempTableName, new ColumnDescription[]
@@ -325,9 +325,9 @@ namespace InformationCenter.DBUtils
             return result;
         }
 
-        public Guid? AddDocDescription(string docDescriptionName, Guid documentId, Dictionary<Field, object> fields)
+        public Guid AddDocDescription(string docDescriptionName, Guid documentId, Dictionary<Field, object> fields)
         {
-            Guid? result = null;
+            Guid result = Guid.Empty;
 
             string tempTableName = "##FieldsTempTable_" + Guid.NewGuid().ToString("N");
             List<ColumnDescription> cds = new List<ColumnDescription>();
