@@ -183,61 +183,14 @@ namespace InformationCenter.WebUI.Controllers
                 }
                 TempData["DescriptionName"] = descriptionName;
 
-                var descriptionFieldsWithValues = new Dictionary<FieldView,object>();
+                //var descriptionFieldsWithValues = new Dictionary<FieldView,object>();
 
                 var fields = (IEnumerable<FieldView>)_client.ServiceCenter.SearchService.GetFields();
                 var selectedFields = new List<FieldView>();
-                foreach (string fieldKey in HttpContext.Request.Params)
-                {
-                    var fieldValueStr = (HttpContext.Request[fieldKey] ?? "").Trim();
 
-                    if (fieldKey.StartsWith("_"))
-                    {
-                        Guid fieldId = new Guid(fieldKey.Substring(1));
 
-                        TempData[fieldKey] = fieldValueStr;
+                var descriptionFieldsWithValues = FieldTypeHelper.GetFieldValues(fields, selectedFields, HttpContext, TempData, ModelState);
 
-                        FieldView field = null;
-                        FieldTypeView fieldTypeView = null;
-                        Type fieldType = typeof(string);
-                        foreach (FieldView f in fields)
-                        {
-                            if (f.ID == fieldId)
-                            {
-                                field = f;
-                                selectedFields.Add(f);
-
-                                fieldTypeView = f.FieldTypeView;
-                                fieldType = f.FieldTypeView.TypeOfField;
-                                
-                                break;
-                            }
-                        }
-                        if (field == null)
-                        {
-                            ModelState.AddModelError(fieldKey, "Поле с идентификатором " + fieldId + " не найдено");
-                            continue;
-                        }
-
-                        try
-                        {
-                            object fieldValue = Convert.ChangeType(fieldValueStr, fieldType);
-
-                            try
-                            {
-                                descriptionFieldsWithValues.Add(field, fieldValue);
-                            }
-                            catch (Exception ex)
-                            {
-                                ModelState.AddModelError(fieldKey, "Ошибка в поле "+field.Name+": " + ex.Message);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            ModelState.AddModelError(fieldKey, "Ошибка в поле " + field.Name + ": " + ex.Message + (fieldTypeView == null ? "" : " Ожидаемый тип: " + fieldTypeView.FieldTypeName));
-                        }
-                    }
-                }
 
                 ViewData["Fields"] = fields;
                 ViewData["SelectedFields"] = selectedFields;
@@ -270,6 +223,138 @@ namespace InformationCenter.WebUI.Controllers
                 {
                     TempData["ModelState"] = ModelState;
                 }
+            }
+            else
+            {
+                ViewData["error"] = "Сервис загрузки документов в данный момент недоступен."
+                    + " " + _client.ServiceCenterException.Message;
+            }
+
+            return actionResult;
+        }
+        public ActionResult EditDescription(Guid? id)
+        {
+            if (AuthHelper.NeedRedirectToAuth(this, "UploadForm")) return RedirectToAction("LogOn", "Account");
+
+            ActionResult actionResult = View();
+            InitServiceCenterClient();
+            if (_client.Available)
+            {
+                try
+                {
+
+                    Guid documentId = (id == null ? new Guid(Request["id"]) : id.Value);
+
+                    DocumentView document = _client.ServiceCenter.DownloadService.GetDocument(documentId);
+                    if (document == null)
+                        throw new Exception("Документ с указанным идентификатором не найден.");
+
+                    List<FieldView> selectedFields = new List<FieldView>();
+
+                    foreach (FieldValueView fieldValue in document.Descriptions[0].DescriptionFieldValues)
+                    {
+                        selectedFields.Add(fieldValue.Field);
+                        TempData["_" + fieldValue.Field.ID] = fieldValue.Value;
+                    }
+
+                    ViewData["DocumentId"] = document.ID;
+                    ViewData["UploadFileName"] = document.FileName;
+                    ViewData["DescriptionName"] = document.Descriptions[0].Name;
+                    ViewData["SelectedFields"] = selectedFields;
+                    ViewData["Fields"] = _client.ServiceCenter.SearchService.GetFields();
+
+                }
+                catch (Exception ex)
+                {
+                    ViewData["error"] = ex.Message;
+                }
+            }
+            else
+            {
+                ViewData["error"] = "Сервис загрузки документов в данный момент недоступен."
+                                    + " " + _client.ServiceCenterException.Message;
+            }
+            return actionResult;
+        }
+        public ActionResult UpdateDescription()
+        {
+            if (AuthHelper.NeedRedirectToAuth(this, "UploadForm")) return RedirectToAction("LogOn", "Account");
+
+            ActionResult actionResult = View("Error");
+            InitServiceCenterClient();
+            if (_client.Available)
+            {
+                actionResult = View("EditDescription");
+ 
+                string documentIdStr = (Request["DocumentId"] ?? "").Trim();
+                if (string.IsNullOrEmpty(documentIdStr))
+                {
+                    ModelState.AddModelError("DocumentId", "Не выбран документ для редактирования.");
+                }
+
+                string descriptionName = (Request["DescriptionName"] ?? "").Trim();
+                if (string.IsNullOrEmpty(descriptionName))
+                {
+                    ModelState.AddModelError("DescriptionName", "Название описания не должно быть пустым.");
+                }
+                TempData["DescriptionName"] = descriptionName;
+
+                DocumentView document = null;
+                try
+                {
+                    Guid documentId = new Guid(documentIdStr);
+
+                    document = _client.ServiceCenter.DownloadService.GetDocument(documentId);
+                    if (document == null)
+                        ModelState.AddModelError("Document", "Указанный документ не найден.");
+
+                }
+                catch (Exception)
+                {
+                    ModelState.AddModelError("DocumentId", "Неверный формат идентификатора документа.");
+                }
+                
+
+
+                var fields = (IEnumerable<FieldView>)_client.ServiceCenter.SearchService.GetFields();
+                var selectedFields = new List<FieldView>();
+
+
+                var descriptionFieldsWithValues = FieldTypeHelper.GetFieldValues(fields, selectedFields, HttpContext, TempData, ModelState);
+
+
+                ViewData["DocumentId"] = documentIdStr;
+                if (document != null)
+                    ViewData["UploadFileName"] = document.FileName;
+                ViewData["Fields"] = fields;
+                ViewData["SelectedFields"] = selectedFields;
+                Session["UploadSelectedFields"] = selectedFields;
+
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        _client.ServiceCenter.DocumentDescriptionService.DeleteDocumentDescription(document.Descriptions[0]);
+
+                        _client.ServiceCenter.UploadService.AddDescription(document.ID, descriptionName, descriptionFieldsWithValues);
+
+
+
+                        actionResult = View("FinishedEditing");
+                        TempData.Clear();
+                        Session["SelectedTemplate"] = null;
+                        Session["UploadSelectedFields"] = null;
+                    }
+                    catch (Exception ex)
+                    {
+                        TempData["error"] = ex.Message;
+                    }
+                }
+                else
+                {
+                    TempData["ModelState"] = ModelState;
+                }
+                
             }
             else
             {
