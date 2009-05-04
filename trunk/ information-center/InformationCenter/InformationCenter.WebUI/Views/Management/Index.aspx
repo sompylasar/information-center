@@ -1,21 +1,21 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+п»ї<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="MainHeaderContent" runat="server">
-Информационный центр ВУЗа
+РРЅС„РѕСЂРјР°С†РёРѕРЅРЅС‹Р№ С†РµРЅС‚СЂ Р’РЈР—Р°
 </asp:Content>
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-	Управление
+	РЈРїСЂР°РІР»РµРЅРёРµ
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h2>Управление</h2>
+    <h2>РЈРїСЂР°РІР»РµРЅРёРµ</h2>
     <div id="ManagementActions">
         <ul id="Actions">              
-            <li><%= Html.ActionLink("Управление шаблонами", "Index", "Templates")%></li>
-            <li><%= Html.ActionLink("Управление полями", "Index", "Fields")%></li>
+            <li><%= Html.ActionLink("РЈРїСЂР°РІР»РµРЅРёРµ С€Р°Р±Р»РѕРЅР°РјРё", "Index", "Templates")%></li>
+            <li><%= Html.ActionLink("РЈРїСЂР°РІР»РµРЅРёРµ РїРѕР»СЏРјРё", "Index", "Fields")%></li>
         </ul>
     </div>
 

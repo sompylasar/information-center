@@ -1,13 +1,13 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+п»ї<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 <%@ Import Namespace="InformationCenter.WebUI.Helpers"%>
 <%@ Import Namespace="InformationCenter.Services"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-Загрузка документа - Информационный центр ВУЗа
+Р—Р°РіСЂСѓР·РєР° РґРѕРєСѓРјРµРЅС‚Р° - РРЅС„РѕСЂРјР°С†РёРѕРЅРЅС‹Р№ С†РµРЅС‚СЂ Р’РЈР—Р°
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="MainHeaderContent" runat="server">
-Информационный центр ВУЗа
+РРЅС„РѕСЂРјР°С†РёРѕРЅРЅС‹Р№ С†РµРЅС‚СЂ Р’РЈР—Р°
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="HeadContent" runat="server">
@@ -129,8 +129,8 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <h2>Заполнение описания</h2>
-    <%=Html.Breadcrumbs().AddTextLink("Загрузка документа").AddActionLink("Выбор шаблона описания", "SelectTemplate").Last("Заполнение описания") %>
+    <h2>Р—Р°РїРѕР»РЅРµРЅРёРµ РѕРїРёСЃР°РЅРёСЏ</h2>
+    <%=Html.Breadcrumbs().AddTextLink("Р—Р°РіСЂСѓР·РєР° РґРѕРєСѓРјРµРЅС‚Р°").AddActionLink("Р’С‹Р±РѕСЂ С€Р°Р±Р»РѕРЅР° РѕРїРёСЃР°РЅРёСЏ", "SelectTemplate").Last("Р—Р°РїРѕР»РЅРµРЅРёРµ РѕРїРёСЃР°РЅРёСЏ") %>
     
     <%
         var selectedFields = (IEnumerable<FieldView>)(ViewData["SelectedFields"] ?? new FieldView[0]);
@@ -260,7 +260,7 @@
                         var value = ($(this).val() || '');
                         var $input_message = $input.next('.field-validation-error');
                         if ($input_message.length <= 0) { $input_message = $('<span class="field-validation-error"></span>'); $input.after($input_message); }
-                        if (value == '') $input_message.html('Заполните поле.').show();
+                        if (value == '') $input_message.html('Р—Р°РїРѕР»РЅРёС‚Рµ РїРѕР»Рµ.').show();
                         else $input_message.hide();
                     });
                 }
@@ -328,7 +328,7 @@
                 var $fileToUpload_message = $fileToUpload.next('.field-validation-error');
                 if ($fileToUpload_message.length <= 0) { $fileToUpload_message = $('<span class="field-validation-error"></span>'); $fileToUpload.after($fileToUpload_message); }
                 if (file == '') {
-                    $fileToUpload_message.html('Выберите файл.').show();
+                    $fileToUpload_message.html('Р’С‹Р±РµСЂРёС‚Рµ С„Р°Р№Р».').show();
                     valid = false;
                 }
                 else {
@@ -339,7 +339,7 @@
                 var $txtDescriptionName_message = $txtDescriptionName.next('.field-validation-error');
                 if ($txtDescriptionName_message.length <= 0) { $txtDescriptionName_message = $('<span class="field-validation-error"></span>'); $txtDescriptionName.after($txtDescriptionName_message); }
                 if (descriptionName == '') {
-                    $txtDescriptionName_message.html('Заполните название описания.').show();
+                    $txtDescriptionName_message.html('Р—Р°РїРѕР»РЅРёС‚Рµ РЅР°Р·РІР°РЅРёРµ РѕРїРёСЃР°РЅРёСЏ.').show();
                     valid = false;
                 }
                 else {
@@ -354,7 +354,7 @@
                     
                     $input.val( $.trim($input.val()) );
                     if (!$item.is('[nullable]') && $input.val() == '') {
-                        $input_message.html('Заполните поле.').show();
+                        $input_message.html('Р—Р°РїРѕР»РЅРёС‚Рµ РїРѕР»Рµ.').show();
                         valid = false;
                     }
                     else {
@@ -372,21 +372,21 @@
         });
     </script>
 
-    <%= Html.ValidationSummary("Введенные данные некорректны. Проверьте их и повторите попытку.") %>
+    <%= Html.ValidationSummary("Р’РІРµРґРµРЅРЅС‹Рµ РґР°РЅРЅС‹Рµ РЅРµРєРѕСЂСЂРµРєС‚РЅС‹. РџСЂРѕРІРµСЂСЊС‚Рµ РёС… Рё РїРѕРІС‚РѕСЂРёС‚Рµ РїРѕРїС‹С‚РєСѓ.") %>
     
     <form action="/Upload/Start" id="frmUpload" method="post" enctype="multipart/form-data">
         <p><span class="error"><%=ViewData["error"]%></span></p>
         <div>
             <table class="layout">
-            <tr><td style="width:15%"><label for="fileToUpload">Документ:</label></td><td style="width:75%"><input type="file" id="fileToUpload" name="f" value="<%=TempData["UploadFileName"] ?? "" %>" /><%=Html.ValidationMessage("f")%></td></tr>
-            <tr><td><label for="txtDescriptionName">Название описания:</label></td><td><input type="text" id="txtDescriptionName" name="DescriptionName" maxlength="256" value="<%=TempData["DescriptionName"] ?? (ViewData["SelectedTemplateName"] != "" ? "Описание по шаблону: "+ViewData["SelectedTemplateName"]: "") %>" /><%= Html.ValidationMessage("DescriptionName")%></td></tr>
+            <tr><td style="width:15%"><label for="fileToUpload">Р”РѕРєСѓРјРµРЅС‚:</label></td><td style="width:75%"><input type="file" id="fileToUpload" name="f" value="<%=TempData["UploadFileName"] ?? "" %>" /><%=Html.ValidationMessage("f")%></td></tr>
+            <tr><td><label for="txtDescriptionName">РќР°Р·РІР°РЅРёРµ РѕРїРёСЃР°РЅРёСЏ:</label></td><td><input type="text" id="txtDescriptionName" name="DescriptionName" maxlength="256" value="<%=TempData["DescriptionName"] ?? (ViewData["SelectedTemplateName"] != "" ? "РћРїРёСЃР°РЅРёРµ РїРѕ С€Р°Р±Р»РѕРЅСѓ: "+ViewData["SelectedTemplateName"]: "") %>" /><%= Html.ValidationMessage("DescriptionName")%></td></tr>
             </table>
         </div>
         <div>
             <table id="fields"><tr id="fields_row"><td class="listbox-section">
                 <fieldset id="fields-from-container">
-                    <legend>Доступные поля описания</legend>
-                    <span class="listbox-from-empty"><%=(fields.Count() + selectedFields.Count() > 0 ? "(все доступные поля выбраны)" : "(список пуст)") %></span>
+                    <legend>Р”РѕСЃС‚СѓРїРЅС‹Рµ РїРѕР»СЏ РѕРїРёСЃР°РЅРёСЏ</legend>
+                    <span class="listbox-from-empty"><%=(fields.Count() + selectedFields.Count() > 0 ? "(РІСЃРµ РґРѕСЃС‚СѓРїРЅС‹Рµ РїРѕР»СЏ РІС‹Р±СЂР°РЅС‹)" : "(СЃРїРёСЃРѕРє РїСѓСЃС‚)") %></span>
                     <ul class="listbox-from">
                         <% foreach (FieldView field in fields) { %>
                         <li rel="_<%=field.ID %>" order="<%=field.Order %>"<%=field.Nullable ? " nullable=\"nullable\"" : "" %>><span class="unselectable"><%=Html.Encode(field.Name) %> (<%=Html.Encode(field.FieldTypeView.FieldTypeName) %>)</span></li>
@@ -395,18 +395,18 @@
                 </fieldset>
             </td><td id="fields-buttons-container">
                 <div>
-                    <button type="button" class="button-add" title="Добавить выделенные">&gt;</button>
-                    <button type="button" class="button-add-all" title="Добавить все">&gt;&gt;</button>
+                    <button type="button" class="button-add" title="Р”РѕР±Р°РІРёС‚СЊ РІС‹РґРµР»РµРЅРЅС‹Рµ">&gt;</button>
+                    <button type="button" class="button-add-all" title="Р”РѕР±Р°РІРёС‚СЊ РІСЃРµ">&gt;&gt;</button>
                 </div>
                 <br />
                 <div>
-                    <button type="button" class="button-remove" title="Убрать выделенные">&lt;</button>
-                    <button type="button" class="button-remove-all" title="Убрать все">&lt;&lt;</button>
+                    <button type="button" class="button-remove" title="РЈР±СЂР°С‚СЊ РІС‹РґРµР»РµРЅРЅС‹Рµ">&lt;</button>
+                    <button type="button" class="button-remove-all" title="РЈР±СЂР°С‚СЊ РІСЃРµ">&lt;&lt;</button>
                 </div>
             </td><td class="listbox-section">
                 <fieldset id="fields-to-container">
-                    <legend>Выбранные поля описания</legend>
-                    <span class="listbox-to-empty">(добавьте необходимые поля)</span>
+                    <legend>Р’С‹Р±СЂР°РЅРЅС‹Рµ РїРѕР»СЏ РѕРїРёСЃР°РЅРёСЏ</legend>
+                    <span class="listbox-to-empty">(РґРѕР±Р°РІСЊС‚Рµ РЅРµРѕР±С…РѕРґРёРјС‹Рµ РїРѕР»СЏ)</span>
                     <div class="listbox-to-wrapper">
                         <table class="listbox-to">
                             <% foreach (FieldView field in selectedFields) { %>
@@ -417,6 +417,6 @@
                 </fieldset>
             </td></tr></table>
         </div>
-        <p><button type="submit">Загрузить</button></p>
+        <p><button type="submit">Р—Р°РіСЂСѓР·РёС‚СЊ</button></p>
     </form>
 </asp:Content>

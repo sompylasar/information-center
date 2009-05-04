@@ -1,31 +1,31 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+п»ї<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-Загрузка завершена - Информационный центр ВУЗа
+Р—Р°РіСЂСѓР·РєР° Р·Р°РІРµСЂС€РµРЅР° - РРЅС„РѕСЂРјР°С†РёРѕРЅРЅС‹Р№ С†РµРЅС‚СЂ Р’РЈР—Р°
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="MainHeaderContent" runat="server">
-Информационный центр ВУЗа
+РРЅС„РѕСЂРјР°С†РёРѕРЅРЅС‹Р№ С†РµРЅС‚СЂ Р’РЈР—Р°
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <h2>Загрузка завершена</h2>
+    <h2>Р—Р°РіСЂСѓР·РєР° Р·Р°РІРµСЂС€РµРЅР°</h2>
     
     <% bool success = string.IsNullOrEmpty((string)ViewData["error"]); %>
     
     <div>
         <%if (success) { %>
-        <p class="success">Загрузка документа завершена успешно.</p>
+        <p class="success">Р—Р°РіСЂСѓР·РєР° РґРѕРєСѓРјРµРЅС‚Р° Р·Р°РІРµСЂС€РµРЅР° СѓСЃРїРµС€РЅРѕ.</p>
         <%}else{ %>
-        <p class="error">Загрузка документа завершена с ошибкой.</p>
+        <p class="error">Р—Р°РіСЂСѓР·РєР° РґРѕРєСѓРјРµРЅС‚Р° Р·Р°РІРµСЂС€РµРЅР° СЃ РѕС€РёР±РєРѕР№.</p>
         <p class="error"><%=Html.Encode(ViewData["error"]) %></p>
-        <!--<p>Чтобы вернуться к редактированию, используйте кнопку &laquo;Назад&raquo; Вашего браузера.</p>-->
+        <!--<p>Р§С‚РѕР±С‹ РІРµСЂРЅСѓС‚СЊСЃСЏ Рє СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЋ, РёСЃРїРѕР»СЊР·СѓР№С‚Рµ РєРЅРѕРїРєСѓ &laquo;РќР°Р·Р°Рґ&raquo; Р’Р°С€РµРіРѕ Р±СЂР°СѓР·РµСЂР°.</p>-->
         <%} %>
         <p>
             <% if (!success) { %>
-            <a href="javascript:window.history.go(-1)">Назад к редактированию</a><br />
+            <a href="javascript:window.history.go(-1)">РќР°Р·Р°Рґ Рє СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЋ</a><br />
             <% } %>
-            <%=Html.ActionLink("Загрузка нового документа", "Index", "Upload") %>
+            <%=Html.ActionLink("Р—Р°РіСЂСѓР·РєР° РЅРѕРІРѕРіРѕ РґРѕРєСѓРјРµРЅС‚Р°", "Index", "Upload") %>
         </p>
     </div>
 </asp:Content>

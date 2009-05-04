@@ -1,13 +1,13 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+п»ї<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 <%@ Import Namespace="InformationCenter.WebUI.Models"%>
 <%@ Import Namespace="InformationCenter.Services"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-Получение документа - Информационный центр ВУЗа
+РџРѕР»СѓС‡РµРЅРёРµ РґРѕРєСѓРјРµРЅС‚Р° - РРЅС„РѕСЂРјР°С†РёРѕРЅРЅС‹Р№ С†РµРЅС‚СЂ Р’РЈР—Р°
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="MainHeaderContent" runat="server">
-Информационный центр ВУЗа
+РРЅС„РѕСЂРјР°С†РёРѕРЅРЅС‹Р№ С†РµРЅС‚СЂ Р’РЈР—Р°
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="HeadContent" runat="server">
@@ -27,7 +27,7 @@
         function updateTimer() {
             if (seconds > 0) {
                 $('#waitDownload').show();
-                $('#waitDownloadTimer').html(seconds + ' сек.');
+                $('#waitDownloadTimer').html(seconds + ' СЃРµРє.');
             }
             else {
                 $('#waitDownload').hide();
@@ -48,7 +48,7 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <h2>Получение документа</h2>
-    <p id="waitDownload" style="display: none"><span id="waitDownloadTimer"></span> до начала скачивания документа &laquo;<%=Html.Encode(ViewData["Document.FileName"])%>&raquo;...</p>
-    <p id="beginDownload">Запущено скачивание документа &laquo;<%=Html.Encode(ViewData["Document.FileName"])%>&raquo;</p>
+    <h2>РџРѕР»СѓС‡РµРЅРёРµ РґРѕРєСѓРјРµРЅС‚Р°</h2>
+    <p id="waitDownload" style="display: none"><span id="waitDownloadTimer"></span> РґРѕ РЅР°С‡Р°Р»Р° СЃРєР°С‡РёРІР°РЅРёСЏ РґРѕРєСѓРјРµРЅС‚Р° &laquo;<%=Html.Encode(ViewData["Document.FileName"])%>&raquo;...</p>
+    <p id="beginDownload">Р—Р°РїСѓС‰РµРЅРѕ СЃРєР°С‡РёРІР°РЅРёРµ РґРѕРєСѓРјРµРЅС‚Р° &laquo;<%=Html.Encode(ViewData["Document.FileName"])%>&raquo;</p>
 </asp:Content>

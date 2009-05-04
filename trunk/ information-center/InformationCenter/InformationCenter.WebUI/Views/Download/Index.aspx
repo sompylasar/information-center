@@ -1,16 +1,16 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+п»ї<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-Получение документа - Информационный центр ВУЗа
+РџРѕР»СѓС‡РµРЅРёРµ РґРѕРєСѓРјРµРЅС‚Р° - РРЅС„РѕСЂРјР°С†РёРѕРЅРЅС‹Р№ С†РµРЅС‚СЂ Р’РЈР—Р°
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="MainHeaderContent" runat="server">
-Информационный центр ВУЗа
+РРЅС„РѕСЂРјР°С†РёРѕРЅРЅС‹Р№ С†РµРЅС‚СЂ Р’РЈР—Р°
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="HeadContent" runat="server"></asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <h2>Получение документа</h2>
+    <h2>РџРѕР»СѓС‡РµРЅРёРµ РґРѕРєСѓРјРµРЅС‚Р°</h2>
     <p><span class="error"><%=Html.Encode(ViewData["error"])%></span></p>
 </asp:Content>

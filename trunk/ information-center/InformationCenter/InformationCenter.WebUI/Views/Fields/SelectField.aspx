@@ -1,44 +1,44 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+п»ї<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 <%@ Import Namespace="InformationCenter.Services"%>
 <%@ Import Namespace="InformationCenter.WebUI.Helpers"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainHeaderContent" runat="server">
-Информационный центр ВУЗа
+РРЅС„РѕСЂРјР°С†РёРѕРЅРЅС‹Р№ С†РµРЅС‚СЂ Р’РЈР—Р°
 </asp:Content>
 
 
 <asp:Content ID="Content3" ContentPlaceHolderID="TitleContent" runat="server">
-	Выбор поля
+	Р’С‹Р±РѕСЂ РїРѕР»СЏ
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h2>Редактирование поля</h2>
-    <%=Html.Breadcrumbs().AddActionLink("Управление", "Index", "Management").AddActionLink("Управление полями", "Index").Last("Выбор")%>
+    <h2>Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РїРѕР»СЏ</h2>
+    <%=Html.Breadcrumbs().AddActionLink("РЈРїСЂР°РІР»РµРЅРёРµ", "Index", "Management").AddActionLink("РЈРїСЂР°РІР»РµРЅРёРµ РїРѕР»СЏРјРё", "Index").Last("Р’С‹Р±РѕСЂ")%>
     <%
             var fields = (IEnumerable<FieldView>)(ViewData["Fields"] ?? new FieldView[0]);
 
     %>
-    <%= Html.ValidationSummary("Введенные данные некорректны. Проверьте их и повторите попытку.") %>
+    <%= Html.ValidationSummary("Р’РІРµРґРµРЅРЅС‹Рµ РґР°РЅРЅС‹Рµ РЅРµРєРѕСЂСЂРµРєС‚РЅС‹. РџСЂРѕРІРµСЂСЊС‚Рµ РёС… Рё РїРѕРІС‚РѕСЂРёС‚Рµ РїРѕРїС‹С‚РєСѓ.") %>
     
     <form action="/Fields/EditField" id="frmSelectField" method="get" enctype="multipart/form-data">
         <p><span class="success"><%=ViewData["success"]%></span></p>
         <p><span class="error"><%=ViewData["error"]%></span></p>
         
-        <p><label for="selField">Поле:</label><select id="selField" name="field">
+        <p><label for="selField">РџРѕР»Рµ:</label><select id="selField" name="field">
             <% foreach (FieldView field in fields)
                {  %>
             <option value="<%=field.ID %>" order="<%=field.Order %>"><%=field.Name+" ("+field.FieldTypeView.FieldTypeName+")"%></option>
             <% } %>
             <% if (fields.Count() == 0)
                { %>
-            <option value="0">(поля отсутствуют)</option>
+            <option value="0">(РїРѕР»СЏ РѕС‚СЃСѓС‚СЃС‚РІСѓСЋС‚)</option>
             <%} %>
         </select><%= Html.ValidationMessage("TemplateId") %></p>
         <div>
             
         </div>
-        <p><button type="submit">Выбрать</button></p>
+        <p><button type="submit">Р’С‹Р±СЂР°С‚СЊ</button></p>
     </form>
 
 
