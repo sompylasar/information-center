@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Linq;
 using InformationCenter.Data;
+using System.Collections.Generic;
+using LogicUtils;
 
 namespace InformationCenter.Services
 {
@@ -13,6 +16,7 @@ namespace InformationCenter.Services
         #region Поля
 
         private FieldTypeView ftView = null;
+        private Dictionary<FieldValue, FieldValueView> fields = null;
 
         #endregion
 
@@ -60,6 +64,28 @@ namespace InformationCenter.Services
                 if (ftView == null && Field.FieldType != null) ftView = new FieldTypeView(Field.FieldType);
                 else if (ftView != null && Field.FieldType == null) ftView = null;
                 return ftView;
+            }
+        }
+
+        /// <summary>
+        /// все представления значений полей описания
+        /// </summary>
+        public FieldValueView[] FieldValues
+        {
+            get
+            {
+                if (fields == null) fields = new Dictionary<FieldValue, FieldValueView>();
+                Field.FieldValue.Load();
+                List<Pair<FieldValue, FieldValueView>> temp = new List<Pair<FieldValue, FieldValueView>>();
+                temp.AddRange(fields.Select(d => new Pair<FieldValue, FieldValueView>(d.Key, d.Value)));
+                fields.Clear();
+                foreach (FieldValue f in Field.FieldValue)
+                {
+                    Pair<FieldValue, FieldValueView> finded = temp.Find(t => t.Key == f);
+                    if (finded == null) fields.Add(f, new FieldValueView(f));
+                    else fields.Add(finded.Key, finded.Value);
+                }
+                return fields.Values.ToArray();
             }
         }
 

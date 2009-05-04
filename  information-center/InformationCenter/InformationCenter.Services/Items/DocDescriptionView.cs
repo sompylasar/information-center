@@ -58,9 +58,9 @@ namespace InformationCenter.Services
         }
 
         /// <summary>
-        /// все поля описания
+        /// все представления значений полей описания
         /// </summary>
-        public FieldValueView[] DescriptionFields
+        public FieldValueView[] DescriptionFieldValues
         {
             get
             {

@@ -14,13 +14,14 @@ namespace InformationCenter.Services
     /// <summary>
     /// Движок для доступа к объектам хранилища.
     /// </summary>
-    public class InformationCenterEngine : EF_Engine
+    public class InformationCenterEngine : EF_Engine, IConnectionStringProvider
     {
 
         #region Поля
 
         private User current = null;
         private DBWorker worker = null;
+        private string storedConnection = null;
 
         #endregion
 
@@ -30,15 +31,18 @@ namespace InformationCenter.Services
         /// конструктор
         /// </summary>
         /// <param name="ConnectionString">строка подключения</param>
-        public InformationCenterEngine(string ConnectionString) : base(new Entities(ConnectionString)) { }
-
-        public InformationCenterEngine(Entities Context) : base(Context) { }
+        public InformationCenterEngine(string ConnectionString) : base(new Entities(ConnectionString))
+        {
+            storedConnection = ConnectionString;
+        }
 
         #endregion
 
         #region Свойства
 
         protected Entities Entities { get { return Context as Entities; } }
+
+        string IConnectionStringProvider.ConnectionString { get { return storedConnection; } }
 
         protected DBWorker Worker
         {

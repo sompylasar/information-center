@@ -54,8 +54,13 @@ namespace InformationCenter.EFEngine
         {
             get
             {
-                int a = context.Connection.ConnectionString.IndexOf('\'');
-                return context.Connection.ConnectionString.Substring(a).Trim('\'');
+                IConnectionStringProvider pr = this as IConnectionStringProvider;
+                if (pr != null) return pr.ConnectionString;
+                else
+                {
+                    int a = context.Connection.ConnectionString.IndexOf('\'');
+                    return context.Connection.ConnectionString.Substring(a).Trim('\'');
+                }
             }
         }
 

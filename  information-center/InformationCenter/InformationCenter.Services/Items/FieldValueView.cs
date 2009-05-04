@@ -40,7 +40,7 @@ namespace InformationCenter.Services
         /// уникальный идентификатор
         /// </summary>
         public Guid ID { get { return FieldValue.ID; } }
-        
+
         /// <summary>
         /// описание поля
         /// </summary>
