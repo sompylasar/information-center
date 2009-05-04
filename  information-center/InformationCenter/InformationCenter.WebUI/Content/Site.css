@@ -369,7 +369,9 @@ div#title h1
 
 .file-name { font-weight: bold; }
 .file-type { margin-left: 10px; color: purple; }
-.description-name { display: block; padding-top: 5px; font-weight: bold; }
+.description-name { display: block; padding-top: 5px;}
+.description-name label{ margin-right: 20px; font-weight: bold; }
+
 .description-fields, .description-fields li 
 {
 	padding-left: 1em;

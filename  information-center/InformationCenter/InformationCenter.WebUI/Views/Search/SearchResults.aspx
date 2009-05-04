@@ -95,9 +95,9 @@
                 <li>
                     <div><span class="file-name"><%=Html.ActionLink(filename, "Index", "Download", new { id = result.Document.ID }, null)%></span><span class="file-type"><%=string.IsNullOrEmpty(contentType) ? "" : "("+Html.Encode(contentType)+")" %></span></div>
                     <div>
-                        <label class="description-name"><%=Html.Encode(result.Name) %></label>
+                        <span class="description-name"><label><%=Html.Encode(result.Name) %></label><%=Html.ActionLink("[редактировать]", "EditDescription", "Upload", new { id = result.Document.ID }, null)%></span>
                         <ul class="description-fields">
-                        <% foreach (FieldValueView descriptionField in result.DescriptionFields) { %>
+                        <% foreach (FieldValueView descriptionField in result.DescriptionFieldValues) { %>
                         <li><%=Html.Encode(descriptionField.Field.Name + "=\"" + descriptionField.Value + "\"") %></li>
                         <% } %>
                         </ul>

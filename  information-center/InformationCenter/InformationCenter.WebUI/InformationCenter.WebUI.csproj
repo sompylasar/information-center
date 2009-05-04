@@ -113,8 +113,10 @@
     <Content Include="Views\Templates\SelectTemplate.aspx" />
     <Content Include="Views\Templates\Index.aspx" />
     <Content Include="Views\Templates\NewTemplate.aspx" />
+    <Content Include="Views\Upload\EditDescription.aspx" />
     <Content Include="Views\Upload\Finished.aspx" />
     <Content Include="Views\Upload\FillDescription.aspx" />
+    <Content Include="Views\Upload\FinishedEditing.aspx" />
     <Content Include="Views\Upload\SelectTemplate.aspx" />
     <Content Include="Web.config" />
     <Content Include="Content\Site.css" />
