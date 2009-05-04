@@ -17,6 +17,11 @@
     <script type="text/javascript" src="/Scripts/jquery.pagination.js"></script>
     <link rel="stylesheet" type="text/css" href="/Content/jquery.pagination/jquery.pagination.css" />
     <style type="text/css">
+        .search-pagination, .search-results 
+        {
+        	margin-top: 15px;
+        	margin-bottom: 5px;
+        }
         #query-container label {
         }
         #results-container {
@@ -84,8 +89,8 @@
         <div id="query-container"><label for="query">Запрос:</label><span id="query"><%=Html.Encode(string.IsNullOrEmpty(query) ? "(пустой)" : query) %></span></div>
         <% string error = (resultsCount <= 0 ? "По Вашему запросу не найдено ни одного документа." : Html.Encode(ViewData["error"] ?? "")); %>
         <% if (!string.IsNullOrEmpty(error)) { %><p><span class="error"><%=error %></span></p><% } %>
-        <div><label class="pagination-label">Страницы: </label><div class="pagination"></div><div style="clear:both;"></div></div>
-        <p id="results-container" class="search-results">
+        <div class="search-pagination"><label class="pagination-label">Страницы: </label><div class="pagination"></div><div style="clear:both;"></div></div>
+        <div id="results-container" class="search-results">
             <span id="total"><%=resultsCount==0 ? "" : "Найдено документов: "+resultsCount.ToString() %></span>
             <ol class="search-results-list">
                 <%foreach (DocDescriptionView result in results) {%>
@@ -95,8 +100,8 @@
                 </li>
                 <%}%>
             </ol>
-        </p>
-        <div><label class="pagination-label">Страницы: </label><div class="pagination"></div><div style="clear:both;"></div></div>
+        </div>
+        <div class="search-pagination"><label class="pagination-label">Страницы: </label><div class="pagination"></div><div style="clear:both;"></div></div>
         <p><a href="/Search/Index">Изменить условия поиска</a><br />
         <a href="/Search/New">Новый поиск</a></p>
     </div>
