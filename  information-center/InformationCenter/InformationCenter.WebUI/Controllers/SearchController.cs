@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web.Mvc;
 using InformationCenter.Services;
@@ -137,7 +138,11 @@ namespace InformationCenter.WebUI.Controllers
                         }
                         catch (Exception ex)
                         {
-                            ModelState.AddModelError(fieldKey, ex.Message +  (fieldTypeView == null ? "" : " Ожидаемый тип: "+fieldTypeView.FieldTypeName));
+                            ModelState.AddModelError(fieldKey,
+                                                     ex.Message +
+                                                     (fieldTypeView == null
+                                                          ? ""
+                                                          : " Ожидаемый тип: " + fieldTypeView.FieldTypeName));
                         }
                     }
                 }

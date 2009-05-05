@@ -58,7 +58,7 @@
     <script type="text/javascript">
         jQuery(function ($) {
             var $results_list = $('#results-container .search-results-list');
-            var $results = $results_list.find('li');
+            var $results = $results_list.find('li.search-result');
             var results_length = $results.length;
             
             var $pagination = $(".pagination");
@@ -67,10 +67,15 @@
                     .bind('click.pagination', function () { return false; })
                     .each(function () {
                         var $a = $(this);
-                        var page = parseInt($.trim($a.text()), 10);
-                        if (!isNaN(page))
-                            $a.attr({ 'href': '#page='+page, 'page': page });
+                        var page_index = parseInt($.trim($a.text()), 10)-1;
+                        if (!isNaN(page_index))
+                            $a.attr({ 'href': '#page='+(page_index+1), 'page': (page_index+1) });
                     });
+            };
+            var update_current_page = function () {
+                var page_from_hash = /#page=([0-9]+)/.exec(location.hash)[1];
+                var current_page = Math.max(1, Math.min(Math.ceil(results_length/pagination_options.items_per_page), page_from_hash));
+                $pagination.find('a[page='+current_page+']').click();
             };
             
             var pagination_options = {
@@ -92,6 +97,7 @@
                     
                     location.hash = '#page='+(page_index+1);
                     extend_pagination();
+                    update_current_page();
                 }
             };
             
@@ -101,9 +107,7 @@
             if (results_length < pagination_options.items_per_page) 
                 $pagination.parent().hide();
             
-            var page_from_hash = /#page=([0-9]+)/.exec(location.hash)[1];
-            var current_page = Math.max(1, Math.min(Math.ceil(results_length/pagination_options.items_per_page), page_from_hash));
-            $pagination.find('a[page='+current_page+']').click();
+            update_current_page();
         });
     </script>
     
@@ -116,7 +120,7 @@
             <span id="total"><%=resultsCount==0 ? "" : "Найдено документов: "+resultsCount.ToString() %></span>
             <ol class="search-results-list">
                 <%foreach (DocDescriptionView result in results) {%>
-                <li>
+                <li class="search-result">
                     <% ViewData["Description"] = result; 
                       Html.RenderPartial("DocDescriptionView", ViewData); %>
                 </li>
