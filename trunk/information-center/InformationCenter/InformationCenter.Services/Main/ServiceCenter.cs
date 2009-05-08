@@ -55,7 +55,7 @@ namespace InformationCenter.Services
         /// <summary>
         /// сервис для скачивания документов (download)
         /// </summary>
-        public IDownloadService DownloadService { get { return InternalService; } }
+        public IDocumentsService DocumentsService { get { return InternalService; } }
 
         /// <summary>
         /// сервис для заливки документов (upload)

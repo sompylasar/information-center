@@ -9,9 +9,9 @@ namespace InformationCenter.Services
 {
 
     /// <summary>
-    /// Сервис для загрузки документов на клиент.
+    /// Набор сервисов.
     /// </summary>
-    public class ServiceSet : IDownloadService, IUploadService, ISearchService, IDocumentDescriptionService, IDisposable
+    public class ServiceSet : IDocumentsService, IUploadService, ISearchService, IDocumentDescriptionService, IDisposable
     {
         
         #region Поля
@@ -257,6 +257,12 @@ namespace InformationCenter.Services
         {
             Engine.DeleteDocumentDescription(DocumentDescription.ID);
             Engine.Refresh(RefreshMode.StoreWins, DocumentDescription.Description);
+        }
+
+        public void DeleteDocument(DocumentView Document)
+        {
+            Engine.DeleteDocument(Document.ID);
+            Engine.Refresh(RefreshMode.StoreWins, Document.Document);
         }
 
         #endregion

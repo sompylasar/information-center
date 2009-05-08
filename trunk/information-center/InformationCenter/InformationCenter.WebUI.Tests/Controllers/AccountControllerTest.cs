@@ -170,7 +170,7 @@ namespace InformationCenter.WebUI.Tests.Controllers
             AccountController controller = GetAccountController();
 
             // Act
-            RedirectToRouteResult result = (RedirectToRouteResult)controller.LogOn("someUser", "goodPass", true, null);
+            RedirectToRouteResult result = (RedirectToRouteResult)controller.LogOn("someUser", "goodPass", null, true, null);
 
             // Assert
             Assert.AreEqual("Home", result.RouteValues["controller"]);
@@ -184,7 +184,7 @@ namespace InformationCenter.WebUI.Tests.Controllers
             AccountController controller = GetAccountController();
 
             // Act
-            RedirectResult result = (RedirectResult)controller.LogOn("someUser", "goodPass", false, "someUrl");
+            RedirectResult result = (RedirectResult)controller.LogOn("someUser", "goodPass", null, false, "someUrl");
 
             // Assert
             Assert.AreEqual("someUrl", result.Url);
@@ -197,7 +197,7 @@ namespace InformationCenter.WebUI.Tests.Controllers
             AccountController controller = GetAccountController();
 
             // Act
-            ViewResult result = (ViewResult)controller.LogOn("username", "", true, null);
+            ViewResult result = (ViewResult)controller.LogOn("username", "", null, true, null);
 
             // Assert
             Assert.AreEqual("You must specify a password.", result.ViewData.ModelState["password"].Errors[0].ErrorMessage);
@@ -210,7 +210,7 @@ namespace InformationCenter.WebUI.Tests.Controllers
             AccountController controller = GetAccountController();
 
             // Act
-            ViewResult result = (ViewResult)controller.LogOn("", "somePass", false, null);
+            ViewResult result = (ViewResult)controller.LogOn("", "somePass", null, false, null);
 
             // Assert
             Assert.AreEqual("You must specify a username.", result.ViewData.ModelState["username"].Errors[0].ErrorMessage);
@@ -223,7 +223,7 @@ namespace InformationCenter.WebUI.Tests.Controllers
             AccountController controller = GetAccountController();
 
             // Act
-            ViewResult result = (ViewResult)controller.LogOn("someUser", "badPass", true, null);
+            ViewResult result = (ViewResult)controller.LogOn("someUser", "badPass", null, true, null);
 
             // Assert
             Assert.AreEqual("The username or password provided is incorrect.", result.ViewData.ModelState["_FORM"].Errors[0].ErrorMessage);

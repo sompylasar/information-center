@@ -55,6 +55,10 @@ http://www.microsoft.com/downloads/details.aspx?FamilyId=FBEE1648-7106-44A7-9649
 http://www.microsoft.com/downloads/details.aspx?FamilyID=53289097-73ce-43bf-b6a6-35e00103cb4b&displaylang=en
 5. Поставить SQL Server 2005.
 6. Присоединить к SQL Server базу данных "InformationCenter".
-7. Только после всего этого можно компилировать проект и молиться, чтобы все заработало =).
+7. При необходимости добавить в Web.config в секцию configuration->connectionStrings следующую строку:
+    <add name="InformationCenterDatabase" connectionString="data source=.\SQLEXPRESS;Initial Catalog=InformationCenter;Integrated Security=SSPI;" providerName="System.Data.SqlClient"/>
+   Заполнить connectionString="" правильной строкой подключения к базе "InformationCenter" (для справки см. http://connectionstrings.com/ ).
+   Примечание: в случае отсутствия в настройках такой строки веб-интерфейс предложит авторизоваться (на данный момент доступен только интегрированный тип входа); в противном случае, если строка задана верно, авторизация запрашиваться не будет.
+8. Только после всего этого можно компилировать проект и молиться, чтобы все заработало =).
 
 ---------------------------------------------------------------------------------------------------

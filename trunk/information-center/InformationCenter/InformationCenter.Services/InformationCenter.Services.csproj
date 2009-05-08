@@ -61,7 +61,7 @@
     <Compile Include="Items\SearchRequestView.cs" />
     <Compile Include="Items\TemplateView.cs" />
     <Compile Include="Items\ViewItem.cs" />
-    <Compile Include="Main\IDownloadService.cs" />
+    <Compile Include="Main\IDocumentsService.cs" />
     <Compile Include="Main\IDocumentDescriptionService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Main\ServiceCenter.cs" />
