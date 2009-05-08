@@ -249,7 +249,7 @@
 %>
     
     <h2>Редактирование шаблона "<%=Html.Encode(TemplateName)  %>"</h2>
-    <%=Html.Breadcrumbs().AddActionLink("Управление", "Index", "Management").AddActionLink("Управление шаблонами", "Index").AddActionLink("Выбор", "SelectField").Last("Редактирование")%>
+    <%=Html.Breadcrumbs().AddActionLink("Управление", "Index", "Management").AddActionLink("Управление шаблонами", "Index").AddActionLink("Выбор", "SelectTemplate").Last("Редактирование")%>
     <%= Html.ValidationSummary("Введенные данные некорректны. Проверьте их и повторите попытку.") %>
     
    
