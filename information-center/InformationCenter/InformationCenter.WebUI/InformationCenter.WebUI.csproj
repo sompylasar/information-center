@@ -55,7 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\DownloadController.cs" />
+    <Compile Include="Controllers\DocumentsController.cs" />
     <Compile Include="Controllers\FieldsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManagementController.cs" />
@@ -70,7 +70,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Pagination.cs" />
-    <Compile Include="Models\AppSettings.cs" />
+    <Compile Include="Models\AppSettingsHelper.cs" />
     <Compile Include="Models\AuthHelper.cs" />
     <Compile Include="Helpers\BreadcrumbsHtmlHelperExtensions.cs" />
     <Compile Include="Models\DownloadResult.cs" />
@@ -102,8 +102,8 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Pagination.xml" />
     <Content Include="Scripts\jquery.listbox_pair.js" />
-    <Content Include="Views\Download\Download.aspx" />
-    <Content Include="Views\Download\Index.aspx" />
+    <Content Include="Views\Documents\DeleteFinished.aspx" />
+    <Content Include="Views\Documents\DownloadStarted.aspx" />
     <Content Include="Views\Fields\EditField.aspx" />
     <Content Include="Views\Fields\Index.aspx" />
     <Content Include="Views\Fields\NewField.aspx" />
