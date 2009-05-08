@@ -17,10 +17,7 @@ namespace InformationCenter.WebUI.Controllers
         private ServiceCenterClient _client;
         private void InitServiceCenterClient()
         {
-            _client = new ServiceCenterClient(
-                (string)(Session["UserName"]),
-                (string)(Session["Password"]),
-                (Session["IntegratedSecurity"] == null ? true : (bool)Session["IntegratedSecurity"]));
+            _client = new ServiceCenterClient((string)Session["ConnectionString"]);
         }
         private bool IsPrevSearchSaved()
         {
