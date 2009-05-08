@@ -9,7 +9,6 @@ using System.Web.Mvc;
 using System.Web.Security;
 using System.Web.UI;
 using InformationCenter.Services;
-using InformationCenter.WebUI.Helpers;
 using InformationCenter.WebUI.Models;
 using System.Web.Routing;
 
@@ -59,7 +58,7 @@ namespace InformationCenter.WebUI.Controllers
             {
                 return LogOnToServiceCenter(Request.UrlReferrer.AbsoluteUri);
             }
-            else if (AppSettings.IsConnectionStringConfigured())
+            else if (AppSettingsHelper.IsConnectionStringConfigured())
             {
                 return LogOnToServiceCenter(null);
             }
