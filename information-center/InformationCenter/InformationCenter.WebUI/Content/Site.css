@@ -57,6 +57,35 @@ label
     cursor: default;
 }
 
+.edit a:link, .delete a:visited
+{
+    color: #000077;
+    text-decoration: underline;
+}
+.edit a:hover
+{
+    color: #0000DD;
+    text-decoration: none;
+}
+.edit a:active
+{
+    color: #0000FF;
+}
+.delete a:link, .delete a:visited
+{
+    color: #770000;
+    text-decoration: underline;
+}
+.delete a:hover
+{
+    color: #DD0000;
+    text-decoration: none;
+}
+.delete a:active
+{
+    color: #FF0000;
+}
+
 /* HEADINGS   
 ----------------------------------------------------------*/
 h1, h2, h3, h4, h5, h6
