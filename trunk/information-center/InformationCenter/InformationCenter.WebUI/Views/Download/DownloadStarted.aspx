@@ -11,10 +11,21 @@
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="HeadContent" runat="server">
-    <% ViewData["FileUrl"] = 
-       "/Download/Index/"
-       +((DocumentView)ViewData["Document"]).ID +"/"
-       +Url.RawEncode((string)ViewData["Document.FileName"] ?? "", Encoding.UTF8) + ""; %>
+    <% 
+        DocumentView document = ((DocumentView)ViewData["Document"]);
+
+        if (document != null)
+        {
+
+            string filename = "", contentType = "";
+            FileHelper.SplitFilename(document.FileName, out filename, out contentType);
+
+            ViewData["FileUrl"] =
+               "/Download/Index/"
+               + document.ID + "/"
+               + Url.RawEncode(filename, Encoding.UTF8) + "";
+
+    %>
     <!--<meta http-equiv="refresh" content="5;url=<%=ViewData["FileUrl"] %>" />-->
     <script type="text/javascript">
     jQuery(function ($) {
@@ -45,10 +56,23 @@
         }, 1000);
     });
     </script>
+    <%  } %>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Получение документа</h2>
-    <p id="waitDownload" style="display: none"><span id="waitDownloadTimer"></span> до начала скачивания документа &laquo;<%=Html.Encode(ViewData["Document.FileName"])%>&raquo;...</p>
-    <p id="beginDownload">Запущено скачивание документа &laquo;<%=Html.Encode(ViewData["Document.FileName"])%>&raquo;</p>
+    <%
+        DocumentView document = ((DocumentView)ViewData["Document"]);
+        if (document == null)
+        {
+    %><p class="error"><%=Html.Encode(ViewData["error"] ?? "Ошибка программы. Документ не задан.")%></p><%
+        }
+        else
+        {
+            string filename = "", contentType = "";
+            FileHelper.SplitFilename(document.FileName, out filename, out contentType);
+    %>
+    <p id="waitDownload" style="display: none"><span id="waitDownloadTimer"></span> до начала скачивания документа &laquo;<%=Html.Encode(filename)%>&raquo;...</p>
+    <p id="beginDownload">Запущено скачивание документа &laquo;<%=Html.Encode(filename)%>&raquo;</p>
+    <%} %>
 </asp:Content>
