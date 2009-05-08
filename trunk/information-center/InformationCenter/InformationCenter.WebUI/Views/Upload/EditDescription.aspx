@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+<%@ Import Namespace="InformationCenter.WebUI.Models"%>
 <%@ Import Namespace="InformationCenter.WebUI.Helpers"%>
 <%@ Import Namespace="InformationCenter.Services"%>
 
@@ -382,7 +383,20 @@
         
         <div>
             <table class="layout">
-            <tr><td style="width:15%"><label for="fileToUpload">Документ:</label></td><td style="width:75%"><input type="text" disabled="disabled" id="fileToUpload" name="f" value="<%=(ViewData["Document"] is DocumentView ? (((DocumentView)ViewData["Document"]).FileName ?? "") : "(описание не связано с документом)") %>" /><%=Html.ValidationMessage("f")%></td></tr>
+            <tr><td style="width:15%"><label for="fileToUpload">Документ:</label></td>
+            <td style="width:75%"><% 
+                DocumentView document = ((DocumentView)ViewData["Document"]);
+                string filename = "", contentType = "";
+                if (document != null)
+                {
+                    FileHelper.SplitFilename(document.FileName, out filename, out contentType);
+                 %>
+                <span class="file-name"><%=Html.ActionLink(filename, "Download", "Documents", new { id = document.ID }, null)%></span><span class="file-type"><%=string.IsNullOrEmpty(contentType) ? "" : "(" + Html.Encode(contentType) + ")"%></span>
+                <span class="delete"><%=Html.ActionLink("[удалить]", "Delete", "Documents", new { id = document.ID }, new { onclick = "return confirm('Вы действительно хотите удалить документ \"" + Html.Encode(filename) + "\"?');" })%></span>
+            <% } else { %>
+                (описание не связано с документом)
+            <% } %>
+            </td></tr>
             <tr><td><label for="txtDescriptionName">Название описания:</label></td><td><input type="text" id="txtDescriptionName" name="DescriptionName" maxlength="256" value="<%=TempData["DescriptionName"] ?? ViewData["DescriptionName"] %>" /><%= Html.ValidationMessage("DescriptionName")%></td></tr>
             </table>
         </div>
