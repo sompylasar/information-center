@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using System.Web.UI;
 using InformationCenter.Services;
+using InformationCenter.WebUI.Helpers;
 using InformationCenter.WebUI.Models;
 using System.Web.Routing;
 
@@ -49,27 +50,63 @@ namespace InformationCenter.WebUI.Controllers
 
         public ActionResult LogOn()
         {
+            TempData["UserName"] = TempData["UserName"];
 
-            return View();
+            if (Session["ReturnRedirect"] == null)
+                return View();
+
+            if (Request.IsAuthenticated)
+            {
+                return LogOnToServiceCenter(Request.UrlReferrer.AbsoluteUri);
+            }
+            else if (AppSettings.IsConnectionStringConfigured())
+            {
+                return LogOnToServiceCenter(null);
+            }
+            else
+            {
+                return View();
+            }
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings",
             Justification = "Needs to take same parameter type as Controller.Redirect()")]
-        public ActionResult LogOn(string userName, string password, bool rememberMe, string returnUrl)
+        public ActionResult LogOn(string userName, string password, string loginType, bool? rememberMe, string returnUrl)
         {
-            bool integratedSecurity = (Request["loginType"] == "integrated");
+            bool integratedSecurity = (loginType == "integrated");
             if (!ValidateLogOn(userName, password, integratedSecurity))
             {
                 return View();
             }
 
+            FormsAuth.SignIn(userName, rememberMe ?? false);
+
             Session["UserName"] = userName;
             Session["Password"] = password;
             Session["IntegratedSecurity"] = integratedSecurity;
+            Session["UseConnectionStringConfig"] = false;
 
-            FormsAuth.SignIn(userName, rememberMe);
+            return LogOnToServiceCenter(returnUrl);
+        }
 
+        private ActionResult LogOnToServiceCenter(string returnUrl)
+        {
+            Exception exception;
+            bool isConnectionStringFallback;
+            if (AuthHelper.TryLogOnToServiceCenter(this, out exception, out isConnectionStringFallback))
+            {
+                return RedirectBack(returnUrl);
+            }
+            else
+            {
+                ViewData["error"] = (exception != null ? exception.Message : "");
+                return View("LogOn");
+            }
+        }
+
+        private ActionResult RedirectBack(string returnUrl)
+        {
             if (!String.IsNullOrEmpty(returnUrl))
             {
                 return Redirect(returnUrl);
@@ -88,9 +125,13 @@ namespace InformationCenter.WebUI.Controllers
 
         public ActionResult LogOff()
         {
+            TempData["UserName"] = Session["UserName"];
+
             Session["UserName"] = null;
             Session["Password"] = null;
             Session["IntegratedSecurity"] = true;
+            Session["UseConnectionStringConfig"] = true;
+            Session["ConnectionString"] = null;
 
             FormsAuth.SignOut();
 
@@ -230,25 +271,9 @@ namespace InformationCenter.WebUI.Controllers
                 ModelState.AddModelError("password", "Вы должны ввести пароль.");
             }
             //if (!MembershipService.ValidateUser(userName, password))
-            if (!TryInitServiceCenterClient(userName, password, integratedSecurity))
-            {
-                ModelState.AddModelError("_FORM", "Неверное имя пользователя, или пароль к нему не подходит.");
-            }
+            //  ModelState.AddModelError("_FORM", "Неверное имя пользователя, или пароль к нему не подходит.");
 
             return ModelState.IsValid;
-        }
-        private bool TryInitServiceCenterClient(string userName, string password, bool integratedSecurity)
-        {
-            try
-            {
-                var client = new ServiceCenterClient(userName, password, integratedSecurity);
-                return client.Available;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex);
-                return false;
-            }
         }
 
         private bool ValidateRegistration(string userName, string email, string password, string confirmPassword)
