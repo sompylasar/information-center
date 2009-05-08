@@ -26,8 +26,9 @@
     <p>
         <!--Введите имя пользователя и пароль.--><!-- Если у Вас нет учетной записи, <%= Html.ActionLink("зарегистрируйтесь", "Register") %>.-->
     </p>
+    <p class="error"><%=Html.Encode(ViewData["error"]) %></p>
     <%= Html.ValidationSummary("Вход запрещен. Исправьте ошибки и попробуйте снова.") %>
-
+    
     <% using (Html.BeginForm()) { %>
         <div>
             <fieldset>
@@ -41,7 +42,7 @@
                 <!--
                 <p>
                     <label for="username">Имя пользователя:</label>
-                    <%= Html.TextBox("username") %>
+                    <%= Html.TextBox("username", TempData["UserName"]) %>
                     <%= Html.ValidationMessage("username") %>
                 </p>
                 <p>
@@ -49,9 +50,9 @@
                     <%= Html.Password("password") %>
                     <%= Html.ValidationMessage("password") %>
                 </p>-->
-                <p>
+                <!--<p>
                     <%= Html.CheckBox("rememberMe") %> <label class="inline" for="rememberMe">Запомнить</label>
-                </p>
+                </p>-->
                 <p>
                     <input type="submit" value="Войти" />
                 </p>
