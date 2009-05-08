@@ -57,7 +57,8 @@ label
     cursor: default;
 }
 
-.edit a:link, .delete a:visited
+.edit a:link, 
+.edit a:visited
 {
     color: #000077;
     text-decoration: underline;
