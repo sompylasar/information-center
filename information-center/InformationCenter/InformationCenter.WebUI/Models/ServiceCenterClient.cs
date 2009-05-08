@@ -5,16 +5,31 @@ namespace InformationCenter.WebUI.Models
 {
     public class ServiceCenterClient
     {
-        public bool Available { get { return (ServiceCenter != null); } }
-        public ServiceCenter ServiceCenter { get; private set; }
+        public bool Available { get { return (_serviceCenter != null); } }
+        private ServiceCenter _serviceCenter;
+        public ServiceCenter ServiceCenter
+        {
+            get
+            {
+                if (!Available)
+                    throw new Exception("Сервисы недоступны." +
+                                        (ServiceCenterException != null ? " " + ServiceCenterException.Message : ""));
+                return _serviceCenter;
+            }
+            protected set { _serviceCenter = value; }
+        }
         public Exception ServiceCenterException { get; private set; }
 
-        public ServiceCenterClient(string userName, string password, bool integratedSecurity)
+        public ServiceCenterClient(string connectionString)
         {
+            ServiceCenterException = new Exception(""); // to avoid null-reference exception on getting ServiceCenterException
             try
             {
-                ServiceCenter =
-                    new ServiceCenter(AppSettings.BuildConnectionString(userName, password, integratedSecurity));
+                connectionString = connectionString ?? AppSettingsHelper.GetConnectionString();
+                if (connectionString == null)
+                    throw new Exception("Не задана строка соединения c сервером базы данных.");
+
+                ServiceCenter = new ServiceCenter(connectionString);
             }
             catch (Exception ex)
             {
