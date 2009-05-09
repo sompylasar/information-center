@@ -1,0 +1,417 @@
+﻿/*----------------------------------------------------------
+The base color for this template is #5c87b2. If you'd like
+to use a different color start by replacing all instances of
+#5c87b2 with your new color.
+----------------------------------------------------------*/
+body
+{
+    background: #5cb257 url(/Content/Images/InformationCenterLogo.png) no-repeat left top;
+    font-size: .75em;
+    font-family: Verdana, Helvetica, Sans-Serif;
+    margin: 0;
+    padding: 0;
+    color: #696969;
+}
+
+a:link
+{
+    color: #50bc5a; /*#03f34a*/
+    text-decoration: underline;
+}
+a:visited
+{
+	color: #50bc5a;
+}
+a:hover
+{
+    color: #1ddd40;
+    text-decoration: none;
+}
+a:active
+{
+    color: #127b37;
+}
+
+p, ul
+{
+    margin-bottom: 20px;
+    line-height: 1.6em;
+}
+
+label 
+{
+	margin-right: 5px;
+}
+
+.breadcrumbs 
+{
+	margin-bottom: 10px;
+}
+.breadcrumbs a
+{
+}
+.breadcrumbs a.text, a.text:link, .breadcrumbs a.text:hover, .breadcrumbs a.text:active
+{
+	color: #50bc5a; /*#03f34a*/
+    text-decoration: none;
+    cursor: default;
+}
+
+.edit a:link, 
+.edit a:visited
+{
+    color: #000077;
+    text-decoration: underline;
+}
+.edit a:hover
+{
+    color: #0000DD;
+    text-decoration: none;
+}
+.edit a:active
+{
+    color: #0000FF;
+}
+.delete a:link, .delete a:visited
+{
+    color: #770000;
+    text-decoration: underline;
+}
+.delete a:hover
+{
+    color: #DD0000;
+    text-decoration: none;
+}
+.delete a:active
+{
+    color: #FF0000;
+}
+
+/* HEADINGS   
+----------------------------------------------------------*/
+h1, h2, h3, h4, h5, h6
+{
+    font-size: 1.5em;
+    color: #000;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1
+{
+    font-size: 2em;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+h2
+{
+    padding: 0 0 10px 0;
+}
+h3
+{
+    font-size: 1.2em;
+}
+h4
+{
+    font-size: 1.1em;
+}
+h5, h6
+{
+    font-size: 1em;
+}
+
+/* this rule styles <h2> tags that are the 
+first child of the left and right table columns */
+.rightColumn > h1, .rightColumn > h2, .leftColumn > h1, .leftColumn > h2
+{
+    margin-top: 0;
+}
+
+/* PRIMARY LAYOUT ELEMENTS   
+----------------------------------------------------------*/
+
+/* you can specify a greater or lesser percentage for the 
+page width. Or, you can specify an exact pixel width. */
+.page
+{
+    width: auto;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+#header
+{
+    position: relative;
+    margin-bottom: 0px;
+    color: #000;
+    padding: 0;
+}
+
+#header h1
+{
+    font-weight: bold;
+    padding: 5px 0;
+    margin: 0;
+    color: #fff;
+    border: none;
+    line-height: 2em;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 32px !important;
+}
+
+#main
+{
+    padding: 30px 30px 15px 30px;
+    background-color: #fff;
+    margin-bottom: 10px;
+    _height: 1px; /* only IE6 applies CSS properties starting with an underscrore */
+}
+
+#footer
+{
+    color: #999;
+    padding: 10px 0;
+    text-align: center;
+    line-height: normal;
+    margin: 0;
+    font-size: .9em;
+}
+
+/* TAB MENU   
+----------------------------------------------------------*/
+ul#menu
+{
+    border-bottom: 1px #5CB257 solid;
+    padding: 0 0 2px;
+    position: relative;
+    margin: 0;
+    text-align: right;
+}
+
+ul#menu li
+{
+    display: inline;
+    list-style: none;
+    white-space: nowrap;
+}
+
+ul#menu li#greeting
+{
+    padding: 10px 20px;
+    font-weight: bold;
+    text-decoration: none;
+    line-height: 2.8em;
+    color: #fff;
+}
+
+ul#menu li a
+{
+    padding: 10px 20px;
+    font-weight: bold;
+    text-decoration: none;
+    line-height: 2.8em;
+    background-color: #e8eef4;
+    color: #03932a;
+}
+
+ul#menu li a:hover
+{
+    background-color: #fff;
+    text-decoration: none;
+}
+
+ul#menu li a:active
+{
+    background-color: #a6e2a6;
+    text-decoration: none;
+}
+
+ul#menu li.selected a
+{
+    background-color: #fff;
+    color: #000;
+}
+
+/* FORM LAYOUT ELEMENTS   
+----------------------------------------------------------*/
+
+fieldset 
+{
+    margin: 1em 0;
+    padding: 1em;
+    border: 1px solid #CCC;
+}
+
+fieldset p 
+{
+    margin: 2px 12px 10px 10px;
+}
+
+fieldset label 
+{
+    display: block;
+}
+
+fieldset label.inline 
+{
+    display: inline;
+}
+
+legend 
+{
+    font-size: 1.1em;
+    font-weight: 600;
+    padding: 2px 4px 8px 4px;
+}
+
+input[type="text"] 
+{
+    width: 200px;
+    border: 1px solid #CCC;
+}
+
+input[type="password"] 
+{
+    width: 200px;
+    border: 1px solid #CCC;
+}
+
+/* TABLE
+----------------------------------------------------------*/
+
+table 
+{
+  /*border: solid 1px #e8eef4;*/
+  border-collapse: separate;
+  border-spacing: 0px;
+}
+
+table td 
+{
+  padding: 2px;   
+  border: solid 1px #e8eef4;
+}
+
+table th
+{
+  padding: 6px 5px;
+  text-align: left;
+  background-color: #e8eef4; 
+  border: solid 1px #e8eef4;   
+}
+
+/* MISC  
+----------------------------------------------------------*/
+table.layout 
+{
+	width: 100%;
+	border: 0;
+}
+table.layout tr, table.layout td 
+{
+	border: 0;
+}
+
+
+.clear
+{
+    clear: both;
+}
+
+.error
+{
+    color: red;
+}
+
+.success
+{
+    color: green;
+}
+
+#menucontainer
+{
+    /*margin-top:40px;*/
+}
+
+div#title
+{
+    display:block;
+    /*float:left;*/
+    text-align:left;
+    min-height: 80px;
+    _height: 80px;
+}
+
+div#title h1 
+{
+	margin-left: 60px;
+}
+
+#logindisplay
+{
+	position: absolute;
+	top: 5px;
+	right: 0;
+    font-size:1.1em;
+    display:block;
+    text-align:right;
+    margin:10px;
+    color:white;
+}
+
+#logindisplay a:link
+{
+    color: white;
+    text-decoration: underline;
+}
+
+#logindisplay a:visited
+{
+    color: white;
+    text-decoration: underline;
+}
+
+#logindisplay a:hover
+{
+    color: white;
+    text-decoration: none;
+}
+
+.field-validation-error
+{
+    color: #ff0000;
+    margin-left: 5px;
+}
+
+.input-validation-error
+{
+    border: 1px solid #ff0000;
+    background-color: #ffeeee;
+}
+
+.validation-summary-errors
+{
+    font-weight: bold;
+    color: #ff0000;
+}
+
+
+.hidden { display: none; }
+
+.file-name { font-weight: bold; }
+.file-type { margin-left: 10px; color: purple; }
+.description-name { display: block; padding-top: 5px;}
+.description-name label{ margin-right: 20px; font-weight: bold; }
+
+.description-fields, .description-fields li 
+{
+	padding-left: 1em;
+	list-style-type: none;
+}
+
+
+
+.pagination-label 
+{
+	float: left;
+	line-height: 1.5em;
+}
