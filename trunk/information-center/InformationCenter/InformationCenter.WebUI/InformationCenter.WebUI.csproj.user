@@ -15,7 +15,7 @@
           <PublishCopyOption>RunFiles</PublishCopyOption>
           <PublishTargetLocation>D:\@ManInBlack\_dev\_univer\InfSys\InformationCenter.project\InformationCenter.src\information-center\InformationCenter.published\</PublishTargetLocation>
           <PublishDeleteAllFiles>True</PublishDeleteAllFiles>
-          <PublishCopyAppData>True</PublishCopyAppData>
+          <PublishCopyAppData>False</PublishCopyAppData>
           <ExternalProgram>
           </ExternalProgram>
           <StartExternalURL>

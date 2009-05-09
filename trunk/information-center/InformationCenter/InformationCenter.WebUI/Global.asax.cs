@@ -18,8 +18,8 @@ namespace InformationCenter.WebUI
 
             routes.MapRoute(
                 "DownloadLink",                                              // Route name
-                "Download/Index/{id}/{encodedFilename}",                           // URL with parameters
-                new { controller = "Download", action = "Index", id = "", encodedFilename = "" }  // Parameter defaults
+                "Documents/Download/{id}/{encodedFilename}",                           // URL with parameters
+                new { controller = "Documents", action = "Download", id = "", encodedFilename = "" }  // Parameter defaults
             );
 
             routes.MapRoute(
