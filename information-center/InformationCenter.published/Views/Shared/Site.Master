@@ -1,0 +1,45 @@
+﻿<%@ Import Namespace="InformationCenter.WebUI.Helpers"%>
+<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title><asp:ContentPlaceHolder ID="TitleContent" runat="server" /></title>
+    <link href="/Content/Site.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/Scripts/jquery-1.3.2.min.js"></script>
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server" />
+</head>
+
+<body>
+    <div class="page">
+
+        <div id="header">
+            <div id="title">
+                <h1><asp:ContentPlaceHolder ID="MainHeaderContent" runat="server" /></h1>
+            </div>
+              
+            <% /*if (Request.IsAuthenticated || !AppSettingsHelper.IsConnectionStringConfigured()) {*/ %>
+            <div id="logindisplay"><% Html.RenderPartial("LogOnUserControl"); %></div> 
+            <% /*}*/ %>
+            
+            <% string route = "/"+(this.ViewContext.RouteData.Values["controller"]??"Home") + "/" + (this.ViewContext.RouteData.Values["action"]??"Index") + "/"; %>
+            <div id="menucontainer">
+                <ul id="menu">              
+                    <li <%=route.StartsWith("/Search/") ? " class=\"selected\"" : "" %>><%= Html.ActionLink("Поиск", "Index", "Search")%></li>
+                    <li <%=route.StartsWith("/Upload/") ? " class=\"selected\"" : "" %>><%= Html.ActionLink("Загрузка", "Index", "Upload")%></li>
+                    <li <%=route.StartsWith("/Management/") || route.StartsWith("/Templates/") || route.StartsWith("/Fields/") ? " class=\"selected\"" : "" %>><%= Html.ActionLink("Управление", "Index", "Management")%></li>
+                    <li <%=route.StartsWith("/Home/About/") ? " class=\"selected\"" : "" %>><%= Html.ActionLink("Об авторах", "About", "Home")%></li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="main">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+
+            <div id="footer">
+            &copy; 2009 МГТУ, ИУ7-83
+            </div>
+        </div>
+    </div>
+</body>
+</html>
