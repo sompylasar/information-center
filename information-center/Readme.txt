@@ -46,21 +46,35 @@ InformationCenter (база данных) - структура базы данн
 
 ---------------------------------------------------------------------------------------------------
 
-Что нужно сделать, чтобы всё это откомпилировать и посмотреть:
+Что нужно сделать, чтобы откомпилировать и посмотреть проект:
 
-1. Поставить Microsoft VisualStudio 2008
-2. Поставить Microsoft .NET Framework 3.5 sp1:
+1. Установить Microsoft VisualStudio 2008.
+2. Установить Microsoft .NET Framework 3.5 sp1:
 http://www.microsoft.com/downloads/details.aspx?FamilyID=AB99342F-5D1A-413D-8319-81DA479AB0D7&displaylang=en
-3. Поставить Microsoft VisualStudio 2008 ServicePack1:
+3. Установить Service Pack 1 для Microsoft VisualStudio 2008:
 http://www.microsoft.com/downloads/details.aspx?FamilyId=FBEE1648-7106-44A7-9649-6D9F6D58056E&displaylang=en
-4. Поставить ASP.NET MVC 1.0:
+4. Установить ASP.NET MVC 1.0:
 http://www.microsoft.com/downloads/details.aspx?FamilyID=53289097-73ce-43bf-b6a6-35e00103cb4b&displaylang=en
-5. Поставить SQL Server 2005.
-6. Присоединить к SQL Server базу данных "InformationCenter".
-7. При необходимости добавить в Web.config в секцию configuration->connectionStrings следующую строку:
+5. Установить SQL Server 2005.
+6. Присоединить к SQL Server базу данных "InformationCenter" ( db/InformationCenter.mdf ).
+7. При необходимости отредактировать файл Web.config в корневой папке проекта, добавив в секцию configuration->connectionStrings следующую строку:
     <add name="InformationCenterDatabase" connectionString="data source=.\SQLEXPRESS;Initial Catalog=InformationCenter;Integrated Security=SSPI;" providerName="System.Data.SqlClient"/>
    Заполнить connectionString="" правильной строкой подключения к базе "InformationCenter" (для справки см. http://connectionstrings.com/ ).
    Примечание: в случае отсутствия в настройках такой строки веб-интерфейс предложит авторизоваться (на данный момент доступен только интегрированный тип входа); в противном случае, если строка задана верно, авторизация запрашиваться не будет.
-8. Только после всего этого можно компилировать проект и молиться, чтобы все заработало =).
+8. Открыть исходные коды проекта ( InformationCenter/InformationCenter.sln ) в VisualStudio и запустить отладку. В появившемся диалоге, спрашивающем, следует ли поменять Web.config для возможной отладки, выбрать продолжение без отладки.
+
+---------------------------------------------------------------------------------------------------
+
+Что нужно сделать, чтобы запустить проект на веб-сервере:
+
+1. Определить версию установленного веб-сервера IIS (Microsoft Internet Information Services)
+В секции Using ASP.NET MVC with Different Versions of IIS статьи http://www.asp.net/learn/mvc/tutorial-08-cs.aspx указано, какие версии IIS установлены в различных версиях ОС Windows).
+2. При необходимости установить IIS версии не ниже 5.0:
+http://www.microsoft.com/web/downloads/platform.aspx
+3. Настроить веб-сервер IIS согласно прилагаемым к нему инструкциям.
+4. Добавить веб-сайт, в корень которого скопировать файлы из папки InformationCenter.published
+5. Следовать инструкциям по настройке установленной версии IIS для ASP.NET MVC (см. статью http://www.asp.net/learn/mvc/tutorial-08-cs.aspx )
+6. Выполнить пункты 5-7 инструкции по компиляции и просмотру проекта.
+7. Запустить веб-браузер и ввести адрес созданного веб-сайта.
 
 ---------------------------------------------------------------------------------------------------
